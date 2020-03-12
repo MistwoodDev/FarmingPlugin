@@ -1,2 +1,2 @@
 # FarmingPlugin
-The farming plugin for the Mystwood Farming Server
+The farming plugin for the Mistwood Farming Server
