@@ -1,25 +1,20 @@
 package net.mistwood.FarmingPlugin.Modules.Shop;
 
-import net.mistwood.FarmingPlugin.EventManager;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.FishHook;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
+import net.mistwood.FarmingPlugin.Main;
 
-public class ShopEvents implements EventManager
+import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
+
+public class ShopEvents implements Listener
 {
 
-    @Override
-    public void OnInventoryClick (Inventory Inventory, int Slot, ClickType Click, ItemStack CurrentItem)
+    private static Main Instance;
+
+    public ShopEvents (Main Instance)
     {
-        // example
+        this.Instance = Instance;
+
+        Bukkit.getServer ().getPluginManager ().registerEvents (this, Instance);
     }
 
-    @Override
-    public void OnPlayerFish (Player Player, Entity Caught, int ExpToDrop, FishHook Hook)
-    {
-        // example
-    }
 }

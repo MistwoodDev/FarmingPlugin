@@ -28,9 +28,7 @@ public class Main extends JavaPlugin
     protected Economy Economy;
     protected Cache<PlayerData> PlayersCache;
     protected Cache<FarmData> FarmsCache;
-
     protected List<Module> Modules;
-    protected List<EventManager> EventManagers;
 
     @Override
     public void onEnable ()
@@ -39,7 +37,6 @@ public class Main extends JavaPlugin
         PlayersCache =  new Cache<PlayerData> ();
         FarmsCache =  new Cache<FarmData> ();
         Modules = new ArrayList<Module> ();
-        EventManagers = new ArrayList<EventManager> ();
 
         Modules.add (new ShopModule ());
         for (Module Module : Modules)
@@ -67,11 +64,6 @@ public class Main extends JavaPlugin
             Module.OnDisable ();
 
         Bukkit.getLogger ().info ("[Farming - 1.0.0] Disabled");
-    }
-
-    public void RegisterEventManager (EventManager Manager)
-    {
-        EventManagers.add (Manager);
     }
 
     public void RegisterCommand (String Name, CommandExecutor Command)
