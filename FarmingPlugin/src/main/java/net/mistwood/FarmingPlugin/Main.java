@@ -2,6 +2,7 @@ package net.mistwood.FarmingPlugin;
 
 import net.milkbowl.vault.economy.Economy;
 
+import net.mistwood.FarmingPlugin.Modules.Farm.FarmModule;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -24,11 +25,11 @@ public class Main extends JavaPlugin
 
     private static Main Instance;
 
-    protected Config Config;
-    protected Economy Economy;
-    protected Cache<PlayerData> PlayersCache;
-    protected Cache<FarmData> FarmsCache;
-    protected List<Module> Modules;
+    public Config Config;
+    public Economy Economy;
+    public Cache<PlayerData> PlayersCache;
+    public Cache<FarmData> FarmsCache;
+    public List<Module> Modules;
 
     @Override
     public void onEnable ()
@@ -39,6 +40,7 @@ public class Main extends JavaPlugin
         Modules = new ArrayList<Module> ();
 
         Modules.add (new ShopModule ());
+        Modules.add (new FarmModule ());
         for (Module Module : Modules)
             Module.OnEnable (this);
 
@@ -48,9 +50,15 @@ public class Main extends JavaPlugin
 
         if (!SetupConfig ())
             Bukkit.getLogger ().warning ("[Farming - 1.0.0] Failed to load config");
+            Bukkit.getServer ().getPluginManager ().disablePlugin (this);
 
         if (!SetupEconomy ())
             Bukkit.getLogger ().warning ("[Farming - 1.0.0] Failed to initialize economy");
+            Bukkit.getServer ().getPluginManager ().disablePlugin (this);
+
+        if (!SetupRedProtect ())
+            Bukkit.getLogger ().warning ("[Farming - 1.0.0] RedProtect plugin could not be found");
+            Bukkit.getServer ().getPluginManager ().disablePlugin (this);
 
         // TODO: Connect to DB
 
@@ -105,6 +113,11 @@ public class Main extends JavaPlugin
             Economy = EconomyProvider.getProvider ();
 
         return (Economy != null);
+    }
+
+    private boolean SetupRedProtect ()
+    {
+        return Bukkit.getPluginManager ().getPlugin ("RedProtect") != null && Bukkit.getPluginManager ().getPlugin ("RedProtect").isEnabled ();
     }
 
 }

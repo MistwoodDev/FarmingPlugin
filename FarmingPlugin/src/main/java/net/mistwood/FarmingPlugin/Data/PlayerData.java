@@ -7,7 +7,13 @@ import java.util.UUID;
 public class PlayerData
 {
 
-    public Player PlayerObject;
+    public Player PlayerInstance;
     public UUID FarmID;
+
+    public PlayerData (Player PlayerInstance, UUID FarmID)
+    {
+        this.PlayerInstance = PlayerInstance;
+        this.FarmID = FarmID;
+    }
 
 }
