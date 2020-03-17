@@ -26,14 +26,26 @@ public class EventListener implements Listener
     @EventHandler
     public void onPlayerJoin (PlayerJoinEvent Event)
     {
-        PlayerData Data = PlayerData.FromMap (Instance.Database.Get (Event.getPlayer ().getUniqueId (), DatabaseCollection.PlayersCollection));
+        if (!Event.getPlayer ().hasPlayedBefore () || Instance.Database.Exists (Event.getPlayer ().getUniqueId (), DatabaseCollection.PlayersCollection)) // Delete the database check once release
+        {
+            PlayerData Data = new PlayerData (Event.getPlayer (), Event.getPlayer ().getName (), null, null);
 
-        // Add player to cache
-        Instance.PlayersCache.Add (Data.PlayerInstance.getUniqueId (), Data);
-        // Add players farm to cache (if the farm isn't already in the cache)
-        Instance.FarmsCache.Add (Data.FarmID, FarmData.FromMap (Instance.Database.Get (Data.FarmID, DatabaseCollection.FarmsCollection))); // TODO: Maybe to check first?
-        // Add the player to the cached farms `OnlinePlayers` list
-        Instance.FarmsCache.Update (Data.FarmID, Instance.FarmsCache.Get (Data.FarmID).AddOnlinePlayer (Data));
+            Instance.PlayersCache.Add (Data.PlayerInstance.getUniqueId (), Data);
+
+            Instance.Database.Insert (Data.ToMap (), DatabaseCollection.PlayersCollection);
+        }
+
+        else
+        {
+            PlayerData Data = PlayerData.FromMap (Instance.Database.Get (Event.getPlayer ().getUniqueId (), DatabaseCollection.PlayersCollection));
+
+            // Add player to cache
+            Instance.PlayersCache.Add (Data.PlayerInstance.getUniqueId (), Data);
+            // Add players farm to cache (if the farm isn't already in the cache)
+            Instance.FarmsCache.Add (Data.FarmID, FarmData.FromMap (Instance.Database.Get (Data.FarmID, DatabaseCollection.FarmsCollection))); // TODO: Maybe to check first?
+            // Add the player to the cached farms `OnlinePlayers` list
+            Instance.FarmsCache.Update (Data.FarmID, Instance.FarmsCache.Get (Data.FarmID).AddOnlinePlayer (Data));
+        }
     }
 
     @EventHandler
