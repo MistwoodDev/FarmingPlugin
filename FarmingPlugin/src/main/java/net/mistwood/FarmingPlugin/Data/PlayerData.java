@@ -28,8 +28,8 @@ public class PlayerData
         Map<String, Object> Data = new HashMap<String, Object> ();
         Data.put ("ID", PlayerInstance.getUniqueId ().toString ());
         Data.put ("Name", PlayerInstance.getName ());
-        Data.put ("FarmID", FarmID.toString ());
-        Data.put ("FarmPermission", PermissionLevel.toString ());
+        Data.put ("FarmID", FarmID != null ? FarmID.toString () : "null");
+        Data.put ("FarmPermission", PermissionLevel != null ? PermissionLevel.toString () : "null");
 
         return Data;
     }
@@ -41,8 +41,8 @@ public class PlayerData
         return new PlayerData (
                 Target,
                 Target.getName (),
-                UUID.fromString (Data.get ("FarmID").toString ()),
-                FarmPermissionLevel.valueOf (Data.get ("FarmPermission").toString ())
+                !Data.get("FarmID").toString ().equals ("null") ? UUID.fromString (Data.get ("FarmID").toString ()) : null,
+                !Data.get("FarmID").toString ().equals ("null") ? FarmPermissionLevel.valueOf (Data.get ("FarmPermission").toString ()) : null
         );
     }
 

@@ -71,22 +71,20 @@ public class FarmData
         Data.put ("ID", ID.toString ());
         Data.put ("Name", Name);
         Data.put ("Owner", Owner.toString ());
-        Data.put ("Players", Helper.UUIDListToString (Players));
+        Data.put ("Players", Helper.UUIDListToString (Players)); // We may need to make this here into an ArrayList<Document> or something instead
 
         return Data;
     }
 
     public static FarmData FromMap (Map<String, Object> Data)
     {
-        FarmData NewObject = new FarmData (
+        return new FarmData (
           UUID.fromString (Data.get ("ID").toString ()),
           Data.get ("Name").toString (),
           UUID.fromString (Data.get ("Owner").toString ()),
           RedProtect.get ().getAPI ().getRegion ("", Bukkit.getWorld ("world")),
           Helper.StringUUIDToUUIDList ((List<String>) Data.get ("Players"))
         );
-
-        return NewObject;
     }
 
 }
