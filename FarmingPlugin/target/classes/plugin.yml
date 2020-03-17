@@ -1,0 +1,8 @@
+name: Farming
+main: net.mistwood.FarmingPlugin.Main
+version: 1.0.0
+author: Mistwood
+commands:
+  shop:
+    description: Main shop command
+    usage: /shop

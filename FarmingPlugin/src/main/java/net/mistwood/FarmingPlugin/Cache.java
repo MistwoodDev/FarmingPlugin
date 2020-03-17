@@ -18,6 +18,12 @@ public class Cache<T>
         CachedItems.put (ID, Value);
     }
 
+    // NOTE: This is just the same as the add method, but I still wanted it there
+    public void Update (UUID ID, T Value)
+    {
+        CachedItems.put (ID, Value);
+    }
+
     public void Remove (UUID ID)
     {
         CachedItems.remove (ID);

@@ -6,13 +6,13 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class Config
 {
 
-    protected String DatabaseHost;
-    protected int DatabasePort;
-    protected String DatabaseName;
-    protected String DatabaseUsername;
-    protected String DatabasePassword;
-    protected String DatabaseUsersTable;
-    protected String DatabaseFarmsTable;
+    public String DatabaseHost;
+    public int DatabasePort;
+    public String DatabaseName;
+    public String DatabaseUsername;
+    public String DatabasePassword;
+    public String DatabasePlayersCollection;
+    public String DatabaseFarmsCollection;
 
     // TODO: Add more
 
@@ -24,8 +24,8 @@ public class Config
         this.DatabaseName = DatabaseSection.get ("Name").toString ();
         this.DatabaseUsername = DatabaseSection.get ("Username").toString ();
         this.DatabasePassword = DatabaseSection.get ("Password").toString ();
-        this.DatabaseUsersTable = DatabaseSection.get ("UsersTable").toString ();
-        this.DatabaseFarmsTable = DatabaseSection.get ("FarmsTable").toString ();
+        this.DatabasePlayersCollection = DatabaseSection.get ("PlayersCollection").toString ();
+        this.DatabaseFarmsCollection = DatabaseSection.get ("FarmsCollection").toString ();
     }
 
 }

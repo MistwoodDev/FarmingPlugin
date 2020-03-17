@@ -2,7 +2,9 @@ package net.mistwood.FarmingPlugin;
 
 import net.milkbowl.vault.economy.Economy;
 
+import net.mistwood.FarmingPlugin.Database.DatabaseManager;
 import net.mistwood.FarmingPlugin.Modules.Farm.FarmModule;
+import net.mistwood.FarmingPlugin.Utils.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -25,6 +27,7 @@ public class Main extends JavaPlugin
 
     private static Main Instance;
 
+    public DatabaseManager Database;
     public Config Config;
     public Economy Economy;
     public Cache<PlayerData> PlayersCache;
@@ -49,20 +52,19 @@ public class Main extends JavaPlugin
         new EventListener (this);
 
         if (!SetupConfig ())
-            Bukkit.getLogger ().warning ("[Farming - 1.0.0] Failed to load config");
-            Bukkit.getServer ().getPluginManager ().disablePlugin (this);
+            Bukkit.getLogger ().severe (Messages.PluginConfigFailed);
 
         if (!SetupEconomy ())
-            Bukkit.getLogger ().warning ("[Farming - 1.0.0] Failed to initialize economy");
-            Bukkit.getServer ().getPluginManager ().disablePlugin (this);
+            Bukkit.getLogger ().severe (Messages.PluginEconomyFailed);
 
         if (!SetupRedProtect ())
-            Bukkit.getLogger ().warning ("[Farming - 1.0.0] RedProtect plugin could not be found");
-            Bukkit.getServer ().getPluginManager ().disablePlugin (this);
+            Bukkit.getLogger ().severe (Messages.PluginRedProtectFailed);
 
-        // TODO: Connect to DB
+        Database = new DatabaseManager (Config);
+        Database.Connect ();
+        Bukkit.getLogger ().info (Messages.PluginDatabaseConnected);
 
-        Bukkit.getLogger ().info ("[Farming - 1.0.0] Enabled");
+        Bukkit.getLogger ().info (Messages.PluginEnabled);
     }
 
     @Override
@@ -71,7 +73,7 @@ public class Main extends JavaPlugin
         for (Module Module : Modules)
             Module.OnDisable ();
 
-        Bukkit.getLogger ().info ("[Farming - 1.0.0] Disabled");
+        Bukkit.getLogger ().info (Messages.PluginDisabled);
     }
 
     public void RegisterCommand (String Name, CommandExecutor Command)
@@ -102,6 +104,8 @@ public class Main extends JavaPlugin
             return false;
         }
 
+        Bukkit.getLogger ().info (Messages.PluginLoadedConfig);
+
         return true;
     }
 
@@ -111,6 +115,7 @@ public class Main extends JavaPlugin
 
         if (EconomyProvider != null)
             Economy = EconomyProvider.getProvider ();
+            Bukkit.getLogger ().info (Messages.PluginLoadedEconomy);
 
         return (Economy != null);
     }
