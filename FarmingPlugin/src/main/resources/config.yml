@@ -6,3 +6,7 @@ Database:
   Password: pwd
   PlayersCollection: players
   FarmsCollection: farms
+  AuthKeysCollection: auth-keys # Change to: none, if you don't use the `DiscordLink` module
+  
+Modules:
+  DiscordLink: true
