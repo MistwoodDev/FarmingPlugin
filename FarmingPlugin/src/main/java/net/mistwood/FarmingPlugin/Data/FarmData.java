@@ -71,7 +71,9 @@ public class FarmData
         Data.put ("ID", ID.toString ());
         Data.put ("Name", Name);
         Data.put ("Owner", Owner.toString ());
-        Data.put ("Players", Helper.UUIDListToString (Players)); // We may need to make this here into an ArrayList<Document> or something instead
+        Data.put ("Players", Helper.UUIDListToString (Players));
+        Data.put ("Info", String.valueOf (RegionInstance.getArea ()));
+        Data.put ("Date", RegionInstance.getDate ());
 
         return Data;
     }

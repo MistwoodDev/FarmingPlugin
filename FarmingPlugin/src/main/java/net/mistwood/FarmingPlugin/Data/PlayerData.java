@@ -1,5 +1,6 @@
 package net.mistwood.FarmingPlugin.Data;
 
+import net.mistwood.FarmingPlugin.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -13,13 +14,15 @@ public class PlayerData
     public Player PlayerInstance;
     public String Name;
     public UUID FarmID;
+    public String FarmName;
     public FarmPermissionLevel PermissionLevel;
 
-    public PlayerData (Player PlayerInstance, String Name, UUID FarmID, FarmPermissionLevel PermissionLevel)
+    public PlayerData (Player PlayerInstance, String Name, UUID FarmID, String FarmName, FarmPermissionLevel PermissionLevel)
     {
         this.PlayerInstance = PlayerInstance;
         this.Name = Name;
         this.FarmID = FarmID;
+        this.FarmName = FarmName;
         this.PermissionLevel = PermissionLevel;
     }
 
@@ -29,6 +32,7 @@ public class PlayerData
         Data.put ("ID", PlayerInstance.getUniqueId ().toString ());
         Data.put ("Name", PlayerInstance.getName ());
         Data.put ("FarmID", FarmID != null ? FarmID.toString () : "null");
+        Data.put ("FarmName", FarmName != null ? FarmName : "null");
         Data.put ("FarmPermission", PermissionLevel != null ? PermissionLevel.toString () : "null");
 
         return Data;
@@ -42,6 +46,7 @@ public class PlayerData
                 Target,
                 Target.getName (),
                 !Data.get("FarmID").toString ().equals ("null") ? UUID.fromString (Data.get ("FarmID").toString ()) : null,
+                !Data.get ("FarmName").toString ().equals ("null") ? Data.get ("FarmName").toString () : null,
                 !Data.get("FarmID").toString ().equals ("null") ? FarmPermissionLevel.valueOf (Data.get ("FarmPermission").toString ()) : null
         );
     }
