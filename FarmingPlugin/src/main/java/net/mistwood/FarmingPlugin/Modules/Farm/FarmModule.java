@@ -8,6 +8,7 @@ public class FarmModule implements Module
 
     private static Main Instance;
 
+    @Override
     public void OnEnable (Main Instance)
     {
         this.Instance = Instance;
@@ -15,9 +16,13 @@ public class FarmModule implements Module
         new FarmEvents (Instance);
     }
 
-    public void OnDisable ()
-    {
+    @Override
+    public void OnDisable () { }
 
+    @Override
+    public String GetName ()
+    {
+        return "FarmModule";
     }
 
 }

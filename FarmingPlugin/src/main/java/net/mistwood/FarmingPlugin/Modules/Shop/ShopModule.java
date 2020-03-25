@@ -9,6 +9,7 @@ public class ShopModule implements Module
 
     private static Main Instance;
 
+    @Override
     public void OnEnable (Main Instance)
     {
         this.Instance = Instance;
@@ -17,9 +18,13 @@ public class ShopModule implements Module
         Instance.RegisterCommand ("shop", new ShopCommand (Instance));
     }
 
-    public void OnDisable ()
-    {
+    @Override
+    public void OnDisable () { }
 
+    @Override
+    public String GetName ()
+    {
+        return "ShopModule";
     }
 
 }

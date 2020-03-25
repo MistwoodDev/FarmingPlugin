@@ -5,5 +5,6 @@ public interface Module
 
     void OnEnable (Main Instance);
     void OnDisable ();
+    String GetName ();
 
 }
