@@ -13,6 +13,9 @@ public class Config
     public String DatabasePassword;
     public String DatabasePlayersCollection;
     public String DatabaseFarmsCollection;
+    public String DatabaseAuthKeysCollection;
+
+    public boolean ModulesDiscordLink;
 
     // TODO: Add more
 
@@ -26,6 +29,10 @@ public class Config
         this.DatabasePassword = DatabaseSection.get ("Password").toString ();
         this.DatabasePlayersCollection = DatabaseSection.get ("PlayersCollection").toString ();
         this.DatabaseFarmsCollection = DatabaseSection.get ("FarmsCollection").toString ();
+        this.DatabaseAuthKeysCollection = DatabaseSection.get ("AuthKeysCollection").toString ();
+
+        ConfigurationSection ModulesSection = FileConfig.getConfigurationSection ("Modules");
+        this.ModulesDiscordLink = Boolean.getBoolean (ModulesSection.get ("DiscordLink").toString ());
     }
 
 }
