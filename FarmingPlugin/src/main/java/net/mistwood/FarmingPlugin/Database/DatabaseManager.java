@@ -9,7 +9,9 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.mongodb.connection.ClusterSettings;
 import net.mistwood.FarmingPlugin.Config;
+import net.mistwood.FarmingPlugin.Utils.MongoURIBuilder;
 import org.bson.Document;
+import org.bukkit.Bukkit;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -27,6 +29,7 @@ public class DatabaseManager
     private MongoDatabase Database;
     private MongoCollection<Document> PlayersCollection;
     private MongoCollection<Document> FarmsCollection;
+    private MongoCollection<Document> AuthKeysCollection;
 
     public DatabaseManager (Config Config)
     {
@@ -35,15 +38,21 @@ public class DatabaseManager
 
     public void Connect ()
     {
-        ClusterSettings Cluster = ClusterSettings.builder ().hosts (asList (new ServerAddress (Config.DatabaseHost, Config.DatabasePort))).build ();
-        MongoCredential Credential = MongoCredential.createMongoCRCredential (Config.DatabaseUsername, Config.DatabaseName, Config.DatabasePassword.toCharArray ());
-        MongoClientSettings Settings = MongoClientSettings.builder ().clusterSettings (Cluster).credentialList (asList (Credential)).build ();
+        ClusterSettings Cluster = ClusterSettings.builder ()
+                .hosts (asList (new ServerAddress (Config.DatabaseHost, Config.DatabasePort)))
+                .build ();
+        MongoCredential Credential = MongoCredential.createCredential (Config.DatabaseUsername, Config.DatabaseName, Config.DatabasePassword.toCharArray ());
+        MongoClientSettings Settings = MongoClientSettings.builder ()
+                .clusterSettings (Cluster)
+                .credentialList (asList (Credential))
+                .build ();
 
         Client = MongoClients.create (Settings);
         Database = Client.getDatabase (Config.DatabaseName);
 
         PlayersCollection = Database.getCollection (Config.DatabasePlayersCollection);
-        PlayersCollection = Database.getCollection (Config.DatabaseFarmsCollection);
+        FarmsCollection = Database.getCollection (Config.DatabaseFarmsCollection);
+        AuthKeysCollection = Database.getCollection (Config.DatabaseAuthKeysCollection);
     }
 
     public void Insert (Map<String, Object> Objects, DatabaseCollection Collection)
@@ -57,34 +66,22 @@ public class DatabaseManager
         }
     }
 
-    public Map<String, Object> Get (UUID ID, DatabaseCollection Collection)
+    public void Get (UUID ID, DatabaseCollection Collection, SingleResultCallback<Document> Callback)
     {
-        final Document Result = new Document ();
-
-        SingleResultCallback<Document> ReturnDocumentMap = (Doc, Throwable) -> Result.putAll (Doc);
-
         switch (Collection)
         {
-            case PlayersCollection: PlayersCollection.find (eq ("ID", ID.toString ())).first (ReturnDocumentMap); break;
-            case FarmsCollection: FarmsCollection.find (eq ("ID", ID.toString ())).first (ReturnDocumentMap); break;
+            case PlayersCollection: PlayersCollection.find (eq ("ID", ID.toString ())).first (Callback); break;
+            case FarmsCollection: FarmsCollection.find (eq ("ID", ID.toString ())).first (Callback); break;
         }
-
-        return Result;
     }
 
-    public boolean Exists (UUID ID, DatabaseCollection Collection)
+    public void Exists (UUID ID, DatabaseCollection Collection, SingleResultCallback<Long> Callback)
     {
-        final boolean[] DoesExist = new boolean[1];
-
-        SingleResultCallback<Long> CheckExist = (Count, Throwable) -> DoesExist[0] = (Count > 0);
-
         switch (Collection)
         {
-            case PlayersCollection: PlayersCollection.count (new Document ("ID", ID.toString ()), CheckExist);
-            case FarmsCollection: FarmsCollection.count (new Document ("ID", ID.toString ()), CheckExist);
+            case PlayersCollection: PlayersCollection.count (eq ("ID", ID.toString ()), Callback); break;
+            case FarmsCollection: FarmsCollection.count (eq ("ID", ID.toString ()), Callback); break;
         }
-
-        return DoesExist[0];
     }
 
     public void Update (UUID ID, Map<String, Object> Objects, DatabaseCollection Collection)
