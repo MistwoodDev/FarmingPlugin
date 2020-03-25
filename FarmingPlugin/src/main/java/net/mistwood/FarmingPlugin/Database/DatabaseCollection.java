@@ -4,6 +4,7 @@ public enum DatabaseCollection
 {
 
     PlayersCollection,
-    FarmsCollection
+    FarmsCollection,
+    AuthKeysCollection
 
 }
