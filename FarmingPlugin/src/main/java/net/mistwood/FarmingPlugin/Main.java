@@ -2,8 +2,10 @@ package net.mistwood.FarmingPlugin;
 
 import net.milkbowl.vault.economy.Economy;
 
+import net.mistwood.FarmingPlugin.API.FarmingAPI;
 import net.mistwood.FarmingPlugin.Database.DatabaseManager;
 import net.mistwood.FarmingPlugin.Modules.Farm.FarmModule;
+import net.mistwood.FarmingPlugin.Modules.MinecraftAuth.DiscordLinkModule;
 import net.mistwood.FarmingPlugin.Utils.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
@@ -25,14 +27,17 @@ import java.util.List;
 public class Main extends JavaPlugin
 {
 
-    private static Main Instance;
+    public static Main Instance;
 
+    // TODO: Make some of these private and make getters for them
     public DatabaseManager Database;
     public Config Config;
     public Economy Economy;
     public Cache<PlayerData> PlayersCache;
     public Cache<FarmData> FarmsCache;
     public List<Module> Modules;
+
+    private FarmingAPI API;
 
     @Override
     public void onEnable ()
@@ -41,11 +46,6 @@ public class Main extends JavaPlugin
         PlayersCache =  new Cache<PlayerData> ();
         FarmsCache =  new Cache<FarmData> ();
         Modules = new ArrayList<Module> ();
-
-        Modules.add (new ShopModule ());
-        Modules.add (new FarmModule ());
-        for (Module Module : Modules)
-            Module.OnEnable (this);
 
         // TODO: Load commands (Only default commands, as each module loads their own commands)
 
@@ -60,9 +60,9 @@ public class Main extends JavaPlugin
         if (!SetupRedProtect ())
             Bukkit.getLogger ().severe (Messages.PluginRedProtectFailed);
 
-        Database = new DatabaseManager (Config);
-        Database.Connect ();
-        Bukkit.getLogger ().info (Messages.PluginDatabaseConnected);
+        LoadModules ();
+
+        ConnectDatabase ();
 
         Bukkit.getLogger ().info (Messages.PluginEnabled);
     }
@@ -123,6 +123,35 @@ public class Main extends JavaPlugin
     private boolean SetupRedProtect ()
     {
         return Bukkit.getPluginManager ().getPlugin ("RedProtect") != null && Bukkit.getPluginManager ().getPlugin ("RedProtect").isEnabled ();
+    }
+
+    private void LoadModules ()
+    {
+        // Default Modules
+        Modules.add (new ShopModule ());
+        Modules.add (new FarmModule ());
+
+        // Configurable Modules
+        if (Config.ModulesDiscordLink)
+            Modules.add (new DiscordLinkModule ());
+
+        for (Module Target : Modules)
+        {
+            Target.OnEnable (this);
+            Bukkit.getLogger ().info (String.format (Messages.PluginModuleLoaded, Target.GetName ()));
+        }
+    }
+
+    private void ConnectDatabase ()
+    {
+        Database = new DatabaseManager (Config);
+        Database.Connect ();
+        Bukkit.getLogger ().info (Messages.PluginDatabaseConnected);
+    }
+
+    public FarmingAPI GetAPI ()
+    {
+        return API;
     }
 
 }

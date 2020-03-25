@@ -9,6 +9,7 @@ public class Messages
     public static String PluginEnabled = ConsolePrefix + "Enabled";
     public static String PluginDisabled = ConsolePrefix + "Disabled";
     public static String PluginDatabaseConnected = ConsolePrefix + "Successfully connected to database!";
+    public static String PluginModuleLoaded = ConsolePrefix + "Module '%s' was successfully loaded!";
     public static String PluginLoadedConfig = ConsolePrefix + "Successfully loaded config!";
     public static String PluginLoadedEconomy = ConsolePrefix + "Successfully loaded economy!";
     public static String PluginConfigFailed = ConsolePrefix + "Failed to load config!";
