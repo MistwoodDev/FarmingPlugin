@@ -3,7 +3,7 @@ package net.mistwood.FarmingPlugin.Utils;
 public class Messages
 {
 
-    public static String ConsolePrefix = "[Farming - 1.0.0] ";
+    public static String ConsolePrefix = "[Farming - 1.0.1] ";
     public static String ChatPrefix = "&7[&aFarming&7] ";
 
     public static String PluginEnabled = ConsolePrefix + "Enabled";
