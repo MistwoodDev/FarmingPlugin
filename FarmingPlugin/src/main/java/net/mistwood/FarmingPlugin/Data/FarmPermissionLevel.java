@@ -4,6 +4,7 @@ public enum FarmPermissionLevel
 {
 
     Leader,
-    Admin
+    Admin,
+    Farmer
 
 }
