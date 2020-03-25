@@ -3,6 +3,9 @@ package net.mistwood.FarmingPlugin.Modules.Farm;
 import br.net.fabiozumbi12.RedProtect.Bukkit.API.events.*;
 
 import net.mistwood.FarmingPlugin.Data.FarmData;
+import net.mistwood.FarmingPlugin.Data.FarmPermissionLevel;
+import net.mistwood.FarmingPlugin.Data.PlayerData;
+import net.mistwood.FarmingPlugin.Database.DatabaseCollection;
 import net.mistwood.FarmingPlugin.Main;
 
 import org.bukkit.Bukkit;
@@ -34,9 +37,15 @@ public class FarmEvents implements Listener
         );
         Farm.AddOnlinePlayer (Instance.PlayersCache.Get (Event.getPlayer ().getUniqueId ()));
 
-        // TODO: Add the farm to the database
+        PlayerData Data = Instance.PlayersCache.Get (Event.getPlayer ().getUniqueId ());
+        Data.FarmID = Farm.ID;
+        Data.FarmName = Event.getRegion ().getName ();
+        Data.PermissionLevel = FarmPermissionLevel.Leader;
+        Instance.PlayersCache.Update (Event.getPlayer ().getUniqueId (), Data);
 
-        Instance.FarmsCache.Add (Event.getPlayer ().getUniqueId (), Farm);
+        Instance.Database.Insert (Farm.ToMap (), DatabaseCollection.FarmsCollection);
+
+        Instance.FarmsCache.Add (Farm.ID, Farm);
     }
 
     @EventHandler
