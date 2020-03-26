@@ -3,9 +3,12 @@ package net.mistwood.FarmingPlugin.Utils;
 public class Messages
 {
 
+    // Prefixes
     public static String ConsolePrefix = "[Farming - 1.0.1] ";
     public static String ChatPrefix = "&7[&aFarming&7] ";
+    public static String ChatErrorPrefix = ChatPrefix + "&b&lError ";
 
+    // Console messages
     public static String PluginEnabled = ConsolePrefix + "Enabled";
     public static String PluginDisabled = ConsolePrefix + "Disabled";
     public static String PluginDatabaseConnected = ConsolePrefix + "Successfully connected to database!";
@@ -15,5 +18,12 @@ public class Messages
     public static String PluginConfigFailed = ConsolePrefix + "Failed to load config!";
     public static String PluginEconomyFailed = ConsolePrefix + "Failed to initialize economy!";
     public static String PluginRedProtectFailed = ConsolePrefix + "RedProtect plugin could not be found or is disabled!";
+
+    // Errors
+    public static String NoCommandPermission = ChatErrorPrefix + "&7You don't have the required permission to perform that!";
+    public static String PlayerNotInFarm = ChatErrorPrefix + "&7You're not currently in a farm!";
+    public static String PlayerNotFound = ChatErrorPrefix + "&7Player &b'%s&b' &7not found!";
+
+    public static String FarmCreated = ChatPrefix + "&7Created new farm with name &b%s&7!";
 
 }

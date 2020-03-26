@@ -2,12 +2,15 @@ package net.mistwood.FarmingPlugin.Modules.Farm;
 
 import br.net.fabiozumbi12.RedProtect.Bukkit.API.events.*;
 
+import net.mistwood.FarmingPlugin.API.Events.CreateFarmEvent;
 import net.mistwood.FarmingPlugin.Data.FarmData;
 import net.mistwood.FarmingPlugin.Data.FarmPermissionLevel;
 import net.mistwood.FarmingPlugin.Data.PlayerData;
 import net.mistwood.FarmingPlugin.Database.DatabaseCollection;
 import net.mistwood.FarmingPlugin.Main;
 
+import net.mistwood.FarmingPlugin.Utils.Helper;
+import net.mistwood.FarmingPlugin.Utils.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -37,6 +40,10 @@ public class FarmEvents implements Listener
         );
         Farm.AddOnlinePlayer (Instance.PlayersCache.Get (Event.getPlayer ().getUniqueId ()));
 
+        // If the farm has a default name (player_x), we wan't to change it (player's Farm)
+        if (Farm.Name.contains (Event.getPlayer ().getName () + "_"))
+            Farm.Name = String.format ("%s's Farm", Event.getPlayer ().getName ());
+
         PlayerData Data = Instance.PlayersCache.Get (Event.getPlayer ().getUniqueId ());
         Data.FarmID = Farm.ID;
         Data.FarmName = Event.getRegion ().getName ();
@@ -46,6 +53,12 @@ public class FarmEvents implements Listener
         Instance.Database.Insert (Farm.ToMap (), DatabaseCollection.FarmsCollection);
 
         Instance.FarmsCache.Add (Farm.ID, Farm);
+
+        // Send event
+        CreateFarmEvent FarmEvent = new CreateFarmEvent (Farm, Event.getPlayer ());
+        Bukkit.getPluginManager ().callEvent (FarmEvent);
+
+        Helper.SendMessage (Event.getPlayer (), String.format (Messages.FarmCreated, Farm.Name));
     }
 
     @EventHandler

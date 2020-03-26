@@ -1,8 +1,10 @@
 package net.mistwood.FarmingPlugin;
 
+import br.net.fabiozumbi12.RedProtect.Bukkit.API.RedProtectAPI;
 import net.milkbowl.vault.economy.Economy;
 
 import net.mistwood.FarmingPlugin.API.FarmingAPI;
+import net.mistwood.FarmingPlugin.Commands.CommandHandler;
 import net.mistwood.FarmingPlugin.Database.DatabaseManager;
 import net.mistwood.FarmingPlugin.Modules.Farm.FarmModule;
 import net.mistwood.FarmingPlugin.Modules.MinecraftAuth.DiscordLinkModule;
@@ -46,6 +48,7 @@ public class Main extends JavaPlugin
         PlayersCache =  new Cache<PlayerData> ();
         FarmsCache =  new Cache<FarmData> ();
         Modules = new ArrayList<Module> ();
+        API = new FarmingAPI (this);
 
         // TODO: Load commands (Only default commands, as each module loads their own commands)
 
