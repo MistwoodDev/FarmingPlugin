@@ -18,6 +18,10 @@ public class FarmData
     public List<UUID> Players;
     public List<PlayerData> OnlinePlayers;
 
+    // Init these somehow?
+    public List<Integer> CompletedChallenges;
+    public FarmStats Stats;
+
     public FarmData (UUID ID, String Name, UUID Owner, Region RegionInstance)
     {
         this (ID, Name, Owner, RegionInstance, new ArrayList<UUID> ());
@@ -74,19 +78,26 @@ public class FarmData
         Data.put ("Players", Helper.UUIDListToString (Players));
         Data.put ("Info", String.valueOf (RegionInstance.getArea ()));
         Data.put ("Date", RegionInstance.getDate ());
+        Data.put ("CompletedChallenges", CompletedChallenges);
+        Data.put ("Stats", Stats.ToMap ());
 
         return Data;
     }
 
     public static FarmData FromMap (Map<String, Object> Data)
     {
-        return new FarmData (
+        FarmData Farm =  new FarmData (
           UUID.fromString (Data.get ("ID").toString ()),
           Data.get ("Name").toString (),
           UUID.fromString (Data.get ("Owner").toString ()),
           RedProtect.get ().getAPI ().getRegion ("", Bukkit.getWorld ("world")),
           Helper.StringUUIDToUUIDList ((List<String>) Data.get ("Players"))
         );
+
+        Farm.CompletedChallenges = (List<Integer>) Data.get ("CompletedChallenges");
+        Farm.Stats = FarmStats.FromMap ((Map<String, Object>) Data.get ("Stats"));
+
+        return Farm;
     }
 
 }

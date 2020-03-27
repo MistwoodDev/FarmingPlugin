@@ -20,13 +20,20 @@ public class CommandHandler implements CommandExecutor, TabCompleter, Listener
 
     private Main Instance;
     private String Command;
+    private List<String> Aliases;
     private Map<String, SubCommand> CommandMap = new HashMap<String, SubCommand> ();
     private Map<String, String> CommandConfirm = new HashMap<String, String> ();
 
-    public CommandHandler(Main Instance, String Command)
+    public CommandHandler (Main Instance, String Command)
+    {
+        this (Instance, Command, Arrays.asList ());
+    }
+
+    public CommandHandler (Main Instance, String Command, List<String> Aliases)
     {
         this.Instance = Instance;
         this.Command = Command;
+        this.Aliases = Aliases;
 
         Instance.getCommand (Command).setExecutor (this);
         Instance.getCommand (Command).setTabCompleter (this);

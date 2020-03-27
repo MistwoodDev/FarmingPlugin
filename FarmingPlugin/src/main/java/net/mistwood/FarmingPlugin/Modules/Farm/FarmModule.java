@@ -5,10 +5,12 @@ import net.mistwood.FarmingPlugin.Main;
 import net.mistwood.FarmingPlugin.Module;
 import net.mistwood.FarmingPlugin.Modules.Farm.Commands.AddMemberCommand;
 
+import static java.util.Arrays.asList;
+
 public class FarmModule implements Module
 {
 
-    private static Main Instance;
+    private Main Instance;
 
     @Override
     public void OnEnable (Main Instance)
@@ -17,7 +19,7 @@ public class FarmModule implements Module
 
         new FarmEvents (Instance);
 
-        CommandHandler Handler =  new CommandHandler (Instance, "farm");
+        CommandHandler Handler =  new CommandHandler (Instance, "farm", asList ("f"));
         Handler.RegisterCommand ("addmember", new AddMemberCommand (Instance));
     }
 

@@ -6,6 +6,7 @@ import net.milkbowl.vault.economy.Economy;
 import net.mistwood.FarmingPlugin.API.FarmingAPI;
 import net.mistwood.FarmingPlugin.Commands.CommandHandler;
 import net.mistwood.FarmingPlugin.Database.DatabaseManager;
+import net.mistwood.FarmingPlugin.Modules.Challenge.ChallengeModule;
 import net.mistwood.FarmingPlugin.Modules.Farm.FarmModule;
 import net.mistwood.FarmingPlugin.Modules.MinecraftAuth.DiscordLinkModule;
 import net.mistwood.FarmingPlugin.Utils.Messages;
@@ -133,6 +134,7 @@ public class Main extends JavaPlugin
         // Default Modules
         Modules.add (new ShopModule ());
         Modules.add (new FarmModule ());
+        Modules.add (new ChallengeModule ());
 
         // Configurable Modules
         if (Config.ModulesDiscordLink)
