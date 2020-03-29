@@ -1,5 +1,7 @@
 package net.mistwood.FarmingPlugin.Utils;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -21,6 +23,11 @@ public class Helper
     public static void SendMessage (Player Target, String Message)
     {
         Target.sendMessage (Colorfy (Message));
+    }
+
+    public static void DisplayActionBar (Player Target, String Message)
+    {
+        Target.spigot ().sendMessage (ChatMessageType.ACTION_BAR, new TextComponent (Colorfy (Message)));
     }
 
     public static String Colorfy (String Message)
