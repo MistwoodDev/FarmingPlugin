@@ -52,11 +52,28 @@ public class EventListener implements Listener
                     // Is the player in a farm?
                     if (Data.FarmID != null)
                     {
-                        Instance.Database.Get (Data.FarmID, DatabaseCollection.FarmsCollection, (FarmResult, FarmError) -> {
-                            // Add players farm to cache (if the farm isn't already in the cache)
-                            Instance.FarmsCache.Add (Data.FarmID, FarmData.FromMap (FarmResult)); // TODO: Maybe to check first?
-                            // Add the player to the cached farms `OnlinePlayers` list
-                            Instance.FarmsCache.Update (Data.FarmID, Instance.FarmsCache.Get (Data.FarmID).AddOnlinePlayer (Data));
+                        Instance.Database.Exists (Data.FarmID, DatabaseCollection.FarmsCollection, (FarmCount, FError) -> {
+                            boolean FarmExists = FarmCount > 0;
+
+                            if (FarmExists)
+                            {
+                                Instance.Database.Get (Data.FarmID, DatabaseCollection.FarmsCollection, (FarmResult, FarmError) -> {
+                                    // Add players farm to cache (if the farm isn't already in the cache)
+                                    Instance.FarmsCache.Add (Data.FarmID, FarmData.FromMap (FarmResult)); // TODO: Maybe to check first?
+                                    // Add the player to the cached farms `OnlinePlayers` list
+                                    Instance.FarmsCache.Update (Data.FarmID, Instance.FarmsCache.Get (Data.FarmID).AddOnlinePlayer (Data));
+                                });
+                            }
+
+                            // The players farm has been deleted while they were gone/offline
+                            else
+                            {
+                                PlayerData Player = Instance.PlayersCache.Get (Data.PlayerInstance.getUniqueId ());
+                                Player.FarmID = null;
+                                Player.FarmName = null;
+                                Player.PermissionLevel = null;
+                                Instance.PlayersCache.Update (Player.PlayerInstance.getUniqueId (), Player);
+                            }
                         });
                     }
                 });
