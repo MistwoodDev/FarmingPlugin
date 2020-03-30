@@ -4,8 +4,8 @@ public class Messages
 {
 
     // Prefixes
-    public static String ConsolePrefix = "[Farming - 1.0.1] ";
-    public static String ChatPrefix = "&7[&aFarming&7] ";
+    public static String ConsolePrefix = "[Farming - 1.0.3] ";
+    public static String ChatPrefix = "&7[&bFarming&7] ";
     public static String ChatErrorPrefix = ChatPrefix + "&b&lError ";
 
     // Console messages
@@ -21,7 +21,10 @@ public class Messages
 
     // Errors
     public static String NoCommandPermission = ChatErrorPrefix + "&7You don't have the required permission to perform that!";
-    public static String PlayerNotInFarm = ChatErrorPrefix + "&7You're not currently in a farm!";
+    public static String PlayerNotInFarm = ChatErrorPrefix + "&b%s &7not currently in a farm!";
+    public static String YouNotInFarm = ChatErrorPrefix + "&7You're not currently in a farm!";
+    public static String PlayerAlreadyInFarm = ChatErrorPrefix + "&b%s &7not currently in a farm!";
+    public static String YouAlreadyInFarm = ChatErrorPrefix + "&7You're not currently in a farm!";
     public static String PlayerNotFound = ChatErrorPrefix + "&7Player &b'%s&b' &7not found!";
 
     public static String FarmCreated = ChatPrefix + "&7Created new farm with name &b%s&7!";
