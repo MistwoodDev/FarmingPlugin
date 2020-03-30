@@ -2,6 +2,7 @@ package net.mistwood.FarmingPlugin.Utils;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.mistwood.FarmingPlugin.Data.PlayerData;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -44,9 +45,7 @@ public class Helper
     {
         List<String> StringIDs = new ArrayList<String> ();
         for (UUID ID : IDs)
-        {
             StringIDs.add (ID.toString ());
-        }
 
         return StringIDs;
     }
@@ -55,9 +54,7 @@ public class Helper
     {
         List<UUID> IDs = new ArrayList<UUID> ();
         for (String ID : StringIDs)
-        {
             IDs.add (UUID.fromString (ID));
-        }
 
         return IDs;
     }
