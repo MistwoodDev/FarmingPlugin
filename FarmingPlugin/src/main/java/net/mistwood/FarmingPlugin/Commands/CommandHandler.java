@@ -1,8 +1,11 @@
 package net.mistwood.FarmingPlugin.Commands;
 
+import net.mistwood.FarmingPlugin.Data.PlayerData;
 import net.mistwood.FarmingPlugin.Main;
 import net.mistwood.FarmingPlugin.Utils.Helper;
 import net.mistwood.FarmingPlugin.Utils.Messages;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,7 +24,8 @@ public class CommandHandler implements CommandExecutor, TabCompleter, Listener
     private Main Instance;
     private String Command;
     private List<String> Aliases;
-    private Map<String, SubCommand> CommandMap = new HashMap<String, SubCommand> ();
+    private Map<List<String>, SubCommand> CommandMap = new HashMap<List<String>, SubCommand> ();
+    // TODO: Make a confirm system
     private Map<String, String> CommandConfirm = new HashMap<String, String> ();
 
     public CommandHandler (Main Instance, String Command)
@@ -58,7 +62,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter, Listener
         {
             if (Args.length > 0 && HasCommand (Args[0]))
             {
-                TabCompleter Completer = this.GetCommandSubCommand (Args[0]);
+                TabCompleter Completer = GetCommandSubCommand (Args[0]);
                 return Completer.onTabComplete (Sender, Command, Alias, CopyArrayOfRange (Args, Args.length));
             }
 
@@ -66,11 +70,11 @@ public class CommandHandler implements CommandExecutor, TabCompleter, Listener
             {
                 SortedSet<String> Tab = new TreeSet<String> ();
 
-                for (String Commands : CommandMap.keySet ())
+                for (List<String> Commands : CommandMap.keySet ())
                 {
-                    // TODO: Check for permission
-                    if (Commands.startsWith (Args[0]) && !Tab.contains (Commands))
-                        Tab.add (Commands);
+                    String Key = Commands.get (0);
+                    if (Key.startsWith (Args[0]) && !Tab.contains (Key) && Instance.PermissionManager.HasCommandPermission (Sender, Key))
+                        Tab.add (Key);
                 }
 
                 return new ArrayList<> (Tab);
@@ -90,14 +94,12 @@ public class CommandHandler implements CommandExecutor, TabCompleter, Listener
         Player Target = Event.getPlayer ();
         String[] Args = Event.getMessage ().split (" ");
 
-        StringBuilder CommandArgsBuilder = new StringBuilder ();
-        Arrays.stream (Args).forEach (Argument -> CommandArgsBuilder.append (Argument).append (" "));
-        String CommandArguments = CommandArgsBuilder.substring (1, CommandArgsBuilder.length () - 1);
+        List<String> CommandAliases = new ArrayList<String> ();
+        Aliases.forEach (Alias -> CommandAliases.add ("/" + Alias));
 
-        if (Args.length >= 2 && Args[0].equals (Command))
+        if (Args.length >= 2 && (Args[0].equals ("/" + Command) || CommandAliases.contains (Args[0])))
         {
-            // TODO: Check perms
-            if (HasCommand (Args[1]))
+            if (HasCommand (Args[1]) && !Instance.PermissionManager.HasCommandPermission (Event.getPlayer (), Args[1]))
             {
                 Helper.SendMessage (Target, Messages.NoCommandPermission);
                 Event.setCancelled (true);
@@ -107,7 +109,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter, Listener
         }
     }
 
-    public void RegisterCommand (String Command, SubCommand CommandExecutor)
+    public void RegisterCommand (List<String> Command, SubCommand CommandExecutor)
     {
         CommandMap.put (Command, CommandExecutor);
     }
