@@ -64,15 +64,41 @@ public class FarmEvents implements Listener
     @EventHandler
     public void OnRegionDeleted (DeleteRegionEvent Event)
     {
-        // TODO: Make this
+        PlayerData Player = Instance.PlayersCache.Get (Event.getPlayer ().getUniqueId ());
+
+        if (Player.FarmID != null)
+        {
+            FarmData Farm = Instance.FarmsCache.Get (Player.FarmID);
+
+            if (Farm.Owner == Player.PlayerInstance.getUniqueId ())
+            {
+                Instance.FarmsCache.Remove (Farm.ID);
+
+                for (PlayerData Target : Farm.OnlinePlayers)
+                {
+                    Target.FarmID = null;
+                    Target.FarmName = null;
+                    Target.PermissionLevel = null;
+                    Instance.PlayersCache.Update (Target.PlayerInstance.getUniqueId (), Target);
+                }
+
+                Instance.Database.Remove (Farm.ID, DatabaseCollection.FarmsCollection);
+            }
+        }
     }
 
     @EventHandler
     public void OnRegionRenamed (RenameRegionEvent Event)
     {
         if (!Event.getOldName ().equals (Event.getNewName ()))
-            // TODO: Make sure this actually works
-            Instance.FarmsCache.Get (Instance.PlayersCache.Get (Event.getPlayer ().getUniqueId ()).FarmID).Name = Event.getNewName ();
+        {
+            // TODO: Check if player is actually in a farm
+            // TODO Check if player is owner of farm
+            // TODO: Maybe; check new name for bad words?
+            FarmData Farm = Instance.FarmsCache.Get (Instance.PlayersCache.Get (Event.getPlayer ().getUniqueId()).FarmID);
+            Farm.Name = Event.getNewName ();
+            Instance.FarmsCache.Update (Farm.ID, Farm);
+        }
     }
 
     @EventHandler
