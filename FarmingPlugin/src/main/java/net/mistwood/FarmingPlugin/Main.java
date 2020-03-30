@@ -10,6 +10,7 @@ import net.mistwood.FarmingPlugin.Modules.Challenge.ChallengeModule;
 import net.mistwood.FarmingPlugin.Modules.Farm.FarmModule;
 import net.mistwood.FarmingPlugin.Modules.MinecraftAuth.DiscordLinkModule;
 import net.mistwood.FarmingPlugin.Utils.Messages;
+import net.mistwood.FarmingPlugin.Utils.PermissionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -39,6 +40,7 @@ public class Main extends JavaPlugin
     public Cache<PlayerData> PlayersCache;
     public Cache<FarmData> FarmsCache;
     public List<Module> Modules;
+    public PermissionManager PermissionManager;
 
     private FarmingAPI API;
 
@@ -50,6 +52,7 @@ public class Main extends JavaPlugin
         FarmsCache =  new Cache<FarmData> ();
         Modules = new ArrayList<Module> ();
         API = new FarmingAPI (this);
+        PermissionManager = new PermissionManager ();
 
         // TODO: Load commands (Only default commands, as each module loads their own commands)
 
