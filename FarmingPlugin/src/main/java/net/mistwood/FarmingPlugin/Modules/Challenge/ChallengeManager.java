@@ -5,6 +5,7 @@ import org.bukkit.event.Event;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class ChallengeManager
 {
@@ -24,6 +25,11 @@ public class ChallengeManager
     public void Emit (Class TargetEvent, Event EventData, FarmData Farm)
     {
         Challenges.entrySet ().stream ().filter (Value -> Value.getKey () == TargetEvent).forEach (Challenge -> Challenge.getValue ().Perform (EventData, Farm));
+    }
+
+    public Set<Class> GetEvents ()
+    {
+        return Challenges.keySet ();
     }
 
 }

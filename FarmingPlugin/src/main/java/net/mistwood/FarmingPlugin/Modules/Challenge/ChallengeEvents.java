@@ -1,7 +1,9 @@
 package net.mistwood.FarmingPlugin.Modules.Challenge;
 
 import net.mistwood.FarmingPlugin.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 
@@ -15,6 +17,13 @@ public class ChallengeEvents implements Listener
     {
         this.Instance = Instance;
         this.Manager = Manager;
+
+        for (Class Event : Manager.GetEvents ())
+        {
+            Bukkit.getPluginManager ().registerEvent (Event, new Listener () {}, EventPriority.NORMAL, (Listener, TargetEvent) -> {
+                Manager.Emit (TargetEvent.getClass (), TargetEvent, null); // TODO: Somehow find farm data here
+            }, Instance);
+        }
     }
 
     @EventHandler
