@@ -36,6 +36,8 @@ public class FarmData
         this.RegionInstance = RegionInstance;
         this.Players = Players;
         this.OnlinePlayers = new ArrayList<PlayerData> ();
+        this.CompletedChallenges = new ArrayList<Integer> ();
+        this.Stats = FarmStats.Init ();
 
         // Add the owner to the players list
         this.Players.add (Owner);
@@ -90,7 +92,7 @@ public class FarmData
           UUID.fromString (Data.get ("ID").toString ()),
           Data.get ("Name").toString (),
           UUID.fromString (Data.get ("Owner").toString ()),
-          RedProtect.get ().getAPI ().getRegion ("", Bukkit.getWorld ("world")),
+          RedProtect.get ().getAPI ().getRegion ("", Objects.requireNonNull (Bukkit.getWorld ("world"))),
           Helper.StringUUIDToUUIDList ((List<String>) Data.get ("Players"))
         );
 

@@ -51,4 +51,9 @@ public class PlayerData
         );
     }
 
+    public String GetName ()
+    {
+        return Name;
+    }
+
 }
