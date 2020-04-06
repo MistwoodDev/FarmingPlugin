@@ -20,5 +20,9 @@ public class FishingModule implements Module {
 	
 	@Override
 	public void onDisable() { }
-	
+
+    @Override
+    public String GetName() {
+        return "FishingModule";
+    }
 }
