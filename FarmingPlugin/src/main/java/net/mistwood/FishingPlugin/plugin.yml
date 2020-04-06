@@ -1,0 +1,6 @@
+name: FishingPlugin
+version: 1.0
+author: fried_fetus69
+main: ca.fried_fetus69.fishingplugin.Main
+api-version: 1.13
+commands:
