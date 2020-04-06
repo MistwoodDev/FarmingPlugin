@@ -13,10 +13,9 @@ public class FishingModule implements Module {
 	@Override
 	public void onEnable(Main Instance) {
 		this.instance = Instance;
-		saveDefaultConfig();
-		getLogger().info("FishingPlugin enabled");
-		//getCommand("shop").setExecutor(new CommandShop());
-		//getServer().getPluginManager().registerEvents(new MyPluginListener(this), this);
+		
+		new FishingEvents(Instance);
+		//Instance.RegisterCommand("test", new FishingCommand(Instance));
 	}
 	
 	@Override
