@@ -15,7 +15,6 @@ public class FishingModule implements Module {
 		this.instance = Instance;
 		
 		new FishingEvents(Instance);
-		//Instance.RegisterCommand("test", new FishingCommand(Instance));
 	}
 	
 	@Override

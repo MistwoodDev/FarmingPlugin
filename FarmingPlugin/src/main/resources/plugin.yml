@@ -10,6 +10,10 @@ commands:
     description: Main farm command
     usage: /farm ? for help
     aliases: [farms, f]
+   fishing:
+   	description: Main fishing command
+   	usage: /fishing ? for help
+   	aliases: [fs]
 permissions:
   farming.*:
     description: All farming commands

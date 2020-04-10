@@ -16,5 +16,24 @@ public class FishingEvents implements Listener
 
         Bukkit.getServer().getPluginManager().registerEvents(this, Instance);
     }
+    
+    @EventHandler
+    public void onFish(PlayerFishEvent Event) {
+    	//TODO: Handle event
+    	Player p = Event.getPlayer();
+    	Material item = p.getItemInHand();
+    	if (item.getType() == Material.FISHING_ROD) {
+    		switch(item.getItemMeta().getDisplayName()) {
+    		case "Fishing Rod":
+    			Event.getHook().setBiteChance(0.08);
+    		break;
+    		case "God Rod":
+    			Event.getHook().setBiteChance(1);
+    		break;
+    		default:
+    		break;
+    		}
+    	}
+    }
 
 }
