@@ -40,10 +40,11 @@ public class FishingEvents implements Listener
 	    		}
 	    	}
     	}else if (Event.State == "BITE") {
-    		p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
+    		//TODO: Add event when fish is on hook
     	}else if (Event.State == "CAUGHT_FISH") {
     		if(Event.getCaught() instanceof Item){
     			Item caught = (Item) Event.getCaught();
+        		p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_TOUCH, 1f, 1f);
 	    		p.sendMessage("You caught §6%s§r with your %s!", caught.getItemMeta().getDisplayName(), item.getItemMeta().getDisplayName());
 	        }
 	    }else if (Event.State == "FAILED_ATTEMPT") {
