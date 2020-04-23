@@ -18,7 +18,7 @@ public class CommandHelper {
     public static void HandleGive(Main Instance, Player Target, String[] Args) {
     	if (Args.length > 3) {
             
-            Target.sendMessage(Messages.GiveArgsError);
+            Helper.SendMessage(Target, Messages.GiveArgsError);
     	}
     }
 
