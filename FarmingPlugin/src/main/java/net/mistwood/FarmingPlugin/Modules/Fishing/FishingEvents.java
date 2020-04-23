@@ -2,6 +2,7 @@ package net.mistwood.FarmingPlugin.Modules.Fishing;
 
 import net.mistwood.FarmingPlugin.Main;
 import net.mistwood.FarmingPlugin.Utils.Messages;
+import net.mistwood.FarmingPlugin.Utils.Helper;
 
 import java.lang.Object;
 import java.util.Random;
@@ -51,7 +52,7 @@ public class FishingEvents implements Listener
             }
         }else if (Event.getState() == PlayerFishEvent.State.BITE) {
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1f, 1f);
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.Bite));
+            Helper.SendMessage(p, Messages.Bite);
         }else if (Event.getState() == PlayerFishEvent.State.CAUGHT_ENTITY || Event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
         	if(Event.getCaught() == null) return;
             Item caught = (Item) Event.getCaught();
@@ -63,21 +64,21 @@ public class FishingEvents implements Listener
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1f, 1f);
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1f, 3f);
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1f, 5f);
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(Messages.CaughtEntity, caught.getItemStack().getAmount(), caught.getName(), rodName)));
+            Helper.SendMessage(p, String.format(Messages.CaughtEntity, caught.getItemStack().getAmount(), caught.getName(), rodName));
         }else if (Event.getState() == PlayerFishEvent.State.FAILED_ATTEMPT) {
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1f, 1f);
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.BiteFail));
+            Helper.SendMessage(p, Messages.BiteFail);
         }
     }
 
 	private String capitalize(String str) {
-	    String words[] = str.split("\\s");  
-	    String capitalizeWord = "";  
-	    for(String w:words){  
-	        String first = w.substring(0,1);  
-	        String afterfirst = w.substring(1);  
-	        capitalizeWord += first.toUpperCase() + afterfirst + " ";  
-	    }  
-	    return capitalizeWord.trim();  
+	    String words[] = str.split("\\s");
+	    String capitalizeWord = "";
+	    for(String w:words) {
+	        String first = w.substring(0,1);
+	        String afterfirst = w.substring(1);
+	        capitalizeWord += first.toUpperCase() + afterfirst + " ";
+	    }
+	    return capitalizeWord.trim();
 	}
 }
