@@ -1,8 +1,11 @@
 package net.mistwood.FarmingPlugin.Modules.Fishing;
 
 import net.mistwood.FarmingPlugin.Main;
+import net.mistwood.FarmingPlugin.Utils.Messages;
 
 import java.lang.Object;
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.Sound;
@@ -17,8 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.ChatColor;
-import net.mistwood.FarmingPlugin.Utils.Messages;
-import java.util.Random;
+
 
 public class FishingEvents implements Listener
 {
@@ -35,7 +37,7 @@ public class FishingEvents implements Listener
     @EventHandler
     public void onFish(PlayerFishEvent Event) {
         Player p = Event.getPlayer();
-        int xpToDrop = 50;
+        int xpToDrop = 0;
         ItemStack rod = p.getInventory().getItemInMainHand();
         String rodName = rod.getItemMeta().hasDisplayName() ? rod.getItemMeta().getDisplayName() : capitalize(rod.getType().name().replace("_", " ").toLowerCase());
         Event.setExpToDrop(xpToDrop);
@@ -61,7 +63,7 @@ public class FishingEvents implements Listener
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1f, 1f);
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1f, 3f);
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1f, 5f);
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(Messages.CaughtEntity, caught.getName(), rodName)));
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(Messages.CaughtEntity, caught.getItemStack().getAmount(), caught.getName(), rodName)));
         }else if (Event.getState() == PlayerFishEvent.State.FAILED_ATTEMPT) {
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1f, 1f);
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.BiteFail));

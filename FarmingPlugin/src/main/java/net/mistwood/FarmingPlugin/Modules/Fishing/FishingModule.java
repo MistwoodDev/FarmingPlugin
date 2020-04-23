@@ -4,7 +4,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.mistwood.FarmingPlugin.Main;
 import net.mistwood.FarmingPlugin.Module;
-//import net.mistwood.FarmingPlugin.Modules.Fishing.Commands.FishingCommand;
+import net.mistwood.FarmingPlugin.Commands.CommandHandler;
+import net.mistwood.FarmingPlugin.Main;
+import net.mistwood.FarmingPlugin.Module;
+import net.mistwood.FarmingPlugin.Modules.Fishing.Commands.*;
+
+import static java.util.Arrays.asList;
 
 public class FishingModule implements Module {
     
@@ -15,6 +20,9 @@ public class FishingModule implements Module {
         this.instance = Instance;
         
         new FishingEvents(Instance);
+        
+        CommandHandler Handler = new CommandHandler(Instance, "fishing", asList("fs"));
+        Handler.RegisterCommand(asList("give"), new GiveCommand(Instance));
     }
     
     @Override
