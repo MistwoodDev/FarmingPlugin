@@ -54,8 +54,8 @@ public class FishingEvents implements Listener
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1f, 1f);
             Helper.SendMessage(p, Messages.Bite);
         }else if (Event.getState() == PlayerFishEvent.State.CAUGHT_ENTITY || Event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
-        	if(Event.getCaught() == null) return;
             Item caught = (Item) Event.getCaught();
+        	if(caught == null) return;
             Material[] replacements = {Material.COD, Material.SALMON, Material.TRIPWIRE_HOOK, Material.LILY_PAD, Material.NAME_TAG};
             if (caught.getItemStack().getType() == Material.ENCHANTED_BOOK) {
             	int random = new Random().nextInt(replacements.length);
