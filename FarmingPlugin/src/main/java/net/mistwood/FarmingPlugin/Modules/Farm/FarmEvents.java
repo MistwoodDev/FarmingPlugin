@@ -40,7 +40,7 @@ public class FarmEvents implements Listener
         );
         Farm.AddOnlinePlayer (Instance.PlayersCache.Get (Event.getPlayer ().getUniqueId ()));
 
-        // If the farm has a default name (player_x), we wan't to change it (player's Farm)
+        // If the farm has a default name (player_x), we want to change it (player's Farm)
         if (Farm.Name.contains (Event.getPlayer ().getName () + "_"))
             Farm.Name = String.format ("%s's Farm", Event.getPlayer ().getName ());
 

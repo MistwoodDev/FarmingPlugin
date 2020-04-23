@@ -10,6 +10,10 @@ commands:
     description: Main farm command
     usage: /farm ? for help
     aliases: [farms, f]
+  fishing:
+    description: Main fishing command
+    usage: /fishing ? for help
+    aliases: [fs]
 permissions:
   farming.*:
     description: All farming commands
@@ -46,3 +50,4 @@ permissions:
       farming.command.deny: true
       farming.command.rename: true
       farming.command.reload: true
+      fishing.command.give: true

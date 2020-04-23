@@ -22,6 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.mistwood.FarmingPlugin.Data.FarmData;
 import net.mistwood.FarmingPlugin.Data.PlayerData;
 import net.mistwood.FarmingPlugin.Modules.Shop.ShopModule;
+import net.mistwood.FarmingPlugin.Modules.Fishing.FishingModule;
 
 import java.io.File;
 import java.io.IOException;
@@ -137,6 +138,7 @@ public class Main extends JavaPlugin
         // Default Modules
         Modules.add (new ShopModule ());
         Modules.add (new FarmModule ());
+        Modules.add (new FishingModule ());
         Modules.add (new ChallengeModule ());
 
         // Configurable Modules

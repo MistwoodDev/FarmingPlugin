@@ -6,6 +6,7 @@ public class Messages
     // Prefixes
     public static String ConsolePrefix = "[Farming - 1.0.3] ";
     public static String ChatPrefix = "&7[&bFarming&7] ";
+    public static String ChatPrefixFishing = "&7[&bFishing&7] &r";
     public static String ChatErrorPrefix = ChatPrefix + "&b&lError ";
 
     // Console messages
@@ -28,5 +29,11 @@ public class Messages
     public static String PlayerNotFound = ChatErrorPrefix + "&7Player &b'%s&b' &7not found!";
 
     public static String FarmCreated = ChatPrefix + "&7Created new farm with name &b%s&7!";
+    
+    //Fishing
+    public static String CaughtEntity = ChatPrefixFishing + "You caught &b%dx %s&r with your %s&r!";
+    public static String Bite = ChatPrefixFishing + "Something is tugging, &breel it in &rquick before it escapes&r!";
+    public static String BiteFail = ChatPrefixFishing + "&bOh no! It got away! &rDon't worry, you'll get better with practice";
+    public static String GiveArgsError = ChatPrefixFishing = "&bCorrect usage: /give <player> <fishing_rod> <amount>";
 
 }
