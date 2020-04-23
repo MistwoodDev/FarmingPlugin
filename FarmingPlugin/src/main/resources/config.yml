@@ -11,4 +11,5 @@ Database:
 Modules:
   DiscordLink: true
 
-PlayFishingSounds: true
+Fishing:
+  PlaySounds: true
