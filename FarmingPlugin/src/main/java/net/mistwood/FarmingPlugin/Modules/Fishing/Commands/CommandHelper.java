@@ -19,7 +19,7 @@ public class CommandHelper {
     	if (Args.length > 3) {
             
             Target.sendMessage(Messages.GiveArgsError);
-        }
+    	}
     }
 
 }
