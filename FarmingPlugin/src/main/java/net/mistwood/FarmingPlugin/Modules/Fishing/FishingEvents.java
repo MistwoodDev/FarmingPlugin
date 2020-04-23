@@ -10,6 +10,7 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.Sound;
+import org.bukkit.Location;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -51,22 +52,22 @@ public class FishingEvents implements Listener
                 }
             }
         }else if (Event.getState() == PlayerFishEvent.State.BITE) {
-            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1f, 1f);
+        	PlaySound(p, p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 0.5f, 1f);
             Helper.SendMessage(p, Messages.Bite);
         }else if (Event.getState() == PlayerFishEvent.State.CAUGHT_ENTITY || Event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
             Item caught = (Item) Event.getCaught();
         	if(caught == null) return;
-            Material[] replacements = {Material.COD, Material.SALMON, Material.TRIPWIRE_HOOK, Material.LILY_PAD, Material.NAME_TAG};
+            Material[] replacements = {Material.COD, Material.SALMON, Material.TRIPWIRE_HOOK, Material.LILY_PAD, Material.NAME_TAG, Material.SADDLE, Material.PUFFERFISH};
             if (caught.getItemStack().getType() == Material.ENCHANTED_BOOK) {
             	int random = new Random().nextInt(replacements.length);
             	caught.getItemStack().setType(replacements[random]);
             }
-            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1f, 1f);
-            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1f, 3f);
-            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1f, 5f);
+            PlaySound(p, p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 0.5f, 1f);
+            PlaySound(p, p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 0.5f, 3f);
+            PlaySound(p, p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 0.5f, 5f);
             Helper.SendMessage(p, String.format(Messages.CaughtEntity, caught.getItemStack().getAmount(), caught.getName(), rodName));
         }else if (Event.getState() == PlayerFishEvent.State.FAILED_ATTEMPT) {
-            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1f, 1f);
+        	PlaySound(p, p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1f, 1f);
             Helper.SendMessage(p, Messages.BiteFail);
         }
     }
@@ -80,5 +81,11 @@ public class FishingEvents implements Listener
 	        capitalizeWord += first.toUpperCase() + afterfirst + " ";
 	    }
 	    return capitalizeWord.trim();
+	}
+	
+	private void PlaySound(Player p, Location location, Sound sound, float volume, float pitch) {
+		if (Main.getPlugin().getConfig().getString("PlayFishingSounds") == "true") {
+			p.playSound(location, sound, volume, pitch);
+		}
 	}
 }

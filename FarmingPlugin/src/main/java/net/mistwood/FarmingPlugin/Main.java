@@ -18,6 +18,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 
 import net.mistwood.FarmingPlugin.Data.FarmData;
 import net.mistwood.FarmingPlugin.Data.PlayerData;
@@ -163,5 +164,11 @@ public class Main extends JavaPlugin
     {
         return API;
     }
-
+    
+    public static Plugin getPlugin()
+    {
+       
+        return Bukkit.getServer().getPluginManager().getPlugin("Farming");
+       
+    }
 }
