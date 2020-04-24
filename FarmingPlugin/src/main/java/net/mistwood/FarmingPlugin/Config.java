@@ -16,6 +16,8 @@ public class Config
     public String DatabaseAuthKeysCollection;
 
     public boolean ModulesDiscordLink;
+    
+    public boolean PlaySounds;
 
     // TODO: Add more
 
@@ -33,6 +35,9 @@ public class Config
 
         ConfigurationSection ModulesSection = FileConfig.getConfigurationSection ("Modules");
         this.ModulesDiscordLink = Boolean.getBoolean (ModulesSection.get ("DiscordLink").toString ());
+        
+        ConfigurationSection FishingSection = FileConfig.getConfigurationSection("Fishing");
+        this.PlaySounds = FishingSection.get("PlaySounds").toString() == "true" ? true : false;
     }
 
 }

@@ -40,17 +40,10 @@ public class FishingEvents implements Listener
     public void onFish(PlayerFishEvent Event) {
         Player p = Event.getPlayer();
         int xpToDrop = 0;
-        ItemStack rod = p.getInventory().getItemInMainHand();
+        ItemStack rod = p.getInventory().getItemInMainHand().getType() == Material.FISHING_ROD ? p.getInventory().getItemInMainHand() : p.getInventory().getItemInOffHand();
         String rodName = rod.getItemMeta().hasDisplayName() ? rod.getItemMeta().getDisplayName() : capitalize(rod.getType().name().replace("_", " ").toLowerCase());
         Event.setExpToDrop(xpToDrop);
         if (Event.getState() == PlayerFishEvent.State.FISHING) {
-            if (rod.getType() == Material.FISHING_ROD) {
-                if (rodName == "Fishing Rod") {
-                    //TODO: stuff
-                }else if (rodName == ChatColor.AQUA + "God Rod") {
-                    //TODO: more stuff
-                }
-            }
         }else if (Event.getState() == PlayerFishEvent.State.BITE) {
         	PlaySound(p, p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 0.5f, 1f);
             Helper.SendMessage(p, Messages.Bite);
@@ -62,6 +55,14 @@ public class FishingEvents implements Listener
             	int random = new Random().nextInt(replacements.length);
             	caught.getItemStack().setType(replacements[random]);
             }
+            if (rod.getItemMeta().hasLore()) {
+            	if (rod.getItemMeta().getLore().size() > 1) {
+            		if (rod.getItemMeta().getLore().get(2).startsWith("LOOT: ")) {
+		            	int multiplier = Integer.parseInt(rod.getItemMeta().getLore().get(2).substring(6, 7));
+		            	caught.getItemStack().setAmount(multiplier);
+            		}
+            	}
+        	}
             PlaySound(p, p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 0.5f, 1f);
             PlaySound(p, p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 0.5f, 3f);
             PlaySound(p, p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 0.5f, 5f);
@@ -84,7 +85,7 @@ public class FishingEvents implements Listener
 	}
 	
 	private void PlaySound(Player p, Location location, Sound sound, float volume, float pitch) {
-		if (Main.getPlugin().getConfig().getString("PlayFishingSounds") == "true") {
+		if (Instance.Config.PlaySounds) {
 			p.playSound(location, sound, volume, pitch);
 		}
 	}

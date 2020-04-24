@@ -27,6 +27,7 @@ public class Messages
     public static String PlayerAlreadyInFarm = ChatErrorPrefix + "&b%s &7not currently in a farm!";
     public static String YouAlreadyInFarm = ChatErrorPrefix + "&7You're not currently in a farm!";
     public static String PlayerNotFound = ChatErrorPrefix + "&7Player &b'%s&b' &7not found!";
+    public static String UnknownItem = ChatErrorPrefix + "&7Unknown item: &b%s";
 
     public static String FarmCreated = ChatPrefix + "&7Created new farm with name &b%s&7!";
     
@@ -34,6 +35,6 @@ public class Messages
     public static String CaughtEntity = ChatPrefixFishing + "You caught &b%dx %s&r with your %s&r!";
     public static String Bite = ChatPrefixFishing + "Something is tugging, &breel it in &rquick before it escapes&r!";
     public static String BiteFail = ChatPrefixFishing + "&bOh no! It got away! &rDon't worry, you'll get better with practice";
-    public static String GiveArgsError = ChatPrefixFishing = "&bCorrect usage: /give <player> <fishing_rod> <amount>";
+    public static String GiveArgsError = ChatPrefixFishing = "&bCorrect usage: /give <player> <fishing_rod> [amount]";
 
 }

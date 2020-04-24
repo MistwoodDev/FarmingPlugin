@@ -164,11 +164,4 @@ public class Main extends JavaPlugin
     {
         return API;
     }
-    
-    public static Plugin getPlugin()
-    {
-       
-        return Bukkit.getServer().getPluginManager().getPlugin("Farming");
-       
-    }
 }

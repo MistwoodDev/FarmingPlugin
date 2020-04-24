@@ -1,8 +1,0 @@
-Database:
-  Host: localhost
-  Port: 5000
-  Name: farming
-  Username: admin
-  Password: pwd
-  PlayersCollection: players
-  FarmsCollection: farms
