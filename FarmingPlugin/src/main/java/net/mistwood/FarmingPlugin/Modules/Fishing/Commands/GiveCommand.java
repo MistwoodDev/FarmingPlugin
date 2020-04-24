@@ -21,16 +21,16 @@ public class GiveCommand implements SubCommand {
 	
 	@Override
 	public boolean onCommand(CommandSender Sender, Command Command, String Label, String[] Args) {
-		if (Args.length > 0 && (Sender instanceof Player && Instance.PermissionManager.HasCommandPermission(Sender, "give")))
-        	{
-            		Player Target = (Player) Sender;
+		if (Args.length > 0 && (Sender instanceof Player && Instance.PermissionManager.HasCommandPermission(Sender, "fishing.give")))
+		{
+			Player Target = (Player) Sender;
+			CommandHelper.HandleGive(Instance, Target, Args);
 
-            		CommandHelper.HandleGive(Instance, Target, Args);
-
-            		return true;
-        	}
-		else return false;
+			return true;
 		}
+
+		return false;
+	}
 	
     @Override
     public List<String> onTabComplete (CommandSender Sender, Command Command, String Alias, String[] Args)

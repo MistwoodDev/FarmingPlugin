@@ -29,12 +29,13 @@ public class Messages
     public static String PlayerNotFound = ChatErrorPrefix + "&7Player &b'%s&b' &7not found!";
     public static String UnknownItem = ChatErrorPrefix + "&7Unknown item: &b%s";
 
+    // Farming
     public static String FarmCreated = ChatPrefix + "&7Created new farm with name &b%s&7!";
     
     //Fishing
     public static String CaughtEntity = ChatPrefixFishing + "You caught &b%dx %s&r with your %s&r!";
     public static String Bite = ChatPrefixFishing + "Something is tugging, &breel it in &rquick before it escapes&r!";
     public static String BiteFail = ChatPrefixFishing + "&bOh no! It got away! &rDon't worry, you'll get better with practice";
-    public static String GiveArgsError = ChatPrefixFishing = "&bCorrect usage: /give <player> <fishing_rod> [amount]";
+    public static String GiveArgsError = ChatPrefixFishing = "&7Correct usage: &b/give <player> <fishing_rod> [amount]";
 
 }

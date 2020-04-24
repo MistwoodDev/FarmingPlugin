@@ -1,23 +1,19 @@
 package net.mistwood.FarmingPlugin.Modules.Fishing;
 
-import org.bukkit.plugin.java.JavaPlugin;
-
 import net.mistwood.FarmingPlugin.Main;
 import net.mistwood.FarmingPlugin.Module;
 import net.mistwood.FarmingPlugin.Commands.CommandHandler;
-import net.mistwood.FarmingPlugin.Main;
-import net.mistwood.FarmingPlugin.Module;
 import net.mistwood.FarmingPlugin.Modules.Fishing.Commands.*;
 
 import static java.util.Arrays.asList;
 
 public class FishingModule implements Module {
     
-    private Main instance;
+    private Main Instance;
     
     @Override
     public void OnEnable(Main Instance) {
-        this.instance = Instance;
+        this.Instance = Instance;
         
         new FishingEvents(Instance);
         

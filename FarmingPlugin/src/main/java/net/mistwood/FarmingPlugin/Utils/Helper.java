@@ -59,4 +59,18 @@ public class Helper
         return IDs;
     }
 
+    public static  String Capitalize (String Target)
+    {
+        StringBuilder Capitalized = new StringBuilder ();
+
+        for (String Word : Target.toLowerCase ().split ("\\s"))
+        {
+            String First = Word.substring (0,1).toUpperCase ();
+            String Rest = Word.substring (1);
+            Capitalized.append (First).append (Rest).append (" ");
+        }
+
+        return Capitalized.toString ().trim ();
+    }
+
 }
