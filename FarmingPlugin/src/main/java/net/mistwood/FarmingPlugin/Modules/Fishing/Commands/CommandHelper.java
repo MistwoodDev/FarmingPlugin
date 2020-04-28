@@ -47,6 +47,24 @@ public class CommandHelper {
 
 					break;
 				}
+				case "LORD_ROD": {
+					giveItem = new ItemStack(Material.FISHING_ROD, Amt);
+					giveItem.addUnsafeEnchantment(Enchantment.LURE, 2);
+					giveItem.addUnsafeEnchantment(Enchantment.DURABILITY, 2);
+					giveItem.addUnsafeEnchantment(Enchantment.LUCK, 2);
+					List<String> lore = new ArrayList<String>();
+					lore.add("Fishing rod - Lord kit");
+					lore.add("");
+					lore.add("LOOT: 2X MULTIPLIER");
+					lore.add("EXTRA LOOT 2");
+					ItemMeta itm = giveItem.getItemMeta();
+					assert itm != null;
+					itm.setLore(lore);
+					itm.setDisplayName("§cLord Rod");
+					giveItem.setItemMeta(itm);
+
+					break;
+				}
 				case "GOD_ROD": {
 					giveItem = new ItemStack(Material.FISHING_ROD, Amt);
 					giveItem.addUnsafeEnchantment(Enchantment.LURE, 3);
@@ -56,10 +74,11 @@ public class CommandHelper {
 					lore.add("Fishing rod - God kit");
 					lore.add("");
 					lore.add("LOOT: 3X MULTIPLIER");
+					lore.add("EXTRA LOOT 3");
 					ItemMeta itm = giveItem.getItemMeta();
 					assert itm != null;
 					itm.setLore(lore);
-					itm.setDisplayName("Â§bGod Rod");
+					itm.setDisplayName("§bGod Rod");
 					giveItem.setItemMeta(itm);
 
 					break;
@@ -73,6 +92,7 @@ public class CommandHelper {
 					lore.add("Fishing rod - Dev");
 					lore.add("");
 					lore.add("LOOT: 5X MULTIPLIER");
+					lore.add("EXTRA LOOT 5");
 					ItemMeta itm = giveItem.getItemMeta();
 					assert itm != null;
 					itm.setLore(lore);
