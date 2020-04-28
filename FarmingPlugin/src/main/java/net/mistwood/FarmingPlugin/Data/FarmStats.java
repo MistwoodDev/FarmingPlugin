@@ -3,10 +3,15 @@ package net.mistwood.FarmingPlugin.Data;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FarmStats
+public class FarmStats implements Data
 {
 
     public int Crops;
+
+    private FarmStats (int Crops)
+    {
+        this.Crops = Crops;
+    }
 
     public static FarmStats Init ()
     {
@@ -15,11 +20,7 @@ public class FarmStats
         );
     }
 
-    private FarmStats (int Crops)
-    {
-        this.Crops = Crops;
-    }
-
+    @Override
     public Map<String, Object> ToMap ()
     {
         Map<String, Object> Data = new HashMap<String, Object> ();
@@ -31,7 +32,7 @@ public class FarmStats
     public static FarmStats FromMap (Map<String, Object> Data)
     {
         return new FarmStats (
-                0
+                (Integer) Data.get ("Crops")
         );
     }
 

@@ -1,6 +1,5 @@
 package net.mistwood.FarmingPlugin.Data;
 
-import net.mistwood.FarmingPlugin.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -8,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class PlayerData
+public class PlayerData implements Data
 {
 
     public Player PlayerInstance;
@@ -26,6 +25,7 @@ public class PlayerData
         this.PermissionLevel = PermissionLevel;
     }
 
+    @Override
     public Map<String, Object> ToMap ()
     {
         Map<String, Object> Data = new HashMap<String, Object> ();

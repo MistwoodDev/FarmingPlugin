@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
 
 import java.util.*;
 
-public class FarmData
+public class FarmData implements Data
 {
 
     public UUID ID;
@@ -18,7 +18,6 @@ public class FarmData
     public List<UUID> Players;
     public List<PlayerData> OnlinePlayers;
 
-    // Init these somehow?
     public List<Integer> CompletedChallenges;
     public FarmStats Stats;
 
@@ -29,6 +28,11 @@ public class FarmData
 
     public FarmData (UUID ID, String Name, UUID Owner, Region RegionInstance, List<UUID> Players)
     {
+        this (ID, Name, Owner, RegionInstance, Players, new ArrayList<Integer> (), FarmStats.Init ());
+    }
+
+    public FarmData (UUID ID, String Name, UUID Owner, Region RegionInstance, List<UUID> Players, List<Integer> CompletedChallenges, FarmStats Stats)
+    {
         this.ID = ID;
         this.Name = Name;
         this.RegionName = RegionInstance.getName ();
@@ -36,8 +40,8 @@ public class FarmData
         this.RegionInstance = RegionInstance;
         this.Players = Players;
         this.OnlinePlayers = new ArrayList<PlayerData> ();
-        this.CompletedChallenges = new ArrayList<Integer> ();
-        this.Stats = FarmStats.Init ();
+        this.CompletedChallenges = CompletedChallenges;
+        this.Stats = Stats;
 
         // Add the owner to the players list
         this.Players.add (Owner);
@@ -51,8 +55,7 @@ public class FarmData
 
     public void RemovePlayer (UUID ID)
     {
-        if (Players.contains (ID))
-            Players.remove (ID);
+        Players.remove (ID);
     }
 
     public FarmData AddOnlinePlayer (PlayerData Player)
@@ -71,6 +74,7 @@ public class FarmData
         return this;
     }
 
+    @Override
     public Map<String, Object> ToMap ()
     {
         Map<String, Object> Data = new HashMap<String, Object> ();
@@ -94,8 +98,10 @@ public class FarmData
           UUID.fromString (Data.get ("Owner").toString ()),
           RedProtect.get ().getAPI ().getRegion ("", Objects.requireNonNull (Bukkit.getWorld ("world"))),
           Helper.StringUUIDToUUIDList ((List<String>) Data.get ("Players"))
+          // TODO: Add completed challenges list and farm stats
         );
 
+        // Horrible way:
         Farm.CompletedChallenges = (List<Integer>) Data.get ("CompletedChallenges");
         Farm.Stats = FarmStats.FromMap ((Map<String, Object>) Data.get ("Stats"));
 
