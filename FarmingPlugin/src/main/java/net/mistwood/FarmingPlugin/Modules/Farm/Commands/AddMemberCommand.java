@@ -2,6 +2,7 @@ package net.mistwood.FarmingPlugin.Modules.Farm.Commands;
 
 import net.mistwood.FarmingPlugin.Commands.SubCommand;
 import net.mistwood.FarmingPlugin.Main;
+import net.mistwood.FarmingPlugin.Module;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -44,7 +45,7 @@ public class AddMemberCommand implements SubCommand
             if (Args[0].isEmpty ())
                 return Bukkit.getOnlinePlayers ().stream ().map (Player::getName).collect (Collectors.toList ());
             else
-                return Bukkit.getOnlinePlayers ().stream ().filter (Player -> Player.getName ().toLowerCase ().startsWith (Args[0].toLowerCase ())).map (Player::getName).collect (Collectors.toList ());
+                return Instance.Modules.stream ().filter (Mod -> Mod.GetName ().toLowerCase ().startsWith (Args[0].toLowerCase ())).map (Module::GetName).collect (Collectors.toList ());
 
         return new ArrayList<> ();
     }

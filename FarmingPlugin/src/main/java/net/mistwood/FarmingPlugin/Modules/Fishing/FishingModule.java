@@ -7,25 +7,28 @@ import net.mistwood.FarmingPlugin.Modules.Fishing.Commands.*;
 
 import static java.util.Arrays.asList;
 
-public class FishingModule implements Module {
+public class FishingModule extends Module
+{
     
     private Main Instance;
-    
-    @Override
-    public void OnEnable(Main Instance) {
-        this.Instance = Instance;
-        
-        new FishingEvents(Instance);
-        
-        CommandHandler Handler = new CommandHandler(Instance, "fishing", asList("fs"));
-        Handler.RegisterCommand(asList("give"), new GiveCommand(Instance));
+
+    public FishingModule ()
+    {
+        super ("FishingModule", "1.0", "fishing");
     }
-    
-    @Override
-    public void OnDisable() { }
 
     @Override
-    public String GetName() {
-        return "FishingModule";
+    public void OnEnable (Main Instance)
+    {
+        this.Instance = Instance;
+        
+        new FishingEvents (Instance);
+        
+        CommandHandler Handler = new CommandHandler (Instance, "fishing", asList ("fs"));
+        Handler.RegisterCommand (asList ("give"), new GiveCommand (Instance));
     }
+    
+    @Override
+    public void OnDisable () { }
+
 }

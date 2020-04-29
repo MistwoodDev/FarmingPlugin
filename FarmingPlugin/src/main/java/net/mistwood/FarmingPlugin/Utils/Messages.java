@@ -28,6 +28,7 @@ public class Messages
     public static String YouAlreadyInFarm = ChatErrorPrefix + "&7You're not currently in a farm!";
     public static String PlayerNotFound = ChatErrorPrefix + "&7Player &b'%s&b' &7not found!";
     public static String UnknownItem = ChatErrorPrefix + "&7Unknown item: &b%s";
+    public static String ModuleNotFound = ChatErrorPrefix + "&7Could not find module with name: &b%s&7!";
 
     // Farming
     public static String FarmCreated = ChatPrefix + "&7Created new farm with name &b%s&7!";

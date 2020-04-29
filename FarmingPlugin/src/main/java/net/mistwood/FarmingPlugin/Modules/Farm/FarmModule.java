@@ -7,10 +7,15 @@ import net.mistwood.FarmingPlugin.Modules.Farm.Commands.*;
 
 import static java.util.Arrays.asList;
 
-public class FarmModule implements Module
+public class FarmModule extends Module
 {
 
     private Main Instance;
+
+    public FarmModule ()
+    {
+        super ("FarmModule", "1.1", "farms");
+    }
 
     @Override
     public void OnEnable (Main Instance)
@@ -19,7 +24,7 @@ public class FarmModule implements Module
 
         new FarmEvents (Instance);
 
-        CommandHandler Handler =  new CommandHandler (Instance, "farm", asList ("farms", "f"));
+        CommandHandler Handler = new CommandHandler (Instance, "farm", asList ("farms", "f"));
         Handler.RegisterCommand (asList ("help", "?"), new HelpCommand (Instance));
         Handler.RegisterCommand (asList ("info", "i"), new InfoCommand (Instance));
         Handler.RegisterCommand (asList ("add", "addmember"), new AddMemberCommand (Instance));
@@ -34,11 +39,5 @@ public class FarmModule implements Module
 
     @Override
     public void OnDisable () { }
-
-    @Override
-    public String GetName ()
-    {
-        return "FarmModule";
-    }
 
 }
