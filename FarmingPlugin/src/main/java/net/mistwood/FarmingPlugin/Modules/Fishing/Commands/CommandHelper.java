@@ -77,7 +77,7 @@ public class CommandHelper {
 					ItemMeta itm = giveItem.getItemMeta();
 					assert itm != null;
 					itm.setLore(lore);
-					itm.setDisplayName (Helper.Colorfy ("&cD&6e&ev &aR&bo&3d"));
+					itm.setDisplayName(Helper.Colorfy("&cD&6e&ev &aR&bo&3d"));
 					giveItem.setItemMeta(itm);
 
 					break;
