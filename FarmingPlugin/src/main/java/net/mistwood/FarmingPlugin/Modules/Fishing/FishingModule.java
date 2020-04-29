@@ -19,6 +19,7 @@ public class FishingModule implements Module {
         
         CommandHandler Handler = new CommandHandler(Instance, "fishing", asList("fs"));
         Handler.RegisterCommand(asList("give"), new GiveCommand(Instance));
+        Handler.RegisterCommand(asList("help", "?"), new HelpCommand(Instance));
     }
     
     @Override

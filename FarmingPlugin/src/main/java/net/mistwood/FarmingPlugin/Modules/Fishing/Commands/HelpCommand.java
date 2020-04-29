@@ -11,19 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GiveCommand implements SubCommand {
+public class HelpCommand implements SubCommand {
 	
 	private Main Instance;
 	
-	public GiveCommand (Main Instance) {
+	public HelpCommand (Main Instance) {
 		this.Instance = Instance;
 	}
 	
 	@Override
 	public boolean onCommand(CommandSender Sender, Command Command, String Label, String[] Args) {
-		if (Args.length > 0 && (Sender instanceof Player && Instance.PermissionManager.HasCommandPermission(Sender, "fishing.give"))) {
+		if (Args.length > 0) {
 			Player Target = (Player) Sender;
-			CommandHelper.HandleGive(Instance, Target, Args);
+			CommandHelper.HandleHelp(Instance, Target, Args);
 
 			return true;
 		}

@@ -18,16 +18,15 @@ import java.util.List;
 
 public class CommandHelper {
 
-    public static void HandleHelp (Main Instance, Player Sender, String Command) {
-
+    public static void HandleHelp(Main Instance, Player Target, String[] Args) {
     }
 
-    public static void HandleGive (Main Instance, Player Target, String[] Args) {
+    public static void HandleGive(Main Instance, Player Target, String[] Args) {
     	if (Args.length < 2 || Args.length > 3) {
     		Helper.SendMessage(Target, Messages.GiveArgsError);
     	} else {
 			if (Bukkit.getPlayer(Args[0]) == null) {
-				Helper.SendMessage (Target, String.format (Messages.PlayerNotFound, Args[0]));
+				Helper.SendMessage(Target, String.format(Messages.PlayerNotFound, Args[0]));
 			}
 
 			int Amt = 1;
@@ -65,24 +64,6 @@ public class CommandHelper {
 
 					break;
 				}
-				case "GOD_ROD": {
-					giveItem = new ItemStack(Material.FISHING_ROD, Amt);
-					giveItem.addUnsafeEnchantment(Enchantment.LURE, 3);
-					giveItem.addUnsafeEnchantment(Enchantment.DURABILITY, 3);
-					giveItem.addUnsafeEnchantment(Enchantment.LUCK, 3);
-					List<String> lore = new ArrayList<String>();
-					lore.add("Fishing rod - God kit");
-					lore.add("");
-					lore.add("LOOT: 3X MULTIPLIER");
-					lore.add("EXTRA LOOT 3");
-					ItemMeta itm = giveItem.getItemMeta();
-					assert itm != null;
-					itm.setLore(lore);
-					itm.setDisplayName("§bGod Rod");
-					giveItem.setItemMeta(itm);
-
-					break;
-				}
 				case "DEV_ROD": {
 					giveItem = new ItemStack(Material.FISHING_ROD, Amt);
 					giveItem.addUnsafeEnchantment(Enchantment.LURE, 5);
@@ -102,7 +83,7 @@ public class CommandHelper {
 					break;
 				}
 				default: {
-					Helper.SendMessage (Target, String.format (Messages.UnknownItem, Args[1]));
+					Helper.SendMessage(Target, String.format(Messages.UnknownItem, Args[1]));
 					break;
 				}
 			}
