@@ -1,16 +1,22 @@
 package net.mistwood.FarmingPlugin;
 
-import br.net.fabiozumbi12.RedProtect.Bukkit.API.RedProtectAPI;
+import jdk.internal.jline.internal.Nullable;
 import net.milkbowl.vault.economy.Economy;
 
 import net.mistwood.FarmingPlugin.API.FarmingAPI;
 import net.mistwood.FarmingPlugin.Commands.CommandHandler;
+import net.mistwood.FarmingPlugin.Commands.DefaultCommands.ModulesCommand;
 import net.mistwood.FarmingPlugin.Database.DatabaseManager;
 import net.mistwood.FarmingPlugin.Modules.Challenge.ChallengeModule;
 import net.mistwood.FarmingPlugin.Modules.Farm.FarmModule;
-import net.mistwood.FarmingPlugin.Modules.MinecraftAuth.DiscordLinkModule;
+import net.mistwood.FarmingPlugin.Modules.DiscordLink.DiscordLinkModule;
 import net.mistwood.FarmingPlugin.Utils.Messages;
 import net.mistwood.FarmingPlugin.Utils.PermissionManager;
+import net.mistwood.FarmingPlugin.Data.FarmData;
+import net.mistwood.FarmingPlugin.Data.PlayerData;
+import net.mistwood.FarmingPlugin.Modules.Shop.ShopModule;
+import net.mistwood.FarmingPlugin.Modules.Fishing.FishingModule;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -18,17 +24,13 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.Plugin;
-
-import net.mistwood.FarmingPlugin.Data.FarmData;
-import net.mistwood.FarmingPlugin.Data.PlayerData;
-import net.mistwood.FarmingPlugin.Modules.Shop.ShopModule;
-import net.mistwood.FarmingPlugin.Modules.Fishing.FishingModule;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 public class Main extends JavaPlugin
 {
@@ -45,6 +47,7 @@ public class Main extends JavaPlugin
     public PermissionManager PermissionManager;
 
     private FarmingAPI API;
+    private CommandHandler DefaultCommandHandler;
 
     @Override
     public void onEnable ()
@@ -56,7 +59,8 @@ public class Main extends JavaPlugin
         API = new FarmingAPI (this);
         PermissionManager = new PermissionManager ();
 
-        // TODO: Load commands (Only default commands, as each module loads their own commands)
+        DefaultCommandHandler = new CommandHandler (this, "farming");
+        DefaultCommandHandler.RegisterCommand (asList ("modules"), new ModulesCommand (this));
 
         new EventListener (this);
 
@@ -163,6 +167,18 @@ public class Main extends JavaPlugin
     public FarmingAPI GetAPI ()
     {
         return API;
+    }
+
+    @Nullable
+    public Module GetModuleByName (String Name)
+    {
+        for (Module Mod : Modules)
+        {
+            if (Mod.GetName ().toLowerCase ().equals (Name.toLowerCase ()))
+                return Mod;
+        }
+
+        return null;
     }
 
 }
