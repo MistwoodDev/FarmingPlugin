@@ -1,35 +1,31 @@
 package net.mistwood.FarmingPlugin.Modules.Challenge;
 
-import net.mistwood.FarmingPlugin.Data.FarmData;
 import org.bukkit.event.Event;
+
+import net.mistwood.FarmingPlugin.Data.FarmData;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class ChallengeManager
-{
+public class ChallengeManager {
 
-    private Map<Class, Challenge> Challenges;
+    private final Map<Class, Challenge> challenges;
 
-    public ChallengeManager ()
-    {
-        this.Challenges = new HashMap<Class, Challenge> ();
+    public ChallengeManager() {
+        this.challenges = new HashMap<>();
     }
 
-    public void AddChallenge (Class Event, Challenge Challenge)
-    {
-        Challenges.put (Event, Challenge);
+    public void addChallenge(Class event, Challenge challenge) {
+        challenges.put(event, challenge);
     }
 
-    public void Emit (Class TargetEvent, Event EventData, FarmData Farm)
-    {
-        Challenges.entrySet ().stream ().filter (Value -> Value.getKey () == TargetEvent).forEach (Challenge -> Challenge.getValue ().Perform (EventData, Farm));
+    public void emit(Class event, Event eventData, FarmData farm) {
+        challenges.entrySet().stream().filter(challengeEntry -> challengeEntry.getKey() == event).forEach(challenge -> challenge.getValue().perform(eventData, farm));
     }
 
-    public Set<Class> GetEvents ()
-    {
-        return Challenges.keySet ();
+    public Set<Class> getEvents() {
+        return challenges.keySet();
     }
 
 }

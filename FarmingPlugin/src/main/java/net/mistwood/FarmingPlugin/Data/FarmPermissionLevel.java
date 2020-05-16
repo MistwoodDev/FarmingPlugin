@@ -1,10 +1,9 @@
 package net.mistwood.FarmingPlugin.Data;
 
-public enum FarmPermissionLevel
-{
+public enum FarmPermissionLevel {
 
-    Leader,
-    Admin,
-    Farmer
+    LEADER,
+    ADMIN,
+    FARMER
 
 }

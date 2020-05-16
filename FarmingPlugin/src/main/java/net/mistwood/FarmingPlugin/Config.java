@@ -5,44 +5,50 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.Objects;
 
-public class Config
-{
+public class Config {
 
-    public String DatabaseHost;
-    public int DatabasePort;
-    public String DatabaseName;
-    public String DatabaseUsername;
-    public String DatabasePassword;
-    public String DatabasePlayersCollection;
-    public String DatabaseFarmsCollection;
-    public String DatabaseAuthKeysCollection;
+    public static class DatabaseConfig {
+        public String host;
+        public int port;
+        public String name;
+        public String username;
+        public String password;
+        public String playersCollection;
+        public String farmsCollection;
+        public String authKeysCollection;
+    }
 
-    public boolean ModulesDiscordLink;
-    
-    public boolean PlaySounds;
+    public static class ModulesConfig {
+        public boolean discordLink;
+    }
 
-    // TODO: Add more
+    public static class FishingConfig {
+        public boolean playSounds;
+    }
 
-    public Config (FileConfiguration FileConfig)
-    {
-        ConfigurationSection DatabaseSection = FileConfig.getConfigurationSection ("Database");
-        assert DatabaseSection != null;
-        this.DatabaseHost = Objects.requireNonNull (DatabaseSection.get ("Host")).toString ();
-        this.DatabasePort = Integer.parseInt (Objects.requireNonNull (DatabaseSection.get ("Port")).toString ());
-        this.DatabaseName = Objects.requireNonNull (DatabaseSection.get ("Name")).toString ();
-        this.DatabaseUsername = Objects.requireNonNull (DatabaseSection.get ("Username")).toString ();
-        this.DatabasePassword = Objects.requireNonNull (DatabaseSection.get ("Password")).toString ();
-        this.DatabasePlayersCollection = Objects.requireNonNull (DatabaseSection.get ("PlayersCollection")).toString ();
-        this.DatabaseFarmsCollection = Objects.requireNonNull (DatabaseSection.get ("FarmsCollection")).toString ();
-        this.DatabaseAuthKeysCollection = Objects.requireNonNull (DatabaseSection.get ("AuthKeysCollection")).toString ();
+    public DatabaseConfig databaseConfig;
+    public ModulesConfig modulesConfig;
+    public FishingConfig fishingConfig;
 
-        ConfigurationSection ModulesSection = FileConfig.getConfigurationSection ("Modules");
-        assert ModulesSection != null;
-        this.ModulesDiscordLink = Boolean.getBoolean (Objects.requireNonNull (ModulesSection.get ("DiscordLink")).toString ());
-        
-        ConfigurationSection FishingSection = FileConfig.getConfigurationSection ("Fishing");
-        assert FishingSection != null;
-        this.PlaySounds = Objects.requireNonNull (FishingSection.get ("PlaySounds")).toString ().equals ("true");
+    public Config(FileConfiguration config) {
+        ConfigurationSection database = config.getConfigurationSection("Database");
+        assert database != null;
+        this.databaseConfig.host = Objects.requireNonNull(database.get("Host")).toString();
+        this.databaseConfig.port = Integer.parseInt(Objects.requireNonNull(database.get("Port")).toString());
+        this.databaseConfig.name = Objects.requireNonNull(database.get("Name")).toString();
+        this.databaseConfig.username = Objects.requireNonNull(database.get("Username")).toString();
+        this.databaseConfig.password = Objects.requireNonNull(database.get("Password")).toString();
+        this.databaseConfig.playersCollection = Objects.requireNonNull(database.get("PlayersCollection")).toString();
+        this.databaseConfig.farmsCollection = Objects.requireNonNull(database.get("FarmsCollection")).toString();
+        this.databaseConfig.authKeysCollection = Objects.requireNonNull(database.get("AuthKeysCollection")).toString();
+
+        ConfigurationSection modules = config.getConfigurationSection("Modules");
+        assert modules != null;
+        this.modulesConfig.discordLink = Objects.requireNonNull(modules.get("DiscordLink")).toString().equals("true");
+
+        ConfigurationSection fishing = config.getConfigurationSection("Fishing");
+        assert fishing != null;
+        this.fishingConfig.playSounds = Objects.requireNonNull(fishing.get("PlaySounds")).toString().equals("true");
     }
 
 }

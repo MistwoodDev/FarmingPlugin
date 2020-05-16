@@ -3,30 +3,25 @@ package net.mistwood.FarmingPlugin.Data;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlayerStats implements Data
-{
+public class PlayerStats implements Data {
 
-    private PlayerStats ()
-    {
+    private PlayerStats() {
         // TODO
     }
 
-    public static PlayerStats Init ()
-    {
-        return new PlayerStats ();
+    public static PlayerStats init() {
+        return new PlayerStats();
     }
 
     @Override
-    public Map<String, Object> ToMap ()
-    {
-        Map<String, Object> Data = new HashMap<String, Object>();
+    public Map<String, Object> toMap() {
+        Map<String, Object> data = new HashMap<>();
 
-        return Data;
+        return data;
     }
 
-    public static PlayerStats FromMap (Map<String, Object> Data)
-    {
-        return new PlayerStats ();
+    public static PlayerStats fromMap(Map<String, Object> data) {
+        return new PlayerStats();
     }
 
 }

@@ -1,6 +1,5 @@
 package net.mistwood.FarmingPlugin.Database;
 
-import com.mongodb.ConnectionString;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import com.mongodb.async.SingleResultCallback;
@@ -8,101 +7,109 @@ import com.mongodb.async.client.*;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.mongodb.connection.ClusterSettings;
-import net.mistwood.FarmingPlugin.Config;
-import net.mistwood.FarmingPlugin.Utils.MongoURIBuilder;
-import org.bson.Document;
-import org.bukkit.Bukkit;
 
-import java.util.Arrays;
+import org.bson.Document;
+
+import net.mistwood.FarmingPlugin.Config;
+
 import java.util.Map;
 import java.util.UUID;
 
 import static com.mongodb.client.model.Filters.eq;
 import static java.util.Arrays.asList;
 
-public class DatabaseManager
-{
+public class DatabaseManager {
 
-    private Config Config;
+    private final Config config;
 
-    private MongoClient Client;
-    private MongoDatabase Database;
-    private MongoCollection<Document> PlayersCollection;
-    private MongoCollection<Document> FarmsCollection;
-    private MongoCollection<Document> AuthKeysCollection;
+    private MongoClient client;
+    private MongoDatabase database;
+    private MongoCollection<Document> playersCollection;
+    private MongoCollection<Document> farmsCollection;
+    private MongoCollection<Document> authKeysCollection;
 
-    public DatabaseManager (Config Config)
-    {
-        this.Config = Config;
+    public DatabaseManager(Config config) {
+        this.config = config;
     }
 
-    public void Connect ()
-    {
-        ClusterSettings Cluster = ClusterSettings.builder ()
-                .hosts (asList (new ServerAddress (Config.DatabaseHost, Config.DatabasePort)))
-                .build ();
-        MongoCredential Credential = MongoCredential.createCredential (Config.DatabaseUsername, Config.DatabaseName, Config.DatabasePassword.toCharArray ());
-        MongoClientSettings Settings = MongoClientSettings.builder ()
-                .clusterSettings (Cluster)
-                .credentialList (asList (Credential))
-                .build ();
+    public void connect() {
+        ClusterSettings cluster = ClusterSettings.builder()
+                .hosts(asList(new ServerAddress(config.databaseConfig.host, config.databaseConfig.port)))
+                .build();
+        MongoCredential credential = MongoCredential.createCredential(config.databaseConfig.username, config.databaseConfig.name, config.databaseConfig.password.toCharArray());
+        MongoClientSettings settings = MongoClientSettings.builder()
+                .clusterSettings(cluster)
+                .credentialList(asList(credential))
+                .build();
 
-        Client = MongoClients.create (Settings);
-        Database = Client.getDatabase (Config.DatabaseName);
+        this.client = MongoClients.create(settings);
+        this.database = client.getDatabase(config.databaseConfig.name);
 
-        PlayersCollection = Database.getCollection (Config.DatabasePlayersCollection);
-        FarmsCollection = Database.getCollection (Config.DatabaseFarmsCollection);
-        AuthKeysCollection = Database.getCollection (Config.DatabaseAuthKeysCollection);
+        this.playersCollection = database.getCollection(config.databaseConfig.playersCollection);
+        this.farmsCollection = database.getCollection(config.databaseConfig.farmsCollection);
+        this.authKeysCollection = database.getCollection(config.databaseConfig.authKeysCollection);
     }
 
-    public void Insert (Map<String, Object> Objects, DatabaseCollection Collection)
-    {
-        Document Doc = new Document (Objects);
+    public void insert(Map<String, Object> objects, DatabaseCollection collection) {
+        Document document = new Document(objects);
 
-        switch (Collection)
-        {
-            case PlayersCollection: PlayersCollection.insertOne (Doc, (Result, Throwable) -> { }); break;
-            case FarmsCollection: FarmsCollection.insertOne (Doc, (Result, Throwable) -> { }); break;
+        switch (collection) {
+            case PLAYERS:
+                playersCollection.insertOne(document, (Result, Throwable) -> {
+                });
+                break;
+            case FARMS:
+                farmsCollection.insertOne(document, (Result, Throwable) -> {
+                });
+                break;
         }
     }
 
-    public void Get (UUID ID, DatabaseCollection Collection, SingleResultCallback<Document> Callback)
-    {
-        switch (Collection)
-        {
-            case PlayersCollection: PlayersCollection.find (eq ("ID", ID.toString ())).first (Callback); break;
-            case FarmsCollection: FarmsCollection.find (eq ("ID", ID.toString ())).first (Callback); break;
+    public void get(UUID id, DatabaseCollection collection, SingleResultCallback<Document> callback) {
+        switch (collection) {
+            case PLAYERS:
+                playersCollection.find(eq("ID", id.toString())).first(callback);
+                break;
+            case FARMS:
+                farmsCollection.find(eq("ID", id.toString())).first(callback);
+                break;
         }
     }
 
-    public void Exists (UUID ID, DatabaseCollection Collection, SingleResultCallback<Long> Callback)
-    {
-        switch (Collection)
-        {
-            case PlayersCollection: PlayersCollection.count (eq ("ID", ID.toString ()), Callback); break;
-            case FarmsCollection: FarmsCollection.count (eq ("ID", ID.toString ()), Callback); break;
+    public void exists(UUID id, DatabaseCollection collection, SingleResultCallback<Long> callback) {
+        switch (collection) {
+            case PLAYERS:
+                playersCollection.count(eq("ID", id.toString()), callback);
+                break;
+            case FARMS:
+                farmsCollection.count(eq("ID", id.toString()), callback);
+                break;
         }
     }
 
-    public void Update (UUID ID, Map<String, Object> Objects, DatabaseCollection Collection)
-    {
-        SingleResultCallback<UpdateResult> UpdateObject = (UpdateResult, Throwable) -> { };
+    public void update(UUID id, Map<String, Object> objects, DatabaseCollection collection) {
+        SingleResultCallback<UpdateResult> callback = (result, t) -> { };
 
-        switch (Collection)
-        {
-            case PlayersCollection: PlayersCollection.updateOne (eq ("ID", ID.toString ()), new Document ("$set", new Document (Objects)), UpdateObject); break;
-            case FarmsCollection: FarmsCollection.updateOne (eq ("ID", ID.toString ()), new Document ("$set", new Document (Objects)), UpdateObject); break;
+        switch (collection) {
+            case PLAYERS:
+                playersCollection.updateOne(eq("ID", id.toString()), new Document("$set", new Document(objects)), callback);
+                break;
+            case FARMS:
+                farmsCollection.updateOne(eq("ID", id.toString()), new Document("$set", new Document(objects)), callback);
+                break;
         }
     }
 
-    public void Remove (UUID ID, DatabaseCollection Collection)
-    {
-        SingleResultCallback<DeleteResult> RemoveObject = (UpdateResult, Throwable) -> { };
+    public void remove(UUID id, DatabaseCollection collection) {
+        SingleResultCallback<DeleteResult> callback = (result, t) -> { };
 
-        switch (Collection)
-        {
-            case PlayersCollection: PlayersCollection.deleteOne (eq ("ID", ID.toString ()), RemoveObject); break;
-            case FarmsCollection: FarmsCollection.deleteOne (eq ("ID", ID.toString ()), RemoveObject); break;
+        switch (collection) {
+            case PLAYERS:
+                playersCollection.deleteOne(eq("ID", id.toString()), callback);
+                break;
+            case FARMS:
+                farmsCollection.deleteOne(eq("ID", id.toString()), callback);
+                break;
         }
     }
 

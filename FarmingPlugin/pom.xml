@@ -90,9 +90,6 @@
                 <configuration>
                     <minimizeJar>true</minimizeJar>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <archive>
-                        <index>true</index>
-                    </archive>
                 </configuration>
                 <executions>
                     <execution>

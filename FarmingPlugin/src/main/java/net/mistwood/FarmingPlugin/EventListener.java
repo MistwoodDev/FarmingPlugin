@@ -1,9 +1,5 @@
 package net.mistwood.FarmingPlugin;
 
-import net.mistwood.FarmingPlugin.Data.FarmData;
-import net.mistwood.FarmingPlugin.Data.PlayerData;
-import net.mistwood.FarmingPlugin.Database.DatabaseCollection;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,68 +7,47 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class EventListener implements Listener
-{
+import net.mistwood.FarmingPlugin.Data.FarmData;
+import net.mistwood.FarmingPlugin.Data.PlayerData;
+import net.mistwood.FarmingPlugin.Database.DatabaseCollection;
 
-    private static Main Instance;
+public class EventListener implements Listener {
 
-    public EventListener (Main Instance)
-    {
-        this.Instance = Instance;
-
-        Bukkit.getServer ().getPluginManager ().registerEvents (this, Instance);
+    public EventListener() {
+        Bukkit.getServer().getPluginManager().registerEvents(this, FarmingPlugin.instance);
     }
 
     @EventHandler
-    public void onPlayerJoin (PlayerJoinEvent Event)
-    {
-        Player Target = Event.getPlayer ();
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
 
-        Instance.Database.Exists (Target.getUniqueId (), DatabaseCollection.PlayersCollection, (Count, Throwable) -> {
-            boolean Exists = Count > 0;
+        FarmingPlugin.instance.database.exists(player.getUniqueId(), DatabaseCollection.PLAYERS, (count, t) -> {
+            boolean exists = count > 0;
 
-            if (!Target.hasPlayedBefore () || !Exists)
-            {
-                PlayerData Data = new PlayerData (Target, Target.getName (),null, null,null);
-
-                Instance.PlayersCache.Add (Target.getUniqueId (), Data);
+            if (!player.hasPlayedBefore() || !exists) {
+                PlayerData playerData = new PlayerData(player, player.getName(), null, null, null);
+                FarmingPlugin.instance.playersCache.add(player.getUniqueId(), playerData);
 
                 // TODO: Do we actually wanna insert the player now? Or wait till he leaves?
-                Instance.Database.Insert (Data.ToMap (), DatabaseCollection.PlayersCollection);
-            }
+                FarmingPlugin.instance.database.insert(playerData.toMap(), DatabaseCollection.PLAYERS);
+            } else {
+                FarmingPlugin.instance.database.get(player.getUniqueId(), DatabaseCollection.PLAYERS, (Result, Error) -> {
+                    PlayerData playerData = PlayerData.fromMap(Result);
+                    FarmingPlugin.instance.playersCache.add(player.getUniqueId(), playerData);
 
-            else
-            {
-                Instance.Database.Get (Target.getUniqueId (), DatabaseCollection.PlayersCollection, (Result, Error) -> {
-                    PlayerData Data = PlayerData.FromMap (Result);
-
-                    // Add player to cache
-                    Instance.PlayersCache.Add (Target.getUniqueId (), Data);
-
-                    // Is the player in a farm?
-                    if (Data.FarmID != null)
-                    {
-                        Instance.Database.Exists (Data.FarmID, DatabaseCollection.FarmsCollection, (FarmCount, FError) -> {
-                            boolean FarmExists = FarmCount > 0;
-
-                            if (FarmExists)
-                            {
-                                Instance.Database.Get (Data.FarmID, DatabaseCollection.FarmsCollection, (FarmResult, FarmError) -> {
-                                    // Add players farm to cache (if the farm isn't already in the cache)
-                                    Instance.FarmsCache.Add (Data.FarmID, FarmData.FromMap (FarmResult)); // TODO: Maybe to check first?
-                                    // Add the player to the cached farms `OnlinePlayers` list
-                                    Instance.FarmsCache.Update (Data.FarmID, Instance.FarmsCache.Get (Data.FarmID).AddOnlinePlayer (Data));
+                    if (playerData.farmID != null) {
+                        FarmingPlugin.instance.database.exists(playerData.farmID, DatabaseCollection.FARMS, (FarmCount, FError) -> {
+                            if (FarmCount > 0) {
+                                FarmingPlugin.instance.database.get(playerData.farmID, DatabaseCollection.FARMS, (FarmResult, FarmError) -> {
+                                    FarmingPlugin.instance.farmsCache.add(playerData.farmID, FarmData.fromMap(FarmResult)); // TODO: Maybe to check first?
+                                    FarmingPlugin.instance.farmsCache.update(playerData.farmID, FarmingPlugin.instance.farmsCache.get(playerData.farmID).addOnlinePlayer(playerData));
                                 });
-                            }
-
-                            // The players farm has been deleted while they were gone/offline
-                            else
-                            {
-                                PlayerData Player = Instance.PlayersCache.Get (Data.PlayerInstance.getUniqueId ());
-                                Player.FarmID = null;
-                                Player.FarmName = null;
-                                Player.PermissionLevel = null;
-                                Instance.PlayersCache.Update (Player.PlayerInstance.getUniqueId (), Player);
+                            } else {
+                                PlayerData data = FarmingPlugin.instance.playersCache.get(playerData.playerInstance.getUniqueId());
+                                data.farmID = null;
+                                data.farmName = null;
+                                data.permissionLevel = null;
+                                FarmingPlugin.instance.playersCache.update(data.playerInstance.getUniqueId(), data);
                             }
                         });
                     }
@@ -82,30 +57,21 @@ public class EventListener implements Listener
     }
 
     @EventHandler
-    public void onPlayerQuit (PlayerQuitEvent Event)
-    {
-        Player Target = Event.getPlayer ();
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        PlayerData playerData = FarmingPlugin.instance.playersCache.get(player.getUniqueId());
+        FarmingPlugin.instance.playersCache.remove(player.getUniqueId());
 
-        PlayerData Data = Instance.PlayersCache.Get (Target.getUniqueId ());
+        if (playerData.farmID != null) {
+            FarmingPlugin.instance.farmsCache.update(playerData.farmID, FarmingPlugin.instance.farmsCache.get(playerData.farmID).removeOnlinePlayer(playerData));
 
-        // Remove the player from the cache
-        Instance.PlayersCache.Remove (Target.getUniqueId ());
-
-        // Is the player in a farm?
-        if (Data.FarmID != null)
-        {
-            // Remove the player from the cached farms `OnlinePlayers` list
-            Instance.FarmsCache.Update (Data.FarmID, Instance.FarmsCache.Get (Data.FarmID).RemoveOnlinePlayer (Data));
-            // Remove the cached farm if the player is the last one online
-            if (Instance.FarmsCache.Get (Data.FarmID).OnlinePlayers.size () < 1)
-            {
-                FarmData Farm = Instance.FarmsCache.Get (Data.FarmID);
-                Instance.FarmsCache.Remove (Data.FarmID);
-
-                Instance.Database.Update (Farm.ID, Farm.ToMap (), DatabaseCollection.FarmsCollection);
+            if (FarmingPlugin.instance.farmsCache.get(playerData.farmID).onlinePlayers.size() < 1) {
+                FarmData Farm = FarmingPlugin.instance.farmsCache.get(playerData.farmID);
+                FarmingPlugin.instance.farmsCache.remove(playerData.farmID);
+                FarmingPlugin.instance.database.update(Farm.id, Farm.toMap(), DatabaseCollection.FARMS);
             }
-            // Add the player and farm (only if needed) to the database
-            Instance.Database.Update (Target.getUniqueId (), Data.ToMap (), DatabaseCollection.PlayersCollection);
+
+            FarmingPlugin.instance.database.update(player.getUniqueId(), playerData.toMap(), DatabaseCollection.PLAYERS);
         }
     }
 

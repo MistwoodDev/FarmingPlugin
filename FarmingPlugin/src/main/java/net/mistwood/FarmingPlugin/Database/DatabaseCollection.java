@@ -1,10 +1,9 @@
 package net.mistwood.FarmingPlugin.Database;
 
-public enum DatabaseCollection
-{
+public enum DatabaseCollection {
 
-    PlayersCollection,
-    FarmsCollection,
-    AuthKeysCollection
+    PLAYERS,
+    FARMS,
+    AUTH_KEYS
 
 }

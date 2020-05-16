@@ -1,34 +1,22 @@
 package net.mistwood.FarmingPlugin.Modules.Farm.Commands;
 
-import net.mistwood.FarmingPlugin.Commands.SubCommand;
-import net.mistwood.FarmingPlugin.Main;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import net.mistwood.FarmingPlugin.Commands.SubCommand;
+import net.mistwood.FarmingPlugin.FarmingPlugin;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class InfoCommand implements SubCommand
-{
-
-    private Main Instance;
-
-    public InfoCommand (Main Instance)
-    {
-        this.Instance = Instance;
-    }
+public class InfoCommand implements SubCommand {
 
     @Override
-    public boolean onCommand (CommandSender Sender, Command Command, String Label, String[] Args)
-    {
-        if (Sender instanceof Player && Instance.PermissionManager.HasCommandPermission (Sender, "info"))
-        {
-            Player Target = (Player) Sender;
-
-            CommandHelper.HandleInfo (Instance, Target);
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (sender instanceof Player && FarmingPlugin.instance.permissionManager.hasCommandPermission(sender, "info")) {
+            Player player = (Player) sender;
+            CommandHelper.handleInfo(player);
 
             return true;
         }
@@ -38,9 +26,8 @@ public class InfoCommand implements SubCommand
     }
 
     @Override
-    public List<String> onTabComplete (CommandSender Sender, Command Command, String Alias, String[] Args)
-    {
-        return new ArrayList<> ();
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+        return new ArrayList<>();
     }
 
 }

@@ -1,23 +1,13 @@
 package net.mistwood.FarmingPlugin.Modules.Shop.Commands;
 
-import net.mistwood.FarmingPlugin.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-public class ShopCommand implements CommandExecutor
-{
-
-    private static Main Instance;
-
-    public ShopCommand (Main Instance)
-    {
-        this.Instance = Instance;
-    }
+public class ShopCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand (CommandSender Sender, Command Command, String Label, String[] Args)
-    {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         return true;
     }
 

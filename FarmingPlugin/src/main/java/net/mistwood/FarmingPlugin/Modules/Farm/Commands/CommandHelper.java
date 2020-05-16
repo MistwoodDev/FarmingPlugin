@@ -1,156 +1,116 @@
 package net.mistwood.FarmingPlugin.Modules.Farm.Commands;
 
-import net.mistwood.FarmingPlugin.Data.FarmData;
-import net.mistwood.FarmingPlugin.Data.FarmPermissionLevel;
-import net.mistwood.FarmingPlugin.Data.PlayerData;
-import net.mistwood.FarmingPlugin.Main;
-import net.mistwood.FarmingPlugin.Utils.Helper;
-import net.mistwood.FarmingPlugin.Utils.Messages;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import net.mistwood.FarmingPlugin.Data.FarmData;
+import net.mistwood.FarmingPlugin.Data.FarmPermissionLevel;
+import net.mistwood.FarmingPlugin.Data.PlayerData;
+import net.mistwood.FarmingPlugin.FarmingPlugin;
+import net.mistwood.FarmingPlugin.Utils.Helper;
+import net.mistwood.FarmingPlugin.Utils.Messages;
+
 import java.util.Collections;
 
-public class CommandHelper
-{
+public class CommandHelper {
 
-    public static void HandleHelp (Main Instance, Player Sender, String Command)
-    {
+    public static void handleHelp(Player player, String cmd) { }
 
+    public static void handleInfo(Player player) {
+        PlayerData playerData = FarmingPlugin.instance.playersCache.get(player.getUniqueId());
+
+        if (checkSenderInFarm(player, playerData)) return;
+
+        FarmData farmData = FarmingPlugin.instance.farmsCache.get(playerData.farmID);
+
+        String header = String.format("&7-- &bFarm: &b&l%s &7--", farmData.name);
+        Helper.sendMessage(player, header);
+        Helper.sendMessage(player, "&7» Name: &b" + farmData.name);
+        Helper.sendMessage(player, "&7» Owner: &b" + Bukkit.getOfflinePlayer(farmData.owner).getName());
+        Helper.sendMessage(player, "&7» Area: &b" + farmData.regionInstance.getArea());
+        Helper.sendMessage(player, "&7» Date of creation: &b" + farmData.regionInstance.getDate());
+        Helper.sendMessage(player, "&7" + String.join("", Collections.nCopies(header.replace("&7", "").replace("&b", "").length(), "-")));
     }
 
-    public static void HandleInfo (Main Instance, Player Sender)
-    {
-        PlayerData Player = Instance.PlayersCache.Get (Sender.getUniqueId ());
+    public static void handleAddMember(Player player, String name) {
+        PlayerData playerData = FarmingPlugin.instance.playersCache.get(player.getUniqueId());
 
-        if (!CheckSenderInFarm (Sender, Player)) return;
+        if (checkSenderInFarm(player, playerData)) return;
+        if (!checkFarmAdminPermission(player, playerData, "add")) return;
 
-        FarmData Farm = Instance.FarmsCache.Get (Player.FarmID);
+        Player member = Bukkit.getPlayer(name);
+        if (!checkPlayerFound(member, player)) return;
 
-        String Header = String.format ("&7-- &bFarm: &b&l%s &7--", Farm.Name);
-        Helper.SendMessage (Sender, Header);
-        Helper.SendMessage (Sender, "&7» Name: &b" + Farm.Name);
-        Helper.SendMessage (Sender, "&7» Owner: &b" + Bukkit.getOfflinePlayer (Farm.Owner).getName ());
-        Helper.SendMessage (Sender, "&7» Area: &b" + Farm.RegionInstance.getArea ());
-        Helper.SendMessage (Sender, "&7» Date of creation: &b" + Farm.RegionInstance.getDate ());
-        Helper.SendMessage (Sender, "&7" + String.join ("", Collections.nCopies (Header.length (), "-")));
+        assert member != null;
+        PlayerData targetPlayer = FarmingPlugin.instance.playersCache.get(member.getUniqueId());
+
+        if (!checkPlayerFound(targetPlayer, player)) return;
+        if (!checkPlayerInFarm(player, targetPlayer)) return;
+
+        FarmData farmData = FarmingPlugin.instance.farmsCache.get(playerData.farmID);
+        farmData.addPlayer(member.getUniqueId());
+        farmData.addOnlinePlayer(targetPlayer);
+        targetPlayer.farmID = farmData.id;
+        targetPlayer.farmName = farmData.name;
+        targetPlayer.permissionLevel = FarmPermissionLevel.FARMER;
+
+        FarmingPlugin.instance.farmsCache.update(farmData.id, farmData);
+        FarmingPlugin.instance.playersCache.update(member.getUniqueId(), targetPlayer);
     }
 
-    // TODO:
-    public static void HandleAddMember (Main Instance, Player Sender, String TargetName)
-    {
-        PlayerData Player = Instance.PlayersCache.Get (Sender.getUniqueId ());
+    public static void handleKickMember(Player player, String name) { }
 
-        if (!CheckSenderInFarm (Sender, Player)) return;
+    public static void handlePromoteMember(Player player, String name) { }
 
-        if (!CheckFarmAdminPermission (Instance, Sender, Player, "add")) return;;
+    public static void handleDemoteMember(Player player, String name) { }
 
-        Player TargetMember = Bukkit.getPlayer (TargetName);
+    public static void handleLeaveFarm(Player player) { }
 
-        if (!CheckPlayerFound (TargetMember, Sender)) return;
+    public static void handleAccept(Player player) { }
 
-        PlayerData TargetPlayer = Instance.PlayersCache.Get (TargetMember.getUniqueId ());
+    public static void handleDeny(Player player) { }
 
-        if (!CheckPlayerFound (TargetPlayer, Sender)) return;
+    public static void handleRename(Player player, String name) { }
 
-        if (!CheckPlayerInFarm (Sender, TargetPlayer)) return;
+    private static boolean checkSenderInFarm(Player player, PlayerData sender) {
+        if (sender.farmID == null) {
+            Helper.sendMessage(player, String.format(Messages.ERROR_YOU_NOT_IN_FARM, sender.name));
+            return true;
+        }
 
-        FarmData Farm = Instance.FarmsCache.Get (Player.FarmID);
-        Farm.AddPlayer (TargetMember.getUniqueId ());
-        Farm.AddOnlinePlayer (TargetPlayer);
-        TargetPlayer.FarmID = Farm.ID;
-        TargetPlayer.FarmName = Farm.Name;
-        TargetPlayer.PermissionLevel = FarmPermissionLevel.Farmer;
-
-        Instance.FarmsCache.Update (Farm.ID, Farm);
-        Instance.PlayersCache.Update (TargetMember.getUniqueId (), TargetPlayer);
+        return false;
     }
 
-    public static void HandleKickMember (Main Instance, Player Sender, String TargetName)
-    {
-
-    }
-
-    public static void HandlePromoteMember (Main Instance, Player Sender, String TargetName)
-    {
-
-    }
-
-    public static void HandleDemoteMember (Main Instance, Player Sender, String TargetName)
-    {
-
-    }
-
-    public static void HandleLeaveFarm (Main Instance, Player Sender)
-    {
-
-    }
-
-    public static void HandleAccept (Main Instance, Player Sender)
-    {
-
-    }
-
-    public static void HandleDeny (Main Instance, Player Sender)
-    {
-
-    }
-
-    public static void HandleRename (Main Instance, Player Sender, String NewName)
-    {
-
-    }
-
-    private static boolean CheckSenderInFarm (Player Target, PlayerData Sender)
-    {
-        if (Sender.FarmID == null)
-        {
-            Helper.SendMessage (Target, String.format (Messages.YouNotInFarm, Sender.Name));
+    private static boolean checkFarmAdminPermission(Player player, PlayerData sender, String perm) {
+        if (!FarmingPlugin.instance.permissionManager.hasFarmPermissionAdmin(player, perm, sender)) {
+            Helper.sendMessage(player, Messages.ERROR_NO_COMMAND_PERMISSION);
             return false;
         }
 
         return true;
     }
 
-    private static boolean CheckFarmAdminPermission (Main Instance, Player Target, PlayerData Sender, String Permission)
-    {
-        if (!Instance.PermissionManager.HasFarmPermissionAdmin (Target, Permission, Sender))
-        {
-            Helper.SendMessage (Target, Messages.NoCommandPermission);
+    private static boolean checkPlayerFound(Player player, Player sender) {
+        if (player == null) {
+            Helper.sendMessage(sender, Messages.ERROR_PLAYER_NOT_FOUND);
             return false;
         }
 
         return true;
     }
 
-    private static boolean CheckPlayerFound (Player Target, Player Sender)
-    {
-        if (Target == null)
-        {
-            Helper.SendMessage (Sender, Messages.PlayerNotFound);
+    private static boolean checkPlayerFound(PlayerData playerData, Player sender) {
+        if (playerData == null) {
+            Helper.sendMessage(sender, Messages.ERROR_PLAYER_NOT_FOUND);
             return false;
         }
 
         return true;
     }
 
-    private static boolean CheckPlayerFound (PlayerData Target, Player Sender)
-    {
-        if (Target == null)
-        {
-            Helper.SendMessage (Sender, Messages.PlayerNotFound);
-            return false;
-        }
-
-        return true;
-    }
-
-    private static boolean CheckPlayerInFarm (Player Target, PlayerData Sender)
-    {
-        if (Sender.FarmID != null)
-        {
-            Helper.SendMessage (Target, String.format (Messages.PlayerAlreadyInFarm, Sender.Name));
+    private static boolean checkPlayerInFarm(Player player, PlayerData sender) {
+        if (sender.farmID != null) {
+            Helper.sendMessage(player, String.format(Messages.ERROR_PLAYER_ALREADY_IN_FARM, sender.name));
             return false;
         }
 

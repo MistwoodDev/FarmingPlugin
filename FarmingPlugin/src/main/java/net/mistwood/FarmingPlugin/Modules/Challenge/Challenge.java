@@ -1,24 +1,23 @@
 package net.mistwood.FarmingPlugin.Modules.Challenge;
 
-import net.mistwood.FarmingPlugin.Data.FarmData;
 import org.bukkit.event.Event;
 
-public abstract class Challenge
-{
+import net.mistwood.FarmingPlugin.Data.FarmData;
 
-    public String Name;
-    public String Description;
-    public int ID;
-    public int XPReward;
+public abstract class Challenge {
 
-    public Challenge (String Name, String Description, int ID, int XPReward)
-    {
-        this.Name = Name;
-        this.Description = Description;
-        this.ID = ID;
-        this.XPReward = XPReward;
+    public String name;
+    public String description;
+    public int id;
+    public int xpReward;
+
+    public Challenge(String name, String description, int id, int xpReward) {
+        this.name = name;
+        this.description = description;
+        this.id = id;
+        this.xpReward = xpReward;
     }
 
-    public abstract void Perform (Event Event, FarmData Farm);
+    public abstract void perform(Event event, FarmData farm);
 
 }

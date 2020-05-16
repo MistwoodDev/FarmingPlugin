@@ -7,53 +7,48 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class PlayerData implements Data
-{
+public class PlayerData implements Data {
 
-    public Player PlayerInstance;
-    public String Name;
-    public UUID FarmID;
-    public String FarmName;
-    public FarmPermissionLevel PermissionLevel;
+    public Player playerInstance;
+    public String name;
+    public UUID farmID;
+    public String farmName;
+    public FarmPermissionLevel permissionLevel;
 
-    public PlayerData (Player PlayerInstance, String Name, UUID FarmID, String FarmName, FarmPermissionLevel PermissionLevel)
-    {
-        this.PlayerInstance = PlayerInstance;
-        this.Name = Name;
-        this.FarmID = FarmID;
-        this.FarmName = FarmName;
-        this.PermissionLevel = PermissionLevel;
+    public PlayerData(Player playerInstance, String name, UUID farmID, String farmName, FarmPermissionLevel permissionLevel) {
+        this.playerInstance = playerInstance;
+        this.name = name;
+        this.farmID = farmID;
+        this.farmName = farmName;
+        this.permissionLevel = permissionLevel;
     }
 
     @Override
-    public Map<String, Object> ToMap ()
-    {
-        Map<String, Object> Data = new HashMap<String, Object> ();
-        Data.put ("ID", PlayerInstance.getUniqueId ().toString ());
-        Data.put ("Name", PlayerInstance.getName ());
-        Data.put ("FarmID", FarmID != null ? FarmID.toString () : "null");
-        Data.put ("FarmName", FarmName != null ? FarmName : "null");
-        Data.put ("FarmPermission", PermissionLevel != null ? PermissionLevel.toString () : "null");
+    public Map<String, Object> toMap() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("ID", playerInstance.getUniqueId().toString());
+        data.put("Name", playerInstance.getName());
+        data.put("FarmID", farmID != null ? farmID.toString() : "null");
+        data.put("FarmName", farmName != null ? farmName : "null");
+        data.put("FarmPermission", permissionLevel != null ? permissionLevel.toString() : "null");
 
-        return Data;
+        return data;
     }
 
-    public static PlayerData FromMap (Map<String, Object> Data)
-    {
-        Player Target = Bukkit.getPlayer (UUID.fromString (Data.get ("ID").toString ()));
+    public static PlayerData fromMap(Map<String, Object> data) {
+        Player player = Bukkit.getPlayer(UUID.fromString(data.get("ID").toString()));
 
-        return new PlayerData (
-                Target,
-                Target.getName (),
-                !Data.get("FarmID").toString ().equals ("null") ? UUID.fromString (Data.get ("FarmID").toString ()) : null,
-                !Data.get ("FarmName").toString ().equals ("null") ? Data.get ("FarmName").toString () : null,
-                !Data.get("FarmID").toString ().equals ("null") ? FarmPermissionLevel.valueOf (Data.get ("FarmPermission").toString ()) : null
+        return new PlayerData(
+                player,
+                player.getName(),
+                !data.get("FarmID").toString().equals("null") ? UUID.fromString(data.get("FarmID").toString()) : null,
+                !data.get("FarmName").toString().equals("null") ? data.get("FarmName").toString() : null,
+                !data.get("FarmID").toString().equals("null") ? FarmPermissionLevel.valueOf(data.get("FarmPermission").toString()) : null
         );
     }
 
-    public String GetName ()
-    {
-        return Name;
+    public String getName() {
+        return name;
     }
 
 }

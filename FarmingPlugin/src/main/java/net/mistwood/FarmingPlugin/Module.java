@@ -1,40 +1,35 @@
 package net.mistwood.FarmingPlugin;
 
-public abstract class Module
-{
+public abstract class Module {
 
-    private final String Name;
-    private final String Version;
-    private final String MainCommand;
+    private final String name;
+    private final String version;
+    private final String mainCommand;
 
-    public Module (String Name, String Version)
-    {
-        this (Name, Version, "");
+    public Module(String name, String version) {
+        this(name, version, "");
     }
 
-    public Module (String Name, String Version, String MainCommand)
-    {
-        this.Name = Name;
-        this.Version = Version;
-        this.MainCommand = MainCommand;
+    public Module(String name, String version, String mainCommand) {
+        this.name = name;
+        this.version = version;
+        this.mainCommand = mainCommand;
     }
 
-    public abstract void OnEnable (Main Instance);
-    public abstract void OnDisable ();
+    public abstract void onEnable();
 
-    public String GetName ()
-    {
-        return Name;
+    public abstract void onDisable();
+
+    public String getName() {
+        return name;
     }
 
-    public String GetVersion ()
-    {
-        return Version;
+    public String getVersion() {
+        return version;
     }
 
-    public String GetMainCommand ()
-    {
-        return MainCommand;
+    public String getMainCommand() {
+        return mainCommand;
     }
 
 }

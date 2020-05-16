@@ -1,20 +1,14 @@
 package net.mistwood.FarmingPlugin.Modules.Shop;
 
-import net.mistwood.FarmingPlugin.Main;
-
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
-public class ShopEvents implements Listener
-{
+import net.mistwood.FarmingPlugin.FarmingPlugin;
 
-    private static Main Instance;
+public class ShopEvents implements Listener {
 
-    public ShopEvents (Main Instance)
-    {
-        this.Instance = Instance;
-
-        Bukkit.getServer ().getPluginManager ().registerEvents (this, Instance);
+    public ShopEvents() {
+        Bukkit.getServer().getPluginManager().registerEvents(this, FarmingPlugin.instance);
     }
 
 }

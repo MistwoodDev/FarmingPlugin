@@ -1,36 +1,35 @@
 package net.mistwood.FarmingPlugin.Modules.Challenge;
 
-import net.mistwood.FarmingPlugin.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 
+import net.mistwood.FarmingPlugin.FarmingPlugin;
+
 public class ChallengeEvents implements Listener
 {
 
-    private Main Instance;
-    private ChallengeManager Manager;
+    private final ChallengeManager manager;
 
-    public ChallengeEvents (Main Instance, ChallengeManager Manager)
+    public ChallengeEvents (ChallengeManager manager)
     {
-        this.Instance = Instance;
-        this.Manager = Manager;
+        this.manager = manager;
 
-        for (Class Event : Manager.GetEvents ())
+        for (Class event : manager.getEvents())
         {
-            Bukkit.getPluginManager ().registerEvent (Event, new Listener () {}, EventPriority.NORMAL, (Listener, TargetEvent) -> {
-                Manager.Emit (TargetEvent.getClass (), TargetEvent, null); // TODO: Somehow find farm data here
-            }, Instance);
+            Bukkit.getPluginManager ().registerEvent (event, new Listener () {}, EventPriority.NORMAL, (listener, e) -> {
+                manager.emit(e.getClass (), e, null); // TODO: Somehow find farm data here
+            }, FarmingPlugin.instance);
         }
     }
 
     @EventHandler
-    public void onPlayerAdvancementDone (PlayerAdvancementDoneEvent Event)
+    public void onPlayerAdvancementDone (PlayerAdvancementDoneEvent event)
     {
         // assuming the target player is in a farm, which we would normally check for
-        Manager.Emit (Event.getClass (), Event, Instance.FarmsCache.Get (Instance.PlayersCache.Get (Event.getPlayer ().getUniqueId ()).FarmID));
+        manager.emit(event.getClass (), event, FarmingPlugin.instance.farmsCache.get(FarmingPlugin.instance.playersCache.get(event.getPlayer ().getUniqueId ()).farmID));
     }
 
 }

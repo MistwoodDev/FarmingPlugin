@@ -3,36 +3,31 @@ package net.mistwood.FarmingPlugin.Data;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FarmStats implements Data
-{
+public class FarmStats implements Data {
 
-    public int Crops;
+    public int crops;
 
-    private FarmStats (int Crops)
-    {
-        this.Crops = Crops;
+    private FarmStats(int crops) {
+        this.crops = crops;
     }
 
-    public static FarmStats Init ()
-    {
-        return new FarmStats (
+    public static FarmStats init() {
+        return new FarmStats(
                 0
         );
     }
 
     @Override
-    public Map<String, Object> ToMap ()
-    {
-        Map<String, Object> Data = new HashMap<String, Object> ();
-        Data.put ("Crops", Crops);
+    public Map<String, Object> toMap() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("Crops", crops);
 
-        return Data;
+        return data;
     }
 
-    public static FarmStats FromMap (Map<String, Object> Data)
-    {
-        return new FarmStats (
-                (Integer) Data.get ("Crops")
+    public static FarmStats fromMap(Map<String, Object> data) {
+        return new FarmStats(
+                (Integer) data.get("Crops")
         );
     }
 

@@ -1,36 +1,26 @@
 package net.mistwood.FarmingPlugin.Modules.Farm.Commands;
 
-import net.mistwood.FarmingPlugin.Commands.SubCommand;
-import net.mistwood.FarmingPlugin.Data.FarmData;
-import net.mistwood.FarmingPlugin.Data.PlayerData;
-import net.mistwood.FarmingPlugin.Main;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import net.mistwood.FarmingPlugin.Commands.SubCommand;
+import net.mistwood.FarmingPlugin.Data.FarmData;
+import net.mistwood.FarmingPlugin.Data.PlayerData;
+import net.mistwood.FarmingPlugin.FarmingPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DemoteMemberCommand implements SubCommand
-{
-
-    private Main Instance;
-
-    public DemoteMemberCommand (Main Instance)
-    {
-        this.Instance = Instance;
-    }
+public class DemoteMemberCommand implements SubCommand {
 
     @Override
-    public boolean onCommand (CommandSender Sender, Command Command, String Label, String[] Args)
-    {
-        if (Args.length > 0 && (Sender instanceof Player && Instance.PermissionManager.HasCommandPermission (Sender, "demote")))
-        {
-            Player Target = (Player) Sender;
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (args.length > 0 && (sender instanceof Player && FarmingPlugin.instance.permissionManager.hasCommandPermission(sender, "demote"))) {
+            Player player = (Player) sender;
 
-            CommandHelper.HandleDemoteMember (Instance, Target, Args[0]);
+            CommandHelper.handleDemoteMember(player, args[0]);
 
             return true;
         }
@@ -40,24 +30,23 @@ public class DemoteMemberCommand implements SubCommand
     }
 
     @Override
-    public List<String> onTabComplete (CommandSender Sender, Command Command, String Alias, String[] Args)
-    {
-        Player Target = (Player) Sender;
-        PlayerData TargetPlayer = Instance.PlayersCache.Get (Target.getUniqueId ());
-        if (TargetPlayer.FarmID == null)
-            return new ArrayList<> ();
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+        Player player = (Player) sender;
+        PlayerData playerData = FarmingPlugin.instance.playersCache.get(player.getUniqueId());
+        if (playerData.farmID == null)
+            return new ArrayList<>();
 
-        FarmData Farm = Instance.FarmsCache.Get (TargetPlayer.FarmID);
-        List<PlayerData> Targets = Farm.OnlinePlayers;
-        Targets.remove (TargetPlayer);
+        FarmData farmData = FarmingPlugin.instance.farmsCache.get(playerData.farmID);
+        List<PlayerData> onlinePlayers = farmData.onlinePlayers;
+        onlinePlayers.remove(playerData);
 
-        if (Args.length == 1)
-            if (Args[0].isEmpty ())
-                return Targets.stream ().map (PlayerData::GetName).collect (Collectors.toList ());
+        if (args.length == 1)
+            if (args[0].isEmpty())
+                return onlinePlayers.stream().map(PlayerData::getName).collect(Collectors.toList());
             else
-                return Targets.stream ().filter (Player -> Player.Name.toLowerCase ().startsWith (Args[0].toLowerCase ())).map (PlayerData::GetName).collect (Collectors.toList ());
+                return onlinePlayers.stream().filter(data -> data.name.toLowerCase().startsWith(args[0].toLowerCase())).map(PlayerData::getName).collect(Collectors.toList());
 
-        return new ArrayList<> ();
+        return new ArrayList<>();
     }
 
 }

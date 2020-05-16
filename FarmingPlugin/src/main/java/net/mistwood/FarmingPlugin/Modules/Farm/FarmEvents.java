@@ -1,5 +1,9 @@
 package net.mistwood.FarmingPlugin.Modules.Farm;
 
+import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+
 import br.net.fabiozumbi12.RedProtect.Bukkit.API.events.*;
 
 import net.mistwood.FarmingPlugin.API.Events.CreateFarmEvent;
@@ -7,109 +11,90 @@ import net.mistwood.FarmingPlugin.Data.FarmData;
 import net.mistwood.FarmingPlugin.Data.FarmPermissionLevel;
 import net.mistwood.FarmingPlugin.Data.PlayerData;
 import net.mistwood.FarmingPlugin.Database.DatabaseCollection;
-import net.mistwood.FarmingPlugin.Main;
-
+import net.mistwood.FarmingPlugin.FarmingPlugin;
 import net.mistwood.FarmingPlugin.Utils.Helper;
 import net.mistwood.FarmingPlugin.Utils.Messages;
-import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 import java.util.UUID;
 
-public class FarmEvents implements Listener
-{
+public class FarmEvents implements Listener {
 
-    private static Main Instance;
-
-    public FarmEvents (Main Instance)
-    {
-        this.Instance = Instance;
-
-        Bukkit.getServer ().getPluginManager ().registerEvents (this, Instance);
+    public FarmEvents() {
+        Bukkit.getServer().getPluginManager().registerEvents(this, FarmingPlugin.instance);
     }
 
     @EventHandler
-    public void OnRegionCreated (CreateRegionEvent Event)
-    {
-        FarmData Farm = new FarmData (
-                UUID.randomUUID (),
-                Event.getRegion ().getName (),
-                Event.getPlayer ().getUniqueId (),
-                Event.getRegion ()
+    public void onRegionCreated(CreateRegionEvent event) {
+        FarmData farmData = new FarmData(
+                UUID.randomUUID(),
+                event.getRegion().getName(),
+                event.getPlayer().getUniqueId(),
+                event.getRegion()
         );
-        Farm.AddOnlinePlayer (Instance.PlayersCache.Get (Event.getPlayer ().getUniqueId ()));
+        farmData.addOnlinePlayer(FarmingPlugin.instance.playersCache.get(event.getPlayer().getUniqueId()));
 
         // If the farm has a default name (player_x), we want to change it (player's Farm)
-        if (Farm.Name.contains (Event.getPlayer ().getName () + "_"))
-            Farm.Name = String.format ("%s's Farm", Event.getPlayer ().getName ());
+        if (farmData.name.contains(event.getPlayer().getName() + "_"))
+            farmData.name = String.format("%s's Farm", event.getPlayer().getName());
 
-        PlayerData Data = Instance.PlayersCache.Get (Event.getPlayer ().getUniqueId ());
-        Data.FarmID = Farm.ID;
-        Data.FarmName = Event.getRegion ().getName ();
-        Data.PermissionLevel = FarmPermissionLevel.Leader;
-        Instance.PlayersCache.Update (Event.getPlayer ().getUniqueId (), Data);
+        PlayerData playerData = FarmingPlugin.instance.playersCache.get(event.getPlayer().getUniqueId());
+        playerData.farmID = farmData.id;
+        playerData.farmName = event.getRegion().getName();
+        playerData.permissionLevel = FarmPermissionLevel.LEADER;
+        FarmingPlugin.instance.playersCache.update(event.getPlayer().getUniqueId(), playerData);
 
-        Instance.Database.Insert (Farm.ToMap (), DatabaseCollection.FarmsCollection);
+        FarmingPlugin.instance.database.insert(farmData.toMap(), DatabaseCollection.FARMS);
 
-        Instance.FarmsCache.Add (Farm.ID, Farm);
+        FarmingPlugin.instance.farmsCache.add(farmData.id, farmData);
 
         // Send event
-        CreateFarmEvent FarmEvent = new CreateFarmEvent (Farm, Event.getPlayer ());
-        Bukkit.getPluginManager ().callEvent (FarmEvent);
+        CreateFarmEvent farmEvent = new CreateFarmEvent(farmData, event.getPlayer());
+        Bukkit.getPluginManager().callEvent(farmEvent);
 
-        Helper.SendMessage (Event.getPlayer (), String.format (Messages.FarmCreated, Farm.Name));
+        Helper.sendMessage(event.getPlayer(), String.format(Messages.FARMING_FARM_CREATED, farmData.name));
     }
 
     @EventHandler
-    public void OnRegionDeleted (DeleteRegionEvent Event)
-    {
-        PlayerData Player = Instance.PlayersCache.Get (Event.getPlayer ().getUniqueId ());
+    public void onRegionDeleted(DeleteRegionEvent event) {
+        PlayerData playerData = FarmingPlugin.instance.playersCache.get(event.getPlayer().getUniqueId());
 
-        if (Player.FarmID != null)
-        {
-            FarmData Farm = Instance.FarmsCache.Get (Player.FarmID);
+        if (playerData.farmID != null) {
+            FarmData farmData = FarmingPlugin.instance.farmsCache.get(playerData.farmID);
 
-            if (Farm.Owner == Player.PlayerInstance.getUniqueId ())
-            {
-                Instance.FarmsCache.Remove (Farm.ID);
+            if (farmData.owner == playerData.playerInstance.getUniqueId()) {
+                FarmingPlugin.instance.farmsCache.remove(farmData.id);
 
-                for (PlayerData Target : Farm.OnlinePlayers)
-                {
-                    Target.FarmID = null;
-                    Target.FarmName = null;
-                    Target.PermissionLevel = null;
-                    Instance.PlayersCache.Update (Target.PlayerInstance.getUniqueId (), Target);
+                for (PlayerData player : farmData.onlinePlayers) {
+                    player.farmID = null;
+                    player.farmName = null;
+                    player.permissionLevel = null;
+                    FarmingPlugin.instance.playersCache.update(player.playerInstance.getUniqueId(), player);
                 }
 
-                Instance.Database.Remove (Farm.ID, DatabaseCollection.FarmsCollection);
+                FarmingPlugin.instance.database.remove(farmData.id, DatabaseCollection.FARMS);
             }
         }
     }
 
     @EventHandler
-    public void OnRegionRenamed (RenameRegionEvent Event)
-    {
-        if (!Event.getOldName ().equals (Event.getNewName ()))
-        {
+    public void onRegionRenamed(RenameRegionEvent event) {
+        if (!event.getOldName().equals(event.getNewName())) {
             // TODO: Check if player is actually in a farm
             // TODO Check if player is owner of farm
             // TODO: Maybe; check new name for bad words?
-            FarmData Farm = Instance.FarmsCache.Get (Instance.PlayersCache.Get (Event.getPlayer ().getUniqueId()).FarmID);
-            Farm.Name = Event.getNewName ();
-            Instance.FarmsCache.Update (Farm.ID, Farm);
+            FarmData farmData = FarmingPlugin.instance.farmsCache.get(FarmingPlugin.instance.playersCache.get(event.getPlayer().getUniqueId()).farmID);
+            farmData.name = event.getNewName();
+            FarmingPlugin.instance.farmsCache.update(farmData.id, farmData);
         }
     }
 
     @EventHandler
-    public void OnRegionFlagChanged (ChangeRegionFlagEvent Event)
-    {
+    public void onRegionFlagChanged(ChangeRegionFlagEvent event) {
         // TODO: Make this
     }
 
     @EventHandler
-    public void OnRegionEnterExit (EnterExitRegionEvent Event)
-    {
+    public void onRegionEnterExit(EnterExitRegionEvent event) {
         // TODO: Make this
     }
 

@@ -1,35 +1,25 @@
 package net.mistwood.FarmingPlugin.Modules.Farm.Commands;
 
-import net.mistwood.FarmingPlugin.Commands.SubCommand;
-import net.mistwood.FarmingPlugin.Main;
-import net.mistwood.FarmingPlugin.Module;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import net.mistwood.FarmingPlugin.Commands.SubCommand;
+import net.mistwood.FarmingPlugin.Module;
+import net.mistwood.FarmingPlugin.FarmingPlugin;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AddMemberCommand implements SubCommand
-{
-
-    private Main Instance;
-
-    public AddMemberCommand (Main Instance)
-    {
-        this.Instance = Instance;
-    }
+public class AddMemberCommand implements SubCommand {
 
     @Override
-    public boolean onCommand (CommandSender Sender, Command Command, String Label, String[] Args)
-    {
-        if (Args.length == 1 && (Sender instanceof Player && Instance.PermissionManager.HasCommandPermission (Sender, "add")))
-        {
-            Player Target = (Player) Sender;
-
-            CommandHelper.HandleAddMember (Instance, Target, Args[0]);
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (args.length == 1 && (sender instanceof Player && FarmingPlugin.instance.permissionManager.hasCommandPermission(sender, "add"))) {
+            Player player = (Player) sender;
+            CommandHelper.handleAddMember(player, args[0]);
 
             return true;
         }
@@ -39,15 +29,14 @@ public class AddMemberCommand implements SubCommand
     }
 
     @Override
-    public List<String> onTabComplete (CommandSender Sender, Command Command, String Alias, String[] Args)
-    {
-        if (Args.length == 1)
-            if (Args[0].isEmpty ())
-                return Bukkit.getOnlinePlayers ().stream ().map (Player::getName).collect (Collectors.toList ());
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length == 1)
+            if (args[0].isEmpty())
+                return Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
             else
-                return Instance.Modules.stream ().filter (Mod -> Mod.GetName ().toLowerCase ().startsWith (Args[0].toLowerCase ())).map (Module::GetName).collect (Collectors.toList ());
+                return FarmingPlugin.instance.modules.stream().filter(module -> module.getName().toLowerCase().startsWith(args[0].toLowerCase())).map(Module::getName).collect(Collectors.toList());
 
-        return new ArrayList<> ();
+        return new ArrayList<>();
     }
 
 }

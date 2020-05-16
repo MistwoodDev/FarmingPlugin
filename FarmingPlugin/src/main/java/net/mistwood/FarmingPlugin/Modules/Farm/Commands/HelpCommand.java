@@ -1,35 +1,26 @@
 package net.mistwood.FarmingPlugin.Modules.Farm.Commands;
 
-import net.mistwood.FarmingPlugin.Commands.SubCommand;
-import net.mistwood.FarmingPlugin.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import net.mistwood.FarmingPlugin.Commands.SubCommand;
+import net.mistwood.FarmingPlugin.FarmingPlugin;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class HelpCommand implements SubCommand
-{
-
-    private Main Instance;
-
-    public HelpCommand (Main Instance)
-    {
-        this.Instance = Instance;
-    }
+public class HelpCommand implements SubCommand {
 
     @Override
-    public boolean onCommand (CommandSender Sender, Command Command, String Label, String[] Args)
-    {
-        if (Sender instanceof Player && Instance.PermissionManager.HasCommandPermission (Sender, "help"))
-        {
-            Player Target = (Player) Sender;
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (sender instanceof Player && FarmingPlugin.instance.permissionManager.hasCommandPermission(sender, "help")) {
+            Player player = (Player) sender;
 
-            if (Args.length > 0)
-                CommandHelper.HandleHelp (Instance, Target, Args[0]);
+            if (args.length > 0)
+                CommandHelper.handleHelp(player, args[0]);
             else
-                CommandHelper.HandleHelp (Instance, Target, "");
+                CommandHelper.handleHelp(player, "");
 
             return true;
         }
@@ -39,9 +30,8 @@ public class HelpCommand implements SubCommand
     }
 
     @Override
-    public List<String> onTabComplete (CommandSender Sender, Command Command, String Alias, String[] Args)
-    {
-        return new ArrayList<> ();
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+        return new ArrayList<>();
     }
 
 }

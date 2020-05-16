@@ -1,109 +1,100 @@
 package net.mistwood.FarmingPlugin.Data;
 
+import org.bukkit.Bukkit;
+
 import br.net.fabiozumbi12.RedProtect.Bukkit.RedProtect;
 import br.net.fabiozumbi12.RedProtect.Bukkit.Region;
+
 import net.mistwood.FarmingPlugin.Utils.Helper;
-import org.bukkit.Bukkit;
 
 import java.util.*;
 
-public class FarmData implements Data
-{
+public class FarmData implements Data {
 
-    public UUID ID;
-    public String Name;
-    public String RegionName;
-    public UUID Owner;
-    public Region RegionInstance;
-    public List<UUID> Players;
-    public List<PlayerData> OnlinePlayers;
+    public UUID id;
+    public String name;
+    public String regionName;
+    public UUID owner;
+    public Region regionInstance;
+    public List<UUID> players;
+    public List<PlayerData> onlinePlayers;
 
-    public List<Integer> CompletedChallenges;
-    public FarmStats Stats;
+    public List<Integer> completedChallenges;
+    public FarmStats stats;
 
-    public FarmData (UUID ID, String Name, UUID Owner, Region RegionInstance)
-    {
-        this (ID, Name, Owner, RegionInstance, new ArrayList<UUID> ());
+    public FarmData(UUID id, String name, UUID owner, Region regionInstance) {
+        this(id, name, owner, regionInstance, new ArrayList<>());
     }
 
-    public FarmData (UUID ID, String Name, UUID Owner, Region RegionInstance, List<UUID> Players)
-    {
-        this (ID, Name, Owner, RegionInstance, Players, new ArrayList<Integer> (), FarmStats.Init ());
+    public FarmData(UUID id, String name, UUID owner, Region regionInstance, List<UUID> players) {
+        this(id, name, owner, regionInstance, players, new ArrayList<>(), FarmStats.init());
     }
 
-    public FarmData (UUID ID, String Name, UUID Owner, Region RegionInstance, List<UUID> Players, List<Integer> CompletedChallenges, FarmStats Stats)
-    {
-        this.ID = ID;
-        this.Name = Name;
-        this.RegionName = RegionInstance.getName ();
-        this.Owner = Owner;
-        this.RegionInstance = RegionInstance;
-        this.Players = Players;
-        this.OnlinePlayers = new ArrayList<PlayerData> ();
-        this.CompletedChallenges = CompletedChallenges;
-        this.Stats = Stats;
+    public FarmData(UUID id, String name, UUID owner, Region regionInstance, List<UUID> players, List<Integer> completedChallenges, FarmStats stats) {
+        this.id = id;
+        this.name = name;
+        this.regionName = regionInstance.getName();
+        this.owner = owner;
+        this.regionInstance = regionInstance;
+        this.players = players;
+        this.onlinePlayers = new ArrayList<PlayerData>();
+        this.completedChallenges = completedChallenges;
+        this.stats = stats;
 
         // Add the owner to the players list
-        this.Players.add (Owner);
+        this.players.add(owner);
     }
 
-    public void AddPlayer (UUID ID)
-    {
-        if (!Players.contains (ID))
-            Players.add (ID);
+    public void addPlayer(UUID id) {
+        if (!players.contains(id))
+            players.add(id);
     }
 
-    public void RemovePlayer (UUID ID)
-    {
-        Players.remove (ID);
+    public void removePlayer(UUID id) {
+        // TODO: Remove from online list too?
+        players.remove(id);
     }
 
-    public FarmData AddOnlinePlayer (PlayerData Player)
-    {
-        if (!OnlinePlayers.contains (Player))
-            OnlinePlayers.add (Player);
+    public FarmData addOnlinePlayer(PlayerData player) {
+        if (!onlinePlayers.contains(player))
+            onlinePlayers.add(player);
 
         return this;
     }
 
-    public FarmData RemoveOnlinePlayer (PlayerData Player)
-    {
-        if (OnlinePlayers.contains (Player))
-            OnlinePlayers.remove (Player);
-
+    public FarmData removeOnlinePlayer(PlayerData player) {
+        onlinePlayers.remove(player);
         return this;
     }
 
     @Override
-    public Map<String, Object> ToMap ()
-    {
-        Map<String, Object> Data = new HashMap<String, Object> ();
-        Data.put ("ID", ID.toString ());
-        Data.put ("Name", Name);
-        Data.put ("Owner", Owner.toString ());
-        Data.put ("Players", Helper.UUIDListToString (Players));
-        Data.put ("Info", String.valueOf (RegionInstance.getArea ()));
-        Data.put ("Date", RegionInstance.getDate ());
-        Data.put ("CompletedChallenges", CompletedChallenges);
-        Data.put ("Stats", Stats.ToMap ());
+    public Map<String, Object> toMap() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("ID", id.toString());
+        data.put("Name", name);
+        data.put("Owner", owner.toString());
+        data.put("Players", Helper.uuidsToStrings(players));
+        data.put("Info", String.valueOf(regionInstance.getArea()));
+        data.put("Date", regionInstance.getDate());
+        data.put("CompletedChallenges", completedChallenges);
+        data.put("Stats", stats.toMap());
 
-        return Data;
+        return data;
     }
 
-    public static FarmData FromMap (Map<String, Object> Data)
-    {
-        FarmData Farm =  new FarmData (
-          UUID.fromString (Data.get ("ID").toString ()),
-          Data.get ("Name").toString (),
-          UUID.fromString (Data.get ("Owner").toString ()),
-          RedProtect.get ().getAPI ().getRegion ("", Objects.requireNonNull (Bukkit.getWorld ("world"))),
-          Helper.StringUUIDToUUIDList ((List<String>) Data.get ("Players"))
-          // TODO: Add completed challenges list and farm stats
+    public static FarmData fromMap(Map<String, Object> data) {
+        FarmData Farm = new FarmData(
+                UUID.fromString(data.get("ID").toString()),
+                data.get("Name").toString(),
+                UUID.fromString(data.get("Owner").toString()),
+                RedProtect.get().getAPI().getRegion("", Objects.requireNonNull(Bukkit.getWorld("world"))),
+                Helper.stringsToUUIDs((List<String>) data.get("Players"))
+                // TODO: Add completed challenges list and farm stats
         );
 
         // Horrible way:
-        Farm.CompletedChallenges = (List<Integer>) Data.get ("CompletedChallenges");
-        Farm.Stats = FarmStats.FromMap ((Map<String, Object>) Data.get ("Stats"));
+        Farm.completedChallenges = (List<Integer>) data.get("CompletedChallenges");
+        Farm.stats = FarmStats.fromMap((Map<String, Object>) data.get("Stats"));
 
         return Farm;
     }

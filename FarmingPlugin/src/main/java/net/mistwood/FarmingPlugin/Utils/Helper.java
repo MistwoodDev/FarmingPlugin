@@ -2,7 +2,7 @@ package net.mistwood.FarmingPlugin.Utils;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.mistwood.FarmingPlugin.Data.PlayerData;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -11,66 +11,57 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
-public class Helper
-{
+public class Helper {
 
-    public static void SendMessage (CommandSender Target, String Message)
-    {
-        Target.sendMessage (Colorfy (Message));
+    public static void sendMessage(CommandSender sender, String msg) {
+        sender.sendMessage(colorfy(msg));
     }
 
-    public static void SendMessage (Player Target, String Message)
-    {
-        Target.sendMessage (Colorfy (Message));
+    public static void sendMessage(Player player, String msg) {
+        player.sendMessage(colorfy(msg));
     }
 
-    public static void DisplayActionBar (Player Target, String Message)
-    {
-        Target.spigot ().sendMessage (ChatMessageType.ACTION_BAR, new TextComponent (Colorfy (Message)));
+    public static void displayActionBar(Player player, String msg) {
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(colorfy(msg)));
     }
 
-    public static String Colorfy (String Message)
-    {
-        return ChatColor.translateAlternateColorCodes ('&', Message);
+    public static String colorfy(String msg) {
+        return ChatColor.translateAlternateColorCodes('&', msg);
     }
 
-    public static ItemStack ItemFromString (String Item)
-    {
-        return new ItemStack (Material.getMaterial (Item.trim ()), 1);
+    public static ItemStack itemFromString(String item) {
+        return new ItemStack(Objects.requireNonNull(Material.getMaterial(item.trim())), 1);
     }
 
-    public static List<String> UUIDListToString (List<UUID> IDs)
-    {
-        List<String> StringIDs = new ArrayList<String> ();
-        for (UUID ID : IDs)
-            StringIDs.add (ID.toString ());
+    public static List<String> uuidsToStrings(List<UUID> uuids) {
+        List<String> strings = new ArrayList<>();
+        for (UUID uuid : uuids)
+            strings.add(uuid.toString());
 
-        return StringIDs;
+        return strings;
     }
 
-    public static List<UUID> StringUUIDToUUIDList (List<String> StringIDs)
-    {
-        List<UUID> IDs = new ArrayList<UUID> ();
-        for (String ID : StringIDs)
-            IDs.add (UUID.fromString (ID));
+    public static List<UUID> stringsToUUIDs(List<String> strings) {
+        List<UUID> uuids = new ArrayList<UUID>();
+        for (String uuid : strings)
+            uuids.add(UUID.fromString(uuid));
 
-        return IDs;
+        return uuids;
     }
 
-    public static  String Capitalize (String Target)
-    {
-        StringBuilder Capitalized = new StringBuilder ();
+    public static String capitalize(String s) {
+        StringBuilder builder = new StringBuilder();
 
-        for (String Word : Target.toLowerCase ().split ("\\s"))
-        {
-            String First = Word.substring (0,1).toUpperCase ();
-            String Rest = Word.substring (1);
-            Capitalized.append (First).append (Rest).append (" ");
+        for (String word : s.toLowerCase().split("\\s")) {
+            String first = word.substring(0, 1).toUpperCase();
+            String rest = word.substring(1);
+            builder.append(first).append(rest).append(" ");
         }
 
-        return Capitalized.toString ().trim ();
+        return builder.toString().trim();
     }
 
 }

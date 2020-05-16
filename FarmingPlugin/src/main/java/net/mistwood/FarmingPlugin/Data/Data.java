@@ -2,9 +2,8 @@ package net.mistwood.FarmingPlugin.Data;
 
 import java.util.Map;
 
-public interface Data
-{
+public interface Data {
 
-    Map<String, Object> ToMap ();
+    Map<String, Object> toMap();
 
 }

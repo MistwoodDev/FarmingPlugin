@@ -1,96 +1,84 @@
 package net.mistwood.FarmingPlugin.Utils;
 
-import net.mistwood.FarmingPlugin.Data.FarmPermissionLevel;
-import net.mistwood.FarmingPlugin.Data.PlayerData;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class PermissionManager
-{
+import net.mistwood.FarmingPlugin.Data.FarmPermissionLevel;
+import net.mistwood.FarmingPlugin.Data.PlayerData;
 
-    private static final String BasePerm = "farming";
-    private static final String CommandBasePerm = BasePerm + "." + "command";
-    private static final String CommandBasePermAdmin = BasePerm + "." + "command.admin";
+public class PermissionManager {
 
-    public boolean HasCommandPermission (CommandSender Target, String Permission)
-    {
-        String AdminPermission = CommandBasePermAdmin + "." + Permission;
-        String UserPermission = CommandBasePerm + "." + Permission;
+    private static final String BASE_PERM = "farming";
+    private static final String COMMAND_BASE_PERM = BASE_PERM + "." + "command";
+    private static final String COMMAND_BASE_PERM_ADMIN = BASE_PERM + "." + "command.admin";
 
-        return HasPermission (Target, AdminPermission) || HasPermission (Target, UserPermission);
+    public boolean hasCommandPermission(CommandSender sender, String perm) {
+        String AdminPermission = COMMAND_BASE_PERM_ADMIN + "." + perm;
+        String UserPermission = COMMAND_BASE_PERM + "." + perm;
+
+        return hasPermission(sender, AdminPermission) || hasPermission(sender, UserPermission);
     }
 
-    public boolean HasPermissionOrByPass (Player Target, String Permission)
-    {
-        return Target.hasPermission (Permission) || Target.hasPermission (Permission + ".bypass");
+    public boolean hasPermissionOrByPass(Player player, String perm) {
+        return player.hasPermission(perm) || player.hasPermission(perm + ".bypass");
     }
 
-    public boolean HasPermission (CommandSender Target, String Permission)
-    {
-        return !(Target instanceof Player) || HasPermission ((Player) Target, Permission);
+    public boolean hasPermission(CommandSender sender, String perm) {
+        return !(sender instanceof Player) || hasPermission((Player) sender, perm);
     }
 
-    public boolean HasPermission (Player Target, String Permission)
-    {
-        return Target != null && (Target.hasPermission (Permission) || Target.hasPermission (CommandBasePermAdmin));
+    public boolean hasPermission(Player player, String perm) {
+        return player != null && (player.hasPermission(perm) || player.hasPermission(COMMAND_BASE_PERM_ADMIN));
     }
 
-    public boolean HasFarmPermissionMember (Player Target, String Permission, PlayerData TargetPlayer)
-    {
-        return FarmPermissionMember (Target, Permission, TargetPlayer);
+    public boolean hasFarmPermissionMember(Player player, String perm, PlayerData data) {
+        return farmPermissionMember(player, perm, data);
     }
 
-    public boolean HasFarmPermissionAdmin (CommandSender Target, String Permission, PlayerData TargetPlayer)
-    {
-        return !(Target instanceof Player) || FarmPermissionAdmin ((Player) Target, Permission, TargetPlayer);
+    public boolean hasFarmPermissionAdmin(CommandSender sender, String perm, PlayerData data) {
+        return !(sender instanceof Player) || farmPermissionAdmin((Player) sender, perm, data);
     }
 
-    public boolean HasFarmPermissionAdmin (Player Target, String Permission, PlayerData TargetPlayer)
-    {
-        return FarmPermissionAdmin (Target, Permission, TargetPlayer);
+    public boolean hasFarmPermissionAdmin(Player player, String perm, PlayerData data) {
+        return farmPermissionAdmin(player, perm, data);
     }
 
-    public boolean HasFarmPermissionLeader (CommandSender Target, String Permission, PlayerData TargetPlayer)
-    {
-        return !(Target instanceof Player) || FarmPermissionLeader ((Player) Target, Permission, TargetPlayer);
+    public boolean hasFarmPermissionLeader(CommandSender sender, String perm, PlayerData data) {
+        return !(sender instanceof Player) || farmPermissionLeader((Player) sender, perm, data);
     }
 
-    public boolean HasFarmPermissionLeader (Player Target, String Permission, PlayerData TargetPlayer)
-    {
-        return FarmPermissionLeader (Target, Permission, TargetPlayer);
+    public boolean hasFarmPermissionLeader(Player player, String perm, PlayerData data) {
+        return farmPermissionLeader(player, perm, data);
     }
 
-    private boolean FarmPermissionMember (Player Target, String Permission, PlayerData TargetPlayer)
-    {
-        String AdminPermission = CommandBasePermAdmin + "." + Permission;
-        String UserPermission = CommandBasePerm + "." + Permission;
+    private boolean farmPermissionMember(Player player, String perm, PlayerData data) {
+        String admin = COMMAND_BASE_PERM_ADMIN + "." + perm;
+        String user = COMMAND_BASE_PERM + "." + perm;
 
-        if (TargetPlayer == null)
-            return HasPermission (Target, AdminPermission) || HasPermission (Target, UserPermission);
+        if (data == null)
+            return hasPermission(player, admin) || hasPermission(player, user);
 
-        return HasPermission (Target, AdminPermission) || (HasPermission (Target, UserPermission) && (TargetPlayer.PermissionLevel == FarmPermissionLevel.Leader || TargetPlayer.PermissionLevel == FarmPermissionLevel.Admin || TargetPlayer.PermissionLevel == FarmPermissionLevel.Farmer));
+        return hasPermission(player, admin) || (hasPermission(player, user) && (data.permissionLevel == FarmPermissionLevel.LEADER || data.permissionLevel == FarmPermissionLevel.ADMIN || data.permissionLevel == FarmPermissionLevel.FARMER));
     }
 
-    private boolean FarmPermissionAdmin (Player Target, String Permission, PlayerData TargetPlayer)
-    {
-        String AdminPermission = CommandBasePermAdmin + "." + Permission;
-        String UserPermission = CommandBasePerm + "." + Permission;
+    private boolean farmPermissionAdmin(Player player, String perm, PlayerData data) {
+        String admin = COMMAND_BASE_PERM_ADMIN + "." + perm;
+        String user = COMMAND_BASE_PERM + "." + perm;
 
-        if (TargetPlayer == null)
-            return HasPermission (Target, AdminPermission) || HasPermission (Target, UserPermission);
+        if (data == null)
+            return hasPermission(player, admin) || hasPermission(player, user);
 
-        return HasPermission (Target, AdminPermission) || (HasPermission (Target, UserPermission) && (TargetPlayer.PermissionLevel == FarmPermissionLevel.Leader || TargetPlayer.PermissionLevel == FarmPermissionLevel.Admin));
+        return hasPermission(player, admin) || (hasPermission(player, user) && (data.permissionLevel == FarmPermissionLevel.LEADER || data.permissionLevel == FarmPermissionLevel.ADMIN));
     }
 
-    private boolean FarmPermissionLeader (Player Target, String Permission, PlayerData TargetPlayer)
-    {
-        String AdminPermission = CommandBasePermAdmin + "." + Permission;
-        String UserPermission = CommandBasePerm + "." + Permission;
+    private boolean farmPermissionLeader(Player player, String perm, PlayerData data) {
+        String admin = COMMAND_BASE_PERM_ADMIN + "." + perm;
+        String user = COMMAND_BASE_PERM + "." + perm;
 
-        if (TargetPlayer == null)
-            return HasPermission (Target, AdminPermission) || HasPermission (Target, UserPermission);
+        if (data == null)
+            return hasPermission(player, admin) || hasPermission(player, user);
 
-        return HasPermission (Target, AdminPermission) || (HasPermission (Target, UserPermission) && TargetPlayer.PermissionLevel == FarmPermissionLevel.Leader);
+        return hasPermission(player, admin) || (hasPermission(player, user) && data.permissionLevel == FarmPermissionLevel.LEADER);
     }
 
 }

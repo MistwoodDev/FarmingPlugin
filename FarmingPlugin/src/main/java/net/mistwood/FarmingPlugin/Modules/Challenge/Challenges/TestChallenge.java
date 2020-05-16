@@ -1,44 +1,36 @@
 package net.mistwood.FarmingPlugin.Modules.Challenge.Challenges;
 
-import net.mistwood.FarmingPlugin.Data.FarmData;
-import net.mistwood.FarmingPlugin.Main;
-import net.mistwood.FarmingPlugin.Modules.Challenge.Challenge;
-
+import net.mistwood.FarmingPlugin.FarmingPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 
-public class TestChallenge extends Challenge
-{
+import net.mistwood.FarmingPlugin.Data.FarmData;
+import net.mistwood.FarmingPlugin.Modules.Challenge.Challenge;
 
-    private Main Instance;
+public class TestChallenge extends Challenge {
 
-    private static final String Name = "TestChallenge";
-    private static final String Description = "A test challenge";
+    private static final String NAME = "TestChallenge";
+    private static final String DESCRIPTION = "A test challenge";
     private static final int ID = 3402449;
-    private static final int XPReward = 100;
+    private static final int XP_REWARD = 100;
 
-    public TestChallenge (Main Instance)
-    {
-        super (Name, Description, ID, XPReward);
-
-        this.Instance = Instance;
+    public TestChallenge() {
+        super(NAME, DESCRIPTION, ID, XP_REWARD);
     }
 
     @Override
-    public void Perform (Event Event, FarmData Farm)
-    {
+    public void perform(Event event, FarmData farm) {
         // This check here is optional
-        if (Event instanceof PlayerAdvancementDoneEvent)
-        {
-            PlayerAdvancementDoneEvent NewEvent = (PlayerAdvancementDoneEvent) Event;
+        if (event instanceof PlayerAdvancementDoneEvent) {
+            PlayerAdvancementDoneEvent e = (PlayerAdvancementDoneEvent) event;
 
-            Advancement Adv = NewEvent.getAdvancement ();
-            Bukkit.getLogger ().info (Adv.toString ());
+            Advancement advancement = e.getAdvancement();
+            Bukkit.getLogger().info(advancement.toString());
 
-            Farm.CompletedChallenges.add (ID);
-            Instance.FarmsCache.Update (Farm.ID, Farm);
+            farm.completedChallenges.add(ID);
+            FarmingPlugin.instance.farmsCache.update(farm.id, farm);
         }
     }
 
