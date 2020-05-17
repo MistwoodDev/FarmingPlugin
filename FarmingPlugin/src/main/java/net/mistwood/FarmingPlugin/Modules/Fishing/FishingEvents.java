@@ -1,5 +1,7 @@
 package net.mistwood.FarmingPlugin.Modules.Fishing;
 
+import net.mistwood.FarmingPlugin.Utils.Lores.LoreParser;
+import net.mistwood.FarmingPlugin.Utils.Lores.Option;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.Location;
@@ -53,29 +55,23 @@ public class FishingEvents implements Listener {
             case CAUGHT_ENTITY: {
                 if (caughtItem == null) return;
 
-                List<String> lore = rod.getItemMeta().getLore();
-                if (lore != null) {
-                    List<String> modifiers = lore.subList(2, lore.size());
-                    for (String modifier : modifiers) {
-                        switch (modifier.trim()) {
-                            case "LOOT:": {
-                                int amountMultiplier = Integer.parseInt(modifier.substring(6, 7));
-                                caughtItem.getItemStack().setAmount(amountMultiplier);
-                            }
+                Option<Integer> lootMultiplier = new Option<>("Loot");
+                Option<Integer> extraLoot = new Option<>("Extra Loot");
+                LoreParser.parse(rod.getItemMeta(), lootMultiplier, extraLoot);
 
-                            case "EXTRA LOOT": {
-                                int extraLootLvl = Integer.parseInt(modifier.substring(11, 12));
-                                for (int i = 0; i < extraLootLvl; i++) {
-                                    int random = new Random().nextInt(replacements.size());
-                                    ItemStack extraItem = new ItemStack(replacements.get(random), caughtItem.getItemStack().getAmount());
+                if (lootMultiplier.notNull()) {
+                    caughtItem.getItemStack().setAmount(lootMultiplier.getValue());
+                }
 
-                                    Item droppedItem = caughtItem.getWorld().dropItem(caughtItem.getLocation(), extraItem);
-                                    Vector velocity = (player.getLocation().toVector().subtract(event.getHook().getLocation().toVector())).multiply(0.1);
-                                    droppedItem.setVelocity(velocity.setY(velocity.getY() + 0.2));
-                                    fishDrops.add(droppedItem);
-                                }
-                            }
-                        }
+                if (extraLoot.notNull()) {
+                    for (int i = 0; i < extraLoot.getValue(); i++) {
+                        int random = new Random().nextInt(replacements.size());
+                        ItemStack extraItem = new ItemStack(replacements.get(random), caughtItem.getItemStack().getAmount());
+
+                        Item droppedItem = caughtItem.getWorld().dropItem(caughtItem.getLocation(), extraItem);
+                        Vector velocity = (player.getLocation().toVector().subtract(event.getHook().getLocation().toVector())).multiply(0.1);
+                        droppedItem.setVelocity(velocity.setY(velocity.getY() + 0.2));
+                        fishDrops.add(droppedItem);
                     }
                 }
 
