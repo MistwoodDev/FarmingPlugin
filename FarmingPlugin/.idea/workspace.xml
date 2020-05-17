@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b91fa801-bacb-4e77-9468-b4f814564290" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/mistwood/FarmingPlugin/Modules/Fishing/FishingEvents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/mistwood/FarmingPlugin/Modules/Fishing/FishingEvents.java" afterDir="false" />
-    </list>
+    <list default="true" id="b91fa801-bacb-4e77-9468-b4f814564290" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,7 +58,7 @@
       <workItem from="1588162787669" duration="2769000" />
       <workItem from="1588621415156" duration="4000" />
       <workItem from="1589640833681" duration="10576000" />
-      <workItem from="1589724305845" duration="3048000" />
+      <workItem from="1589724305845" duration="3053000" />
     </task>
     <servers />
   </component>

@@ -96,8 +96,7 @@ public class FishingEvents implements Listener {
 
                 List<String> dropNames = new ArrayList<>();
                 loot.forEach((item, amount) -> {
-                    // TODO: Does this return the correct itemstack name?
-                    dropNames.add(amount + " " + new ItemStack(item).getItemMeta().getDisplayName());
+                    dropNames.add(amount + " " + Helper.capitalize(item.name().replace("_", " ")));
                 });
 
                 Helper.sendMessage(player, String.format(Messages.FISHING_CAUGHT_ENTITY, String.join(", ", dropNames).replaceFirst(",(?=[^,]+$)", " and"), rodName));
