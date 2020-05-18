@@ -19,14 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b91fa801-bacb-4e77-9468-b4f814564290" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/mistwood/FarmingPlugin/Modules/Fishing/Commands/CommandHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/mistwood/FarmingPlugin/Modules/Fishing/Commands/CommandHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/mistwood/FarmingPlugin/Modules/Fishing/FishingEvents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/mistwood/FarmingPlugin/Modules/Fishing/FishingEvents.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/mistwood/FarmingPlugin/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/mistwood/FarmingPlugin/Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/mistwood/FarmingPlugin/Utils/Lores/LoreParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/mistwood/FarmingPlugin/Utils/Lores/LoreParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/mistwood/FarmingPlugin/Utils/Lores/Option.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/mistwood/FarmingPlugin/Utils/Lores/LoreOption.java" afterDir="false" />
-    </list>
+    <list default="true" id="b91fa801-bacb-4e77-9468-b4f814564290" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -111,6 +104,7 @@
       <workItem from="1589724305845" duration="3053000" />
       <workItem from="1589727375302" duration="3744000" />
       <workItem from="1589801974916" duration="2532000" />
+      <workItem from="1589834043017" duration="398000" />
     </task>
     <task id="LOCAL-00001" summary="Refactored fishing module file">
       <created>1589802134428</created>
@@ -145,6 +139,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Refactored fishing module file" />
