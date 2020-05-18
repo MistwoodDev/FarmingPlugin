@@ -1,11 +1,11 @@
 package net.mistwood.FarmingPlugin.Utils.Lores;
 
-public class Option<T> {
+public class LoreOption<T> {
 
     public final String key;
     private T value = null;
 
-    public Option(String key) {
+    public LoreOption(String key) {
         this.key = key;
     }
 

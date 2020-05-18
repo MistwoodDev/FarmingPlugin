@@ -36,7 +36,7 @@ public class CommandHelper {
             switch (args[1].toUpperCase()) {
                 case "FARMER_ROD": {
                     giveItem = new ItemStack(Material.FISHING_ROD, amount);
-                    List<String> lore = new ArrayList<String>();
+                    List<String> lore = new ArrayList<>();
                     lore.add("Fishing rod - Farmer kit");
                     ItemMeta itm = giveItem.getItemMeta();
                     assert itm != null;
@@ -45,6 +45,7 @@ public class CommandHelper {
 
                     break;
                 }
+
                 case "LORD_ROD": {
                     giveItem = new ItemStack(Material.FISHING_ROD, amount);
                     giveItem.addUnsafeEnchantment(Enchantment.LURE, 2);
@@ -53,8 +54,8 @@ public class CommandHelper {
                     List<String> lore = new ArrayList<String>();
                     lore.add("Fishing rod - Lord kit");
                     lore.add("");
-                    lore.add("LOOT: 2X MULTIPLIER");
-                    lore.add("EXTRA LOOT 2");
+                    lore.add("- LOOT: 2");
+                    lore.add("- EXTRA LOOT: 2");
                     ItemMeta itm = giveItem.getItemMeta();
                     assert itm != null;
                     itm.setLore(lore);
@@ -63,6 +64,7 @@ public class CommandHelper {
 
                     break;
                 }
+
                 case "DEV_ROD": {
                     giveItem = new ItemStack(Material.FISHING_ROD, amount);
                     giveItem.addUnsafeEnchantment(Enchantment.LURE, 5);
@@ -81,6 +83,7 @@ public class CommandHelper {
 
                     break;
                 }
+
                 default: {
                     Helper.sendMessage(player, String.format(Messages.ERROR_UNKNOWN_ITEM, args[1]));
                     break;

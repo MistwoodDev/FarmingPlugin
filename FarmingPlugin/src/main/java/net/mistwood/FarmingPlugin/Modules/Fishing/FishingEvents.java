@@ -1,7 +1,7 @@
 package net.mistwood.FarmingPlugin.Modules.Fishing;
 
 import net.mistwood.FarmingPlugin.Utils.Lores.LoreParser;
-import net.mistwood.FarmingPlugin.Utils.Lores.Option;
+import net.mistwood.FarmingPlugin.Utils.Lores.LoreOption;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.Location;
@@ -55,8 +55,8 @@ public class FishingEvents implements Listener {
             case CAUGHT_ENTITY: {
                 if (caughtItem == null) return;
 
-                Option<Integer> lootMultiplier = new Option<>("Loot");
-                Option<Integer> extraLoot = new Option<>("Extra Loot");
+                LoreOption<Integer> lootMultiplier = new LoreOption<>("Loot");
+                LoreOption<Integer> extraLoot = new LoreOption<>("Extra Loot");
                 LoreParser.parse(rod.getItemMeta(), lootMultiplier, extraLoot);
 
                 if (lootMultiplier.notNull()) {

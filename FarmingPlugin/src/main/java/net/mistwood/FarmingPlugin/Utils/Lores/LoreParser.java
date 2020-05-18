@@ -7,19 +7,19 @@ import java.util.Objects;
 
 public class LoreParser {
 
-    public static void parse(ItemMeta meta, Option... options) {
+    public static void parse(ItemMeta meta, LoreOption... options) {
         parse(meta, ":", options);
     }
 
-    public static void parse(ItemMeta meta, String seperator, Option... options) {
+    public static void parse(ItemMeta meta, String seperator, LoreOption... options) {
         parse(Objects.requireNonNull(meta.getLore()), seperator, options);
     }
 
-    public static void parse(List<String> lore, Option... options) {
+    public static void parse(List<String> lore, LoreOption... options) {
         parse(lore, ":", options);
     }
 
-    public static void parse(List<String> lore, String seperator, Option... options) {
+    public static void parse(List<String> lore, String seperator, LoreOption... options) {
         for (String line : lore) {
             if (line.trim().startsWith("-") && line.contains(seperator)) {
                 line = line.substring(1).trim();
@@ -29,7 +29,7 @@ public class LoreParser {
                     String key = items[0].toLowerCase().trim();
                     String value = items[1].trim();
 
-                    for (Option option : options) {
+                    for (LoreOption option : options) {
                         if (option.key.toLowerCase().equals(key)) {
                             option.setValue(value);
                         }
