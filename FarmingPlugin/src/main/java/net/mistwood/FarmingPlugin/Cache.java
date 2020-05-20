@@ -7,25 +7,25 @@ public class Cache<T> {
 
     private final HashMap<UUID, T> cachedItems = new HashMap<>();
 
-    public T get(UUID ID) {
-        return cachedItems.get(ID);
+    public T get(UUID id) {
+        return cachedItems.get(id);
     }
 
-    public void add(UUID ID, T Value) {
-        cachedItems.put(ID, Value);
+    public void add(UUID id, T value) {
+        cachedItems.put(id, value);
     }
 
-    public void update(UUID ID, T Value) {
-        cachedItems.put(ID, Value);
+    public void update(UUID id, T value) {
+        cachedItems.put(id, value);
     }
 
-    public void remove(UUID ID) {
-        cachedItems.remove(ID);
+    public void remove(UUID id) {
+        cachedItems.remove(id);
     }
 
-    public void remove(T Value) {
+    public void remove(T value) {
         for (UUID id : cachedItems.keySet()) {
-            if (cachedItems.get(id) == Value)
+            if (cachedItems.get(id) == value)
                 cachedItems.remove(id);
         }
     }
