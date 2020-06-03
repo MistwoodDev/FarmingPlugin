@@ -17,14 +17,16 @@ public class KickMemberCommand implements SubCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length > 0 && (sender instanceof Player && FarmingPlugin.instance.permissionManager.hasCommandPermission(sender, "kick"))) {
+        if (sender instanceof Player && FarmingPlugin.instance.permissionManager.hasCommandPermission(sender, "kick")) {
             Player player = (Player) sender;
-            CommandHelper.handleKickMember(player, args[0]);
 
-            return true;
+            if (args.length == 1) {
+                CommandHelper.handleKickMember(player, args[0]);
+            } else {
+                CommandHelper.handleHelp(player, "kick");
+            }
         }
 
-        // TODO: Send command help message
         return true;
     }
 

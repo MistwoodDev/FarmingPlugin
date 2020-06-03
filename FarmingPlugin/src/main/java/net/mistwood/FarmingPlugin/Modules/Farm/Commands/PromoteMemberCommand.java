@@ -17,14 +17,16 @@ public class PromoteMemberCommand implements SubCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length == 1 && (sender instanceof Player) && FarmingPlugin.instance.permissionManager.hasCommandPermission(sender, "promote")) {
+        if (sender instanceof Player && FarmingPlugin.instance.permissionManager.hasCommandPermission(sender, "promote")) {
             Player player = (Player) sender;
-            CommandHelper.handlePromoteMember(player, args[0]);
 
-            return true;
+            if (args.length == 1) {
+                CommandHelper.handlePromoteMember(player, args[0]);
+            } else {
+                CommandHelper.handleHelp(player, "promote");
+            }
         }
 
-        // TODO: Send command help message
         return true;
     }
 

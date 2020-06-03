@@ -17,14 +17,16 @@ public class AddMemberCommand implements SubCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length == 1 && (sender instanceof Player && FarmingPlugin.instance.permissionManager.hasCommandPermission(sender, "add"))) {
+        if (sender instanceof Player && FarmingPlugin.instance.permissionManager.hasCommandPermission(sender, "add")) {
             Player player = (Player) sender;
-            CommandHelper.handleAddMember(player, args[0]);
 
-            return true;
+            if (args.length == 1) {
+                CommandHelper.handleAddMember(player, args[0]);
+            } else {
+                CommandHelper.handleHelp(player, "add");
+            }
         }
 
-        // TODO: Send command help message
         return true;
     }
 

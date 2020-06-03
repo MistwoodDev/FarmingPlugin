@@ -14,9 +14,74 @@ import java.util.Collections;
 
 public class CommandHelper {
 
-    public static void handleHelp(Player player, String cmd) { }
+    public static void handleHelp(Player player, String cmd) {
+        if (cmd.isEmpty()) {
+            String header = "&7-- &bCommands &7--";
+            Helper.sendMessage(player, header);
+            Helper.sendMessage(player, "&7» Add Member: &b/f add <player>");
+            Helper.sendMessage(player, "&7» Demote Member: &b/f demote <player>");
+            Helper.sendMessage(player, "&7» Help: &b/f help [command]");
+            Helper.sendMessage(player, "&7» Info: &b/f info [player|farm]");
+            Helper.sendMessage(player, "&7» Kick Member: &b/f kick <player>");
+            Helper.sendMessage(player, "&7» Leave: &b/f leave");
+            Helper.sendMessage(player, "&7» Promote Member: &b/f promote <player>");
+            Helper.sendMessage(player, "&7» Rename Farm: &b/f rename <name>");
+            Helper.sendMessage(player, "&7" + String.join("", Collections.nCopies(header.replaceAll("&7", "").replaceAll("&b", "").length(), "-")));
+        } else {
+            switch (cmd.toLowerCase()) {
+                case "add": {
+                    String header = "&7-- &bCommand: Add &7--";
+                    Helper.sendMessage(player, header);
+                    Helper.sendMessage(player, "&7» Usage: &b/f add <player>");
+                    Helper.sendMessage(player, "&7» Description: &bInvites the player to your farm");
+                    Helper.sendMessage(player, "&7" + String.join("", Collections.nCopies(header.replaceAll("&7", "").replaceAll("&b", "").length(), "-")));
+                }
 
-    public static void handleInfo(Player player) {
+                case "demote": {
+                    String header = "&7-- &bCommand: Demote &7--";
+                    Helper.sendMessage(player, header);
+                    Helper.sendMessage(player, "&7» Usage: &b/f demote <player>");
+                    Helper.sendMessage(player, "&7» Description: &bDemotes the player to 1 lower rank in your farm");
+                    Helper.sendMessage(player, "&7" + String.join("", Collections.nCopies(header.replaceAll("&7", "").replaceAll("&b", "").length(), "-")));
+                }
+
+                case "kick": {
+                    String header = "&7-- &bCommand: Kick &7--";
+                    Helper.sendMessage(player, header);
+                    Helper.sendMessage(player, "&7» Usage: &b/f kick <player>");
+                    Helper.sendMessage(player, "&7» Description: &bKicks the player from your farm");
+                    Helper.sendMessage(player, "&7" + String.join("", Collections.nCopies(header.replaceAll("&7", "").replaceAll("&b", "").length(), "-")));
+                }
+
+                case "leave": {
+                    String header = "&7-- &bCommand: Leave &7--";
+                    Helper.sendMessage(player, header);
+                    Helper.sendMessage(player, "&7» Usage: &b/f leave");
+                    Helper.sendMessage(player, "&7» Description: &bLeave the current farm you're in");
+                    Helper.sendMessage(player, "&7" + String.join("", Collections.nCopies(header.replaceAll("&7", "").replaceAll("&b", "").length(), "-")));
+                }
+
+                case "promote": {
+                    String header = "&7-- &bCommand: Promote &7--";
+                    Helper.sendMessage(player, header);
+                    Helper.sendMessage(player, "&7» Usage: &b/f promote <player>");
+                    Helper.sendMessage(player, "&7» Description: &bPromotes the player 1 rank in your farm");
+                    Helper.sendMessage(player, "&7" + String.join("", Collections.nCopies(header.replaceAll("&7", "").replaceAll("&b", "").length(), "-")));
+                }
+
+                case "rename": {
+                    String header = "&7-- &bCommand: Rename &7--";
+                    Helper.sendMessage(player, header);
+                    Helper.sendMessage(player, "&7» Usage: &b/f rename <name>");
+                    Helper.sendMessage(player, "&7» Description: &bRenames your farm");
+                    Helper.sendMessage(player, "&7" + String.join("", Collections.nCopies(header.replaceAll("&7", "").replaceAll("&b", "").length(), "-")));
+                }
+            }
+        }
+    }
+
+    // TODO: Make it use `target`
+    public static void handleInfo(Player player, String target) {
         PlayerData playerData = FarmingPlugin.instance.playersCache.get(player.getUniqueId());
 
         if (checkSenderInFarm(player, playerData)) return;
@@ -29,7 +94,7 @@ public class CommandHelper {
         Helper.sendMessage(player, "&7» Owner: &b" + Bukkit.getOfflinePlayer(farmData.owner).getName());
         Helper.sendMessage(player, "&7» Area: &b" + farmData.regionInstance.getArea());
         Helper.sendMessage(player, "&7» Date of creation: &b" + farmData.regionInstance.getDate());
-        Helper.sendMessage(player, "&7" + String.join("", Collections.nCopies(header.replace("&7", "").replace("&b", "").length(), "-")));
+        Helper.sendMessage(player, "&7" + String.join("", Collections.nCopies(header.replaceAll("&7", "").replaceAll("&b", "").length(), "-")));
     }
 
     public static void handleAddMember(Player player, String name) {
@@ -70,7 +135,24 @@ public class CommandHelper {
 
     public static void handleDeny(Player player) { }
 
-    public static void handleRename(Player player, String name) { }
+    public static void handleRename(Player player, String name) {
+        if (checkPlayerFarmOwner(player)) return;
+
+        FarmData farm = getPlayerFarm(player);
+        farm.name = name;
+        FarmingPlugin.instance.farmsCache.update(getPlayer(player).farmID, farm);
+    }
+
+    private static PlayerData getPlayer(Player player) {
+        return FarmingPlugin.instance.playersCache.get(player.getUniqueId());
+    }
+
+    private static FarmData getPlayerFarm(Player player) {
+        PlayerData data = FarmingPlugin.instance.playersCache.get(player.getUniqueId());
+        if (checkSenderInFarm(player, data)) return null;
+
+        return FarmingPlugin.instance.farmsCache.get(data.farmID);
+    }
 
     private static boolean checkSenderInFarm(Player player, PlayerData sender) {
         if (sender.farmID == null) {
@@ -79,6 +161,20 @@ public class CommandHelper {
         }
 
         return false;
+    }
+
+    private static boolean checkPlayerFarmOwner(Player player) {
+        FarmData farm = getPlayerFarm(player);
+        if (farm != null) {
+            if (getPlayer(player).permissionLevel == FarmPermissionLevel.LEADER) {
+                return false;
+            } else {
+                Helper.sendMessage(player, Messages.ERROR_NOT_LEADER);
+                return true;
+            }
+        }
+
+        return true;
     }
 
     private static boolean checkFarmAdminPermission(Player player, PlayerData sender, String perm) {

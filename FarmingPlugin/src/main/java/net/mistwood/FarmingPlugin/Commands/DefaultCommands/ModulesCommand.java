@@ -31,7 +31,7 @@ public class ModulesCommand implements SubCommand {
             String header = "&7--- Module: &b" + module.getName() + " &7---";
             Helper.sendMessage(sender, header);
             Helper.sendMessage(sender, "&7Help: &b/" + module.getMainCommand() + "&b ?");
-            Helper.sendMessage(sender, "&7" + String.join("", Collections.nCopies(header.replace("&7", "").replace("&b", "").length(), "-")));
+            Helper.sendMessage(sender, "&7" + String.join("", Collections.nCopies(header.replaceAll("&7", "").replaceAll("&b", "").length(), "-")));
 
             return true;
         } else {
@@ -45,7 +45,7 @@ public class ModulesCommand implements SubCommand {
                     Helper.sendMessage(sender, "&7- " + module.getName() + "&7 : &b/" + module.getMainCommand() + "&b ?");
             }
 
-            Helper.sendMessage(sender, "&7" + String.join("", Collections.nCopies(header.replace("&7", "").replace("&b", "").length(), "-")));
+            Helper.sendMessage(sender, "&7" + String.join("", Collections.nCopies(header.replaceAll("&7", "").replaceAll("&b", "").length(), "-")));
             return true;
         }
     }

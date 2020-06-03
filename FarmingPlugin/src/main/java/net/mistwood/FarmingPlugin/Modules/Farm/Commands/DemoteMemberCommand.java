@@ -17,15 +17,16 @@ public class DemoteMemberCommand implements SubCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length > 0 && (sender instanceof Player && FarmingPlugin.instance.permissionManager.hasCommandPermission(sender, "demote"))) {
+        if (FarmingPlugin.instance.permissionManager.hasCommandPermission(sender, "demote")) {
             Player player = (Player) sender;
 
-            CommandHelper.handleDemoteMember(player, args[0]);
-
-            return true;
+            if (args.length == 1) {
+                CommandHelper.handleDemoteMember(player, args[0]);
+            } else {
+                CommandHelper.handleHelp(player, "demote");
+            }
         }
 
-        // TODO: Send command help message
         return true;
     }
 

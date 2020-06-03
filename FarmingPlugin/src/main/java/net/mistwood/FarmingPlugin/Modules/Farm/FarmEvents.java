@@ -79,12 +79,12 @@ public class FarmEvents implements Listener {
     @EventHandler
     public void onRegionRenamed(RenameRegionEvent event) {
         if (!event.getOldName().equals(event.getNewName())) {
-            // TODO: Check if player is actually in a farm
-            // TODO Check if player is owner of farm
-            // TODO: Maybe; check new name for bad words?
-            FarmData farmData = FarmingPlugin.instance.farmsCache.get(FarmingPlugin.instance.playersCache.get(event.getPlayer().getUniqueId()).farmID);
-            farmData.name = event.getNewName();
-            FarmingPlugin.instance.farmsCache.update(farmData.id, farmData);
+            PlayerData player = FarmingPlugin.instance.playersCache.get(event.getPlayer().getUniqueId());
+            if (player.farmID != null && player.permissionLevel == FarmPermissionLevel.LEADER) {
+                FarmData farmData = FarmingPlugin.instance.farmsCache.get(player.farmID);
+                farmData.name = FarmingPlugin.instance.filter.filter(event.getNewName());
+                FarmingPlugin.instance.farmsCache.update(farmData.id, farmData);
+            }
         }
     }
 

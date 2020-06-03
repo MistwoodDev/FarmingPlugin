@@ -14,6 +14,7 @@ public class Messages
     public static final String PLUGIN_DISABLED = CONSOLE_PREFIX + "Disabled";
     public static final String PLUGIN_DATABASE_CONNECTED = CONSOLE_PREFIX + "Successfully connected to database!";
     public static final String PLUGIN_MODULE_LOADED = CONSOLE_PREFIX + "Module '%s' was successfully loaded!";
+    public static final String PLUGIN_MODULE_FAILED = CONSOLE_PREFIX + "Failed to load module '%s'! Error: '%s'";
     public static final String PLUGIN_CONFIG_LOADED = CONSOLE_PREFIX + "Successfully loaded config!";
     public static final String PLUGIN_ECONOMY_LOADED = CONSOLE_PREFIX + "Successfully loaded economy!";
     public static final String PLUGIN_CONFIG_LOAD_FAILED = CONSOLE_PREFIX + "Failed to load config!";
@@ -29,6 +30,7 @@ public class Messages
     public static final String ERROR_PLAYER_NOT_FOUND = CHAT_ERROR_PREFIX + "&7Player &b'%s&b' &7not found!";
     public static final String ERROR_UNKNOWN_ITEM = CHAT_ERROR_PREFIX + "&7Unknown item: &b%s";
     public static final String ERROR_MODULE_NOT_FOUND = CHAT_ERROR_PREFIX + "&7Could not find module with name: &b%s&7!";
+    public static final String ERROR_NOT_LEADER = CHAT_ERROR_PREFIX + "&7You must have leader rank in order to perform that!";
 
     // Farming
     public static final String FARMING_FARM_CREATED = CHAT_PREFIX + "&7Created new farm with name &b%s&7!";

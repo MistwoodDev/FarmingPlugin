@@ -14,14 +14,16 @@ public class RenameCommand implements SubCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length > 0 && (sender instanceof Player && FarmingPlugin.instance.permissionManager.hasCommandPermission(sender, "rename"))) {
+        if (sender instanceof Player && FarmingPlugin.instance.permissionManager.hasCommandPermission(sender, "rename")) {
             Player player = (Player) sender;
-            CommandHelper.handleRename(player, args[0]);
 
-            return true;
+            if (args.length == 1) {
+                CommandHelper.handleRename(player, args[0]);
+            } else {
+                CommandHelper.handleHelp(player, "rename");
+            }
         }
 
-        // TODO: Send command help message
         return true;
     }
 

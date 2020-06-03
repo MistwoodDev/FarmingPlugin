@@ -1,6 +1,7 @@
 package net.mistwood.FarmingPlugin;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class Cache<T> {
@@ -9,6 +10,10 @@ public class Cache<T> {
 
     public T get(UUID id) {
         return cachedItems.get(id);
+    }
+
+    public List<T> getAll() {
+        return (List<T>) cachedItems.values();
     }
 
     public void add(UUID id, T value) {

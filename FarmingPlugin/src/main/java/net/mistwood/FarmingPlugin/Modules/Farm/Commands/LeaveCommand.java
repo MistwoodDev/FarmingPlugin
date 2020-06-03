@@ -16,12 +16,14 @@ public class LeaveCommand implements SubCommand {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player && FarmingPlugin.instance.permissionManager.hasCommandPermission(sender, "leave")) {
             Player player = (Player) sender;
-            CommandHelper.handleLeaveFarm(player);
 
-            return true;
+            if (args.length > 0) {
+                CommandHelper.handleHelp(player, "leave");
+            } else {
+                CommandHelper.handleLeaveFarm(player);
+            }
         }
 
-        // TODO: Send command help message
         return true;
     }
 

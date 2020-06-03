@@ -1,11 +1,11 @@
 package net.mistwood.FarmingPlugin.API.Events;
 
-import net.mistwood.FarmingPlugin.Data.FarmData;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+
+import net.mistwood.FarmingPlugin.Data.FarmData;
 
 public class CreateFarmEvent extends Event implements Cancellable {
 

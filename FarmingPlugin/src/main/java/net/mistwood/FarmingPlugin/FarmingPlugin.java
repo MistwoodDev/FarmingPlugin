@@ -1,5 +1,7 @@
 package net.mistwood.FarmingPlugin;
 
+import net.mistwood.FarmingPlugin.Database.DatabaseCollection;
+import net.mistwood.FarmingPlugin.Utils.ProfanityFilter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -34,6 +36,8 @@ import static java.util.Arrays.asList;
 
 public class FarmingPlugin extends JavaPlugin {
 
+    // TODO: Save to DB now and then
+
     public static FarmingPlugin instance;
 
     // TODO: Make some of these private and make getters for them
@@ -44,6 +48,7 @@ public class FarmingPlugin extends JavaPlugin {
     public Cache<FarmData> farmsCache;
     public List<Module> modules;
     public PermissionManager permissionManager;
+    public ProfanityFilter filter;
 
     private FarmingAPI api;
     private CommandHandler defaultCommandHandler;
@@ -51,13 +56,14 @@ public class FarmingPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        playersCache = new Cache<>();
-        farmsCache = new Cache<>();
-        modules = new ArrayList<>();
-        api = new FarmingAPI();
-        permissionManager = new PermissionManager();
+        this.playersCache = new Cache<>();
+        this.farmsCache = new Cache<>();
+        this.modules = new ArrayList<>();
+        this.api = new FarmingAPI();
+        this.permissionManager = new PermissionManager();
+        this.filter = new ProfanityFilter();
 
-        defaultCommandHandler = new CommandHandler("farming");
+        this.defaultCommandHandler = new CommandHandler("farming");
         defaultCommandHandler.registerCommand(asList("modules"), new ModulesCommand());
 
         new EventListener();
@@ -73,6 +79,7 @@ public class FarmingPlugin extends JavaPlugin {
 
         loadModules();
         connectDatabase();
+        startDatabaseSaveTask();
 
         Bukkit.getLogger().info(Messages.PLUGIN_ENABLED);
     }
@@ -135,8 +142,12 @@ public class FarmingPlugin extends JavaPlugin {
             modules.add(new DiscordLinkModule());
 
         for (Module module : modules) {
-            module.onEnable();
-            Bukkit.getLogger().info(String.format(Messages.PLUGIN_MODULE_LOADED, module.getName()));
+            try {
+                module.onEnable();
+                Bukkit.getLogger().info(String.format(Messages.PLUGIN_MODULE_LOADED, module.getName()));
+            } catch (Exception e) {
+                Bukkit.getLogger().severe(String.format(Messages.PLUGIN_MODULE_FAILED, module.getName(), e.getClass().getName()));
+            }
         }
     }
 
@@ -144,6 +155,21 @@ public class FarmingPlugin extends JavaPlugin {
         this.database = new DatabaseManager(config);
         this.database.connect();
         Bukkit.getLogger().info(Messages.PLUGIN_DATABASE_CONNECTED);
+    }
+
+    private void startDatabaseSaveTask() {
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+            @Override
+            public void run() {
+                for (PlayerData player : playersCache.getAll()) {
+                    database.update(player.playerInstance.getUniqueId(), player.toMap(), DatabaseCollection.PLAYERS);
+                }
+
+                for (FarmData farm : farmsCache.getAll()) {
+                    database.update(farm.id, farm.toMap(), DatabaseCollection.FARMS);
+                }
+            }
+        }, 18000L, 18000L);
     }
 
     public FarmingAPI getAPI() {

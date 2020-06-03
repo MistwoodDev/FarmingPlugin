@@ -16,12 +16,14 @@ public class InfoCommand implements SubCommand {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player && FarmingPlugin.instance.permissionManager.hasCommandPermission(sender, "info")) {
             Player player = (Player) sender;
-            CommandHelper.handleInfo(player);
 
-            return true;
+            if (args.length == 1) {
+                CommandHelper.handleInfo(player, args[0]);
+            } else {
+                CommandHelper.handleInfo(player, "");
+            }
         }
 
-        // TODO: Send command help message
         return true;
     }
 
