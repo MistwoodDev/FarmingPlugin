@@ -8,6 +8,7 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.mongodb.connection.ClusterSettings;
 
+import net.mistwood.FarmingPlugin.FarmingPlugin;
 import org.bson.Document;
 
 import net.mistwood.FarmingPlugin.Config;
@@ -20,17 +21,13 @@ import static java.util.Arrays.asList;
 
 public class DatabaseManager {
 
-    private final Config config;
+    private final Config config = FarmingPlugin.instance.config;
 
     private MongoClient client;
     private MongoDatabase database;
     private MongoCollection<Document> playersCollection;
     private MongoCollection<Document> farmsCollection;
     private MongoCollection<Document> authKeysCollection;
-
-    public DatabaseManager(Config config) {
-        this.config = config;
-    }
 
     public void connect() {
         ClusterSettings cluster = ClusterSettings.builder()

@@ -151,7 +151,7 @@ public class FarmingPlugin extends JavaPlugin {
     }
 
     private void connectDatabase() {
-        this.database = new DatabaseManager(config);
+        this.database = new DatabaseManager();
         this.database.connect();
         Bukkit.getLogger().info(Messages.PLUGIN_DATABASE_CONNECTED);
     }
