@@ -82,7 +82,7 @@ public class FarmEvents implements Listener {
             PlayerData player = FarmingPlugin.instance.playersCache.get(event.getPlayer().getUniqueId());
             if (player.farmID != null && player.permissionLevel == FarmPermissionLevel.LEADER) {
                 FarmData farmData = FarmingPlugin.instance.farmsCache.get(player.farmID);
-                farmData.name = FarmingPlugin.instance.filter.filter(event.getNewName());
+                farmData.name = FarmingPlugin.instance.filter.filter(event.getNewName()).getSafeName();
                 FarmingPlugin.instance.farmsCache.update(farmData.id, farmData);
             }
         }

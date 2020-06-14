@@ -26,8 +26,7 @@ import net.mistwood.FarmingPlugin.Data.PlayerData;
 import net.mistwood.FarmingPlugin.Modules.Shop.ShopModule;
 import net.mistwood.FarmingPlugin.Modules.Fishing.FishingModule;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -170,6 +169,18 @@ public class FarmingPlugin extends JavaPlugin {
                 }
             }
         }, 18000L, 18000L);
+    }
+
+    public BufferedReader readResourceFile(String path) {
+        try {
+            File file = new File(getDataFolder(), path);
+            InputStream stream = new FileInputStream(file);
+            InputStreamReader streamReader = new InputStreamReader(stream);
+            return new BufferedReader(streamReader);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public FarmingAPI getAPI() {
