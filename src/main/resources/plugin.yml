@@ -1,0 +1,5 @@
+name: MistwoodFarming
+version: '${version}'
+main: me.munchii.mistwoodfarming.MistwoodFarming
+api-version: '1.20'
+load: STARTUP

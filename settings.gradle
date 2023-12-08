@@ -1,0 +1,3 @@
+rootProject.name = 'MistwoodFarming'
+
+includeBuild "../igloolib"
