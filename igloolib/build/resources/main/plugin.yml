@@ -1,0 +1,7 @@
+name: igloolib
+version: '1.20.2-1.0'
+main: me.munchii.igloolib.Igloolib
+api-version: '1.20'
+load: STARTUP
+authors: [munchii]
+description: plugin library for spigot/paper
