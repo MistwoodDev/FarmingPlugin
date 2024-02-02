@@ -2,6 +2,7 @@ package me.munchii.igloolib.command;
 
 import me.munchii.igloolib.Igloolib;
 import me.munchii.igloolib.util.ArrayUtil;
+import me.munchii.igloolib.util.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -32,13 +33,29 @@ public class CommandManager implements CommandExecutor, TabCompleter, Listener {
         this.commandGroups = new HashSet<>();
 
         this.permissionHandler = new DefaultCommandPermissionHandler();
+
+        enabled = false;
         enable();
     }
 
     public void enable() {
+        Logger.severe("enter");
         if (enabled) return;
 
+        Logger.severe("enter2");
+        // enter
+        // enter2
+        // enter
+        // enter2
+        // enter
+
+        // no commands are registered?
+        commands.forEach(cmd -> Logger.severe(cmd.getCommand()));
         commands.forEach(command -> {
+            Logger.severe("name", Objects.requireNonNull(Igloolib.INSTANCE.getCommand(command.getCommand())).getName());
+            Logger.severe("label", Objects.requireNonNull(Igloolib.INSTANCE.getCommand(command.getCommand())).getLabel());
+            Logger.severe("executor", Objects.requireNonNull(Igloolib.INSTANCE.getCommand(command.getCommand())).getExecutor().getClass().getName());
+
             Objects.requireNonNull(Igloolib.INSTANCE.getCommand(command.getCommand())).setExecutor(this);
             Objects.requireNonNull(Igloolib.INSTANCE.getCommand(command.getCommand())).setTabCompleter(this);
             Objects.requireNonNull(Igloolib.INSTANCE.getCommand(command.getCommand())).register(((CraftServer) Igloolib.INSTANCE.getServer()).getCommandMap());
@@ -46,6 +63,7 @@ public class CommandManager implements CommandExecutor, TabCompleter, Listener {
         });
 
         commandGroups.forEach(IglooCommandGroup::enable);
+        commandGroups.forEach(group -> Bukkit.getServer().getPluginManager().registerEvents(group, Igloolib.INSTANCE)); //?
         Bukkit.getServer().getPluginManager().registerEvents(this, Igloolib.INSTANCE);
         enabled = true;
     }
@@ -91,19 +109,29 @@ public class CommandManager implements CommandExecutor, TabCompleter, Listener {
     }
 
     public boolean hasCommand(String cmd) {
-        return commands.stream().anyMatch(command -> command.getCommand().equals(cmd) || command.getCommandAliases().contains(cmd));// || commandGroups.stream().anyMatch(group -> group.getGroupCommand().equals(cmd) || group.getGroupCommandAliases().contains(cmd));
+        final String commandName = cmd.replace("/", "");
+        return commands.stream().anyMatch(command -> command.getCommand().equals(commandName) || command.getCommandAliases().contains(commandName));// || commandGroups.stream().anyMatch(group -> group.getGroupCommand().equals(cmd) || group.getGroupCommandAliases().contains(cmd));
     }
 
     public Optional<IglooCommand> getCommand(String cmd) {
-        return commands.stream().filter(command -> command.getCommand().equals(cmd) || command.getCommandAliases().contains(cmd)).findFirst();
+        final String commandName = cmd.replace("/", "");
+        return commands.stream().filter(command -> command.getCommand().equals(commandName) || command.getCommandAliases().contains(commandName)).findFirst();
+    }
+
+    public boolean hasCommandGroup(String baseCommand) {
+        final String commandName = baseCommand.replace("/", "");
+        return commandGroups.stream().anyMatch(group -> group.getGroupCommand().equals(commandName) || group.getGroupCommandAliases().contains(commandName));
     }
 
     public Optional<IglooCommandGroup> getCommandGroup(String baseCommand) {
-        return commandGroups.stream().filter(command -> command.getGroupCommand().equals(baseCommand) || command.getGroupCommandAliases().contains(baseCommand)).findFirst();
+        final String commandName = baseCommand.replace("/", "");
+        return commandGroups.stream().filter(command -> command.getGroupCommand().equals(commandName) || command.getGroupCommandAliases().contains(commandName)).findFirst();
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        Logger.severe("yeet", command.getName());
+        Logger.severe("xxx", args);
         if (args.length > 0 && hasCommand(args[0])) {
             IglooCommand subCommand = getCommand(args[0]).get();
             return subCommand.onCommand(sender, command, label, ArrayUtil.copyArrayOfRange(args, args.length));
@@ -118,17 +146,38 @@ public class CommandManager implements CommandExecutor, TabCompleter, Listener {
         String[] args = event.getMessage().split(" ");
         List<String> commandAliases = new ArrayList<>();
         commands.forEach(command -> {
+            Logger.severe("a");
             commandAliases.add("/" + command.getCommand());
-            command.getCommandAliases().forEach(alias -> commandAliases.add("/" + alias));
+            if (!command.getCommandAliases().isEmpty()) {
+                Logger.severe("b");
+                command.getCommandAliases().forEach(alias -> commandAliases.add("/" + alias));
+            }
         });
 
-        if (args.length >= 2 && commandAliases.contains(args[0])) {
-            if (hasCommand(args[1])) {
-                IglooCommand subCommand = getCommand(args[1]).get();
-                if (!permissionHandler.hasCommandPermission(event.getPlayer(), subCommand.getPermission())) {
-                    permissionHandler.onPermissionFailure(event.getPlayer(), subCommand);
-                    event.setCancelled(true);
-                }
+        Logger.severe("--- args ---");
+        Logger.severe(args.length, Arrays.toString(args));
+        Logger.severe("--- ---- ---");
+        Logger.severe("--- aliases ---");
+        Logger.severe(commandAliases.size(), commandAliases);
+        Logger.severe("--- ------- ---");
+        // this line down here v
+        Logger.severe("executor", Objects.requireNonNull(Igloolib.INSTANCE.getCommand(args[0].replace("/", ""))).getExecutor().getClass().getName());
+        // TODO: check if args is greater than or 2 for cmd group?
+        if (args.length >= 1 && commandAliases.contains(args[0])) {
+            Logger.severe("c", args[0]);
+            String command = args[0].replace("/", "");
+            if (hasCommand(command)) {
+                Logger.severe("d");
+                getCommand(command).ifPresent(subCommand -> {
+                    Logger.severe("e");
+                    if (!permissionHandler.hasCommandPermission(player, subCommand.getPermission())) {
+                        Logger.severe("f", subCommand.getPermission());
+                        permissionHandler.onPermissionFailure(player, subCommand);
+                        event.setCancelled(true);
+                    }
+                });
+            } else if (hasCommandGroup(args[0])) {
+                Logger.severe("cmd group");
             }
         }
     }

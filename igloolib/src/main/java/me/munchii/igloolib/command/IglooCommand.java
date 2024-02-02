@@ -7,10 +7,7 @@ import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 
 public abstract class IglooCommand implements CommandExecutor, TabCompleter {
@@ -22,7 +19,7 @@ public abstract class IglooCommand implements CommandExecutor, TabCompleter {
     private boolean enabled;
 
     public IglooCommand(String command) {
-        this(command, Collections.emptySet(), "", "command /" + command);
+        this(command, new HashSet<>(), "", "command /" + command);
     }
 
     public IglooCommand(String command, Set<String> aliases) {
@@ -82,8 +79,8 @@ public abstract class IglooCommand implements CommandExecutor, TabCompleter {
     }
 
     public static final class Builder {
-        private String command;
-        private Set<String> aliases;
+        private final String command;
+        private final Set<String> aliases;
         private String permission;
         private String description;
         private String usage;
@@ -92,6 +89,7 @@ public abstract class IglooCommand implements CommandExecutor, TabCompleter {
 
         public Builder(String cmd) {
             this.command = cmd;
+            this.aliases = new HashSet<>();
         }
 
         public Builder withAlias(String alias) {

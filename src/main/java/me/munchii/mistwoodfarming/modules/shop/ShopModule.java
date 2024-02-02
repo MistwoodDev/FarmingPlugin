@@ -1,10 +1,12 @@
 package me.munchii.mistwoodfarming.modules.shop;
 
+import me.munchii.igloolib.Igloolib;
 import me.munchii.igloolib.command.IglooCommand;
 import me.munchii.igloolib.gui.InventoryActionResult;
 import me.munchii.igloolib.gui.InventoryWindow;
 import me.munchii.igloolib.gui.slot.ButtonSlot;
 import me.munchii.igloolib.module.PluginModule;
+import me.munchii.igloolib.util.Logger;
 import me.munchii.mistwoodfarming.MistwoodFarming;
 import me.munchii.mistwoodfarming.config.MistwoodFarmingConfig;
 import org.bukkit.Material;
@@ -23,7 +25,9 @@ public class ShopModule extends PluginModule {
                 .registerCommand(IglooCommand.create("shop")
                         .withDescription("Opens the shop window")
                         .withUsage("/shop")
+                        .withAlias("sh")
                         .withAction((sender, args) -> {
+                            Logger.severe("yeeet");
                             InventoryWindow shopWindow = new InventoryWindow("Shop", 16, 9);
                             shopWindow.setSlot(9, new ButtonSlot(Material.STONE, ctx -> {
                                 if (ctx.clickType() == ClickType.LEFT) {
@@ -40,6 +44,8 @@ public class ShopModule extends PluginModule {
                             }));
 
                             shopWindow.display((Player) sender);
+
+                            Logger.severe("aaaaaaaa");
 
                             return true;
                         })

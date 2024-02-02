@@ -1,5 +1,6 @@
 package me.munchii.mistwoodfarming;
 
+import me.munchii.igloolib.Igloolib;
 import me.munchii.igloolib.config.Configuration;
 import me.munchii.igloolib.module.ModuleManager;
 import me.munchii.igloolib.util.UUIDCache;
@@ -29,6 +30,11 @@ public final class MistwoodFarming extends JavaPlugin {
     public void onEnable() {
         INSTANCE = this;
 
+        if (!setupIgloolib()) {
+            getLogger().severe("Igloolib is not loaded. Disabling FarmingPlugin");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+
         new Configuration(MistwoodFarmingConfig.class, this);
 
         moduleManager = new ModuleManager();
@@ -46,6 +52,12 @@ public final class MistwoodFarming extends JavaPlugin {
     private void registerModules() {
         moduleManager.registerModule(FarmingModule::new);
         moduleManager.registerModule(ShopModule::new);
+    }
+
+    private boolean setupIgloolib() {
+        return Bukkit.getPluginManager().getPlugin("igloolib") != null
+                && Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("igloolib")).isEnabled()
+                && Igloolib.INSTANCE != null;
     }
 
     private boolean setupEconomy() {
