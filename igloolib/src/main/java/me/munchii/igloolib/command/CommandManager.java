@@ -133,6 +133,9 @@ public class CommandManager implements CommandExecutor, TabCompleter, Listener {
         if (hasCommand(command.getName())) {
             IglooCommand subCommand = getCommand(command.getName()).get();
             return subCommand.onCommand(sender, command, label, ArrayUtil.copyArrayOfRange(args, args.length));
+        } else if (hasCommandGroup(command.getName())) {
+            IglooCommandGroup commandGroup = getCommandGroup(command.getName()).get();
+            return commandGroup.onCommand(sender, command, label, args);
         }
 
         return true;

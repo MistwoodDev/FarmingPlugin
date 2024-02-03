@@ -1,7 +1,9 @@
 package me.munchii.igloolib.gui;
 
+import me.munchii.igloolib.Igloolib;
 import me.munchii.igloolib.gui.slot.Slot;
 import me.munchii.igloolib.gui.slot.StaticSlot;
+import me.munchii.igloolib.util.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,12 +26,16 @@ public class InventoryWindow implements IInventoryGUI {
     private final int columns;
 
     public InventoryWindow(String title, int rows, int columns) {
-        this.inventory = Bukkit.createInventory(null, rows * columns, title);
+        this.inventory = Bukkit.createInventory(this, rows * columns, title);
         this.slots = new HashMap<>();
 
         this.title = title;
         this.rows = rows;
         this.columns = columns;
+    }
+
+    public void registerDefaultListener() {
+        DefaultWindowListener.register();
     }
 
     public void display(Player player) {

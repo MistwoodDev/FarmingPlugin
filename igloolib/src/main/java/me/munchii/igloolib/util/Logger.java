@@ -3,9 +3,7 @@ package me.munchii.igloolib.util;
 import com.google.common.base.Joiner;
 import me.munchii.igloolib.Igloolib;
 
-import java.util.Arrays;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 public class Logger {
     public static <T> void info(T value) {
