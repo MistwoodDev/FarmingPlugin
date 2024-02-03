@@ -27,8 +27,8 @@ public class ShopModule extends PluginModule {
                         .withUsage("/shop")
                         .withAlias("sh")
                         .withAction((sender, args) -> {
-                            Logger.severe("yeeet");
-                            InventoryWindow shopWindow = new InventoryWindow("Shop", 16, 9);
+                            // TODO: window doesnt work. items are draggable and left and right click doesnt fire the event
+                            InventoryWindow shopWindow = new InventoryWindow("Shop", 6, 9);
                             shopWindow.setSlot(9, new ButtonSlot(Material.STONE, ctx -> {
                                 if (ctx.clickType() == ClickType.LEFT) {
                                     MistwoodFarming.INSTANCE.getEconomyService().withdrawPlayer(ctx.player(), 10d);
@@ -44,8 +44,6 @@ public class ShopModule extends PluginModule {
                             }));
 
                             shopWindow.display((Player) sender);
-
-                            Logger.severe("aaaaaaaa");
 
                             return true;
                         })

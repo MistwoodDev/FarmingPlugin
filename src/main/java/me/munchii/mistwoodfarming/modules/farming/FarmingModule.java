@@ -3,6 +3,7 @@ package me.munchii.mistwoodfarming.modules.farming;
 import me.munchii.igloolib.command.IglooCommand;
 import me.munchii.igloolib.module.PluginModule;
 import me.munchii.igloolib.util.Chat;
+import me.munchii.mistwoodfarming.MistwoodFarming;
 import me.munchii.mistwoodfarming.config.MistwoodFarmingConfig;
 
 public class FarmingModule extends PluginModule {

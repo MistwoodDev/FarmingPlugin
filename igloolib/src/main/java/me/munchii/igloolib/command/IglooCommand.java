@@ -27,7 +27,7 @@ public abstract class IglooCommand implements CommandExecutor, TabCompleter {
     }
 
     public IglooCommand(String command, Set<String> aliases, String permission) {
-        this(command, Collections.emptySet(), permission, "command /" + command);
+        this(command, aliases, permission, "command /" + command);
     }
 
     public IglooCommand(String command, Set<String> aliases, String permission, String description) {
@@ -59,7 +59,7 @@ public abstract class IglooCommand implements CommandExecutor, TabCompleter {
     }
 
     public boolean hasPermission() {
-        return permission.isEmpty();
+        return permission != null && permission.isEmpty();
     }
 
     public String getDescription() {

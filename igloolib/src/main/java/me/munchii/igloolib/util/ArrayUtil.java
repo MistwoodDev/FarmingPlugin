@@ -4,6 +4,10 @@ import java.lang.reflect.Array;
 
 public class ArrayUtil {
     public static <T> T[] copyArrayOfRange(T[] original, int end) {
+        if (original.length == 0) {
+            return original;
+        }
+
         int start = 1;
         if (original.length >= start) {
             if (start <= end) {
