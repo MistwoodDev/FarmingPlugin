@@ -17,7 +17,6 @@ public class InputSlot extends Slot {
     }
 
     public InputSlot(Predicate<ItemStack> filter, BiFunction<InventoryClickEventContext, ItemStack, InventoryActionResult> callback) {
-        // TODO: does air work here?
         super(Material.AIR);
 
         this.filterPredicate = filter;

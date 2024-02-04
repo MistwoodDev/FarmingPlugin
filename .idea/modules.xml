@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/igloolib/MistwoodFarming.igloolib.main.iml" filepath="$PROJECT_DIR$/.idea/modules/igloolib/MistwoodFarming.igloolib.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MistwoodFarming.main.iml" filepath="$PROJECT_DIR$/.idea/modules/MistwoodFarming.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/igloolib/me.munchii.MistwoodFarming.igloolib.main.iml" filepath="$PROJECT_DIR$/.idea/modules/igloolib/me.munchii.MistwoodFarming.igloolib.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/me.munchii.MistwoodFarming.main.iml" filepath="$PROJECT_DIR$/.idea/modules/me.munchii.MistwoodFarming.main.iml" />
+    </modules>
+  </component>
+</project>
