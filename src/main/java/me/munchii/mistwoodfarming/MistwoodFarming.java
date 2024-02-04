@@ -3,6 +3,7 @@ package me.munchii.mistwoodfarming;
 import me.munchii.igloolib.Igloolib;
 import me.munchii.igloolib.config.Configuration;
 import me.munchii.igloolib.module.ModuleManager;
+import me.munchii.igloolib.util.Logger;
 import me.munchii.igloolib.util.UUIDCache;
 import me.munchii.mistwoodfarming.config.MistwoodFarmingConfig;
 import me.munchii.mistwoodfarming.model.FarmData;
@@ -30,15 +31,31 @@ public final class MistwoodFarming extends JavaPlugin {
     public void onEnable() {
         INSTANCE = this;
 
+        // TODO: how to include default resource files like en_us.json?
+
         if (!setupIgloolib()) {
-            getLogger().severe("Igloolib is not loaded. Disabling FarmingPlugin");
+            Logger.severe("Igloolib is not loaded. Disabling FarmingPlugin");
             Bukkit.getPluginManager().disablePlugin(this);
+        }
+
+        // TODO: fails to load?
+        if (!setupEconomy()) {
+            Logger.severe("Vault is not loaded. Disabling FarmingPlugin");
+            //Bukkit.getPluginManager().disablePlugin(this);
+        }
+
+        // TODO: fails to load?
+        if (!setupRedProtect()) {
+            Logger.severe("RedProtect is not loaded. Disabling FarmingPlugin");
+            //Bukkit.getPluginManager().disablePlugin(this);
         }
 
         new Configuration(MistwoodFarmingConfig.class, this);
 
         moduleManager = new ModuleManager();
         registerModules();
+
+        setupListeners();
 
         playerCache = new UUIDCache<>(1024);
         farmCache = new UUIDCache<>(1024);
@@ -52,6 +69,10 @@ public final class MistwoodFarming extends JavaPlugin {
     private void registerModules() {
         moduleManager.registerModule(FarmingModule::new);
         moduleManager.registerModule(ShopModule::new);
+    }
+
+    private void setupListeners() {
+        new EventListener();
     }
 
     private boolean setupIgloolib() {
