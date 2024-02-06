@@ -38,12 +38,14 @@ public class InventoryWindow implements IInventoryGUI {
         DefaultWindowListener.register();
     }
 
-    public void display(Player player) {
+    @Override
+    public void open(Player player) {
         slots.forEach((slotId, slot) -> inventory.setItem(slotId, slot.getStack()));
 
         player.openInventory(inventory);
     }
 
+    @Override
     public void refresh() {
         slots.forEach((slotId, slot) -> inventory.setItem(slotId, slot.getStack()));
     }
@@ -75,6 +77,7 @@ public class InventoryWindow implements IInventoryGUI {
         return inventory;
     }
 
+    @Override
     public void fillVoidSlot(Material material) {
         ItemStack stack = new ItemStack(material, 1);
         ItemMeta meta = stack.getItemMeta();
@@ -85,29 +88,40 @@ public class InventoryWindow implements IInventoryGUI {
         fillVoidSlot(stack);
     }
 
+    @Override
     public void fillVoidSlot(ItemStack stack) {
         for (int i = 0; i < inventory.getSize(); i++) {
             setSlot(i, new StaticSlot(stack));
         }
     }
 
+    @Override
     public void fill(Slot slot) {
         IntStream.range(0, inventory.getSize()).forEach(i -> setSlot(i, slot));
     }
 
+    @Override
     public void clear() {
         slots.clear();
         inventory.clear();
     }
 
+    @Override
     public void setSlot(int slotId, Slot slot) {
         slots.put(slotId, slot);
     }
 
+    @Override
     public Optional<Slot> getSlot(int slotId) {
         return slots.containsKey(slotId) ? Optional.of(slots.get(slotId)) : Optional.empty();
     }
 
+    @Override
+    public int size() {
+        return inventory.getSize();
+    }
+
+    @Override
     public int slotAmount() {
         return slots.size();
     }

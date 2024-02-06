@@ -46,7 +46,7 @@ public class DefaultWindowListener implements Listener {
         // TODO: but it also introduces some bugs. for example sometimes it disallows moving around items in the inventory
         // TODO: but also disallows clicking with an item on a input slot. how would i go around this?
         if (event.getInventory().getHolder() instanceof IInventoryGUI gui) {
-            if (!gui.draggable()) {
+            if (!gui.isDraggable()) {
                 event.setCancelled(true);
             }
         }

@@ -10,9 +10,6 @@ public class Chat {
     }
 
     public static void sendTranslatable(Player player, String key) {
-        String msg = Text.translatableColor(player, key);
-        if (msg != null) {
-            player.sendMessage(msg);
-        }
+        player.sendMessage(Text.translatableColor(player, key));
     }
 }
