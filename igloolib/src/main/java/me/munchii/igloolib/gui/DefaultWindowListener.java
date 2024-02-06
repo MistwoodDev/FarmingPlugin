@@ -45,6 +45,7 @@ public class DefaultWindowListener implements Listener {
         // TODO: without this block its possible to spam click with the wrong item on an input slot, and it can still get accepted (without anything happening)
         // TODO: but it also introduces some bugs. for example sometimes it disallows moving around items in the inventory
         // TODO: but also disallows clicking with an item on a input slot. how would i go around this?
+        // Maybe? https://www.spigotmc.org/threads/inventorydragevent-detect-which-inventory.489208/
         if (event.getInventory().getHolder() instanceof IInventoryGUI gui) {
             if (!gui.isDraggable()) {
                 event.setCancelled(true);

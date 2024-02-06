@@ -53,6 +53,11 @@ public enum ProfanityFilter {
             if (messageWords.contains(word)) {
                 profanity.add(word);
             }
+            messageWords.forEach(msg -> {
+                if (msg.startsWith(word) || msg.endsWith(word)) {
+                    profanity.add(word);
+                }
+            });
         });
 
         return profanity;
