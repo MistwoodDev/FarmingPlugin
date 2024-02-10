@@ -2,7 +2,7 @@ package me.munchii.mistwoodfarming.modules.shop.gui;
 
 import me.munchii.igloolib.gui.IInventoryGUI;
 import me.munchii.igloolib.gui.InventoryActionResult;
-import me.munchii.igloolib.gui.InventoryPage;
+import me.munchii.igloolib.gui.page.InventoryPage;
 import me.munchii.igloolib.gui.slot.ButtonSlot;
 import me.munchii.igloolib.gui.slot.StaticSlot;
 import me.munchii.igloolib.util.Chat;

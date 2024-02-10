@@ -1,5 +1,6 @@
 package me.munchii.igloolib.gui;
 
+import me.munchii.igloolib.gui.page.InventoryPage;
 import me.munchii.igloolib.gui.slot.Slot;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
