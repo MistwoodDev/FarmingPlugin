@@ -12,7 +12,7 @@ public class ItemPage implements InventoryPage {
     }
 
     @Override
-    public void render(IInventoryGUI gui) {
+    public void draw(IInventoryGUI gui) {
 
     }
 }

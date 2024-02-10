@@ -7,7 +7,6 @@ import me.munchii.igloolib.gui.slot.ButtonSlot;
 import me.munchii.igloolib.gui.slot.StaticSlot;
 import me.munchii.igloolib.util.Chat;
 import me.munchii.igloolib.util.Logger;
-import me.munchii.igloolib.util.NBTUtil;
 import me.munchii.igloolib.util.StringUtil;
 import me.munchii.mistwoodfarming.model.ShopItem;
 import org.bukkit.Material;
@@ -28,7 +27,7 @@ public class ShopPage implements InventoryPage {
     }
 
     @Override
-    public void render(IInventoryGUI gui) {
+    public void draw(IInventoryGUI gui) {
         final int pageSize = gui.size() - 9;
         final int numItems = items.size();
         final int start = page * pageSize - pageSize;
@@ -53,7 +52,7 @@ public class ShopPage implements InventoryPage {
             }
 
             gui.setSlot(i, new ButtonSlot(shopStack, ctx -> {
-                gui.renderPage(new ItemPage(item));
+                gui.drawPage(new ItemPage(item));
                 return InventoryActionResult.PASS;
             }));
         }
@@ -66,7 +65,7 @@ public class ShopPage implements InventoryPage {
                 prevStack.setItemMeta(prevMeta);
             }
             gui.setSlot(pageSize, new ButtonSlot(prevStack, ctx -> {
-                gui.renderPage(new ShopPage(items, page - 1));
+                gui.drawPage(new ShopPage(items, page - 1));
                 return InventoryActionResult.PASS;
             }));
         } else {
@@ -95,7 +94,7 @@ public class ShopPage implements InventoryPage {
                 nextStack.setItemMeta(nextMeta);
             }
             gui.setSlot(pageSize + 1, new ButtonSlot(nextStack, ctx -> {
-                gui.renderPage(new ShopPage(items, page + 1));
+                gui.drawPage(new ShopPage(items, page + 1));
                 return InventoryActionResult.PASS;
             }));
         }

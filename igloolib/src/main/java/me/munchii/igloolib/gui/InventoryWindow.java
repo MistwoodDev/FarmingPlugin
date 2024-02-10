@@ -25,6 +25,8 @@ public class InventoryWindow implements IInventoryGUI {
     private final int rows;
     private final int columns;
 
+    private final InventoryPageHandler pageHandler = new InventoryPageHandler();
+
     public InventoryWindow(String title, int rows, int columns) {
         this.inventory = Bukkit.createInventory(this, rows * columns, title);
         this.slots = new HashMap<>();
@@ -114,6 +116,24 @@ public class InventoryWindow implements IInventoryGUI {
     @Override
     public Optional<Slot> getSlot(int slotId) {
         return slots.containsKey(slotId) ? Optional.of(slots.get(slotId)) : Optional.empty();
+    }
+
+    public void drawPage(InventoryPage page) {
+        pageHandler.next(page);
+        clear();
+        page.draw(this);
+        refresh();
+    }
+
+    public void drawPreviousPage() {
+        InventoryPage page = pageHandler.previous();
+        clear();
+        page.draw(this);
+        refresh();
+    }
+
+    public InventoryPage getCurrentPage() {
+        return pageHandler.getCurrentPage();
     }
 
     @Override

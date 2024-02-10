@@ -1,21 +1,13 @@
 package me.munchii.mistwoodfarming.modules.shop;
 
-import me.munchii.igloolib.Igloolib;
 import me.munchii.igloolib.command.IglooCommand;
-import me.munchii.igloolib.gui.InventoryActionResult;
 import me.munchii.igloolib.gui.InventoryWindow;
-import me.munchii.igloolib.gui.slot.ButtonSlot;
-import me.munchii.igloolib.gui.slot.InputSlot;
 import me.munchii.igloolib.module.PluginModule;
 import me.munchii.igloolib.util.Logger;
-import me.munchii.mistwoodfarming.MistwoodFarming;
 import me.munchii.mistwoodfarming.config.MistwoodFarmingConfig;
 import me.munchii.mistwoodfarming.model.ShopItem;
 import me.munchii.mistwoodfarming.modules.shop.gui.ShopPage;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -116,7 +108,7 @@ public class ShopModule extends PluginModule {
                         .withAction((sender, args) -> {
                             InventoryWindow shopWindow = new InventoryWindow("Shop", 6, 9);
                             Logger.severe(items.get(0).itemName());
-                            shopWindow.renderPage(new ShopPage(items, 1));
+                            shopWindow.drawPage(new ShopPage(items, 1));
                             shopWindow.registerDefaultListener();
                             shopWindow.open((Player) sender);
 

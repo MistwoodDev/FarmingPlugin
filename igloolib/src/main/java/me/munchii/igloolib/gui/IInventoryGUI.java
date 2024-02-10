@@ -37,9 +37,9 @@ public interface IInventoryGUI extends InventoryHolder {
 
     int slotAmount();
 
-    default void renderPage(InventoryPage page) {
+    default void drawPage(InventoryPage page) {
         clear();
-        page.render(this);
+        page.draw(this);
         refresh();
     }
 }
