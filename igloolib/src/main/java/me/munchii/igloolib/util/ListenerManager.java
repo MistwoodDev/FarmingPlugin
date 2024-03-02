@@ -53,9 +53,12 @@ public class ListenerManager {
 
     public <T extends Listener> boolean enable(Class<T> clazz) {
         if (isRegistered(clazz) && !isEnabled(clazz)) {
-            Bukkit.getPluginManager().registerEvents(listeners.get(clazz).instance, Igloolib.INSTANCE);
-            listeners.get(clazz).enabled = true;
-            return true;
+            ListenerReference ref = listeners.get(clazz);
+            if (HandlerList.getRegisteredListeners(Igloolib.INSTANCE).stream().noneMatch(l -> l.getListener().equals(ref.instance))) {
+                Bukkit.getPluginManager().registerEvents(ref.instance, Igloolib.INSTANCE);
+                ref.enabled = true;
+                return true;
+            }
         }
 
         return false;
