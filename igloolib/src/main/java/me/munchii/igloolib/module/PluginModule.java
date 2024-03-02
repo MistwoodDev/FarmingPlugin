@@ -2,6 +2,7 @@ package me.munchii.igloolib.module;
 
 import me.munchii.igloolib.Igloolib;
 import me.munchii.igloolib.command.CommandManager;
+import me.munchii.igloolib.util.ListenerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -20,6 +21,7 @@ public abstract class PluginModule {
     private boolean initialized;
 
     private final CommandManager commandManager;
+    private final ListenerManager listenerManager;
 
     public PluginModule(String name, boolean enabled) {
         this.name = name;
@@ -30,6 +32,7 @@ public abstract class PluginModule {
         this.initialized = false;
 
         this.commandManager = new CommandManager();
+        this.listenerManager = new ListenerManager();
     }
 
     public abstract void onEnable();
@@ -39,9 +42,10 @@ public abstract class PluginModule {
         enabled = true;
         initialized = true;
 
-        for (Listener listener : listeners) {
-            Bukkit.getServer().getPluginManager().registerEvents(listener, instance);
-        }
+        //for (Listener listener : listeners) {
+            //Bukkit.getServer().getPluginManager().registerEvents(listener, instance);
+        //}
+        listenerManager.enableAll();
 
         commandManager.enable();
 
@@ -52,9 +56,10 @@ public abstract class PluginModule {
         enabled = false;
         initialized = false;
 
-        for (Listener listener : listeners) {
-            HandlerList.unregisterAll(listener);
-        }
+        //for (Listener listener : listeners) {
+            //HandlerList.unregisterAll(listener);
+        //}
+        listenerManager.disableAll();
 
         commandManager.disable();
 
@@ -62,19 +67,26 @@ public abstract class PluginModule {
     }
 
     public void registerListener(Supplier<Listener> listener) {
-        listeners.add(listener.get());
+        //listeners.add(listener.get());
+        Listener l = listenerManager.put(listener, false);
         if (initialized) {
-            Bukkit.getServer().getPluginManager().registerEvents(listener.get(), instance);
+            //Bukkit.getServer().getPluginManager().registerEvents(listener.get(), instance);
+            listenerManager.enable(l.getClass());
         }
     }
 
     public void deregisterListener(Listener listener) {
-        listeners.remove(listener);
-        HandlerList.unregisterAll(listener);
+        //listeners.remove(listener);
+        //HandlerList.unregisterAll(listener);
+        listenerManager.disable(listener.getClass());
     }
 
     public CommandManager getCommandManager() {
         return commandManager;
+    }
+
+    public ListenerManager getListenerManager() {
+        return listenerManager;
     }
 
     public String getName() {
