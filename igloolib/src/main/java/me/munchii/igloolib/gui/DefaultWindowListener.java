@@ -14,32 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Optional;
 
 public class DefaultWindowListener implements Listener {
-    protected static DefaultWindowListener INSTANCE;
-
-    public static boolean isRegistered() {
-        return INSTANCE != null;
-    }
-
-    public static boolean register() {
-        if (isRegistered()) {
-            return false;
-        }
-
-        INSTANCE = new DefaultWindowListener();
-        Bukkit.getPluginManager().registerEvents(INSTANCE, Igloolib.INSTANCE);
-        return true;
-    }
-
-    public static boolean deregister() {
-        if (!isRegistered()) {
-            return false;
-        }
-
-        HandlerList.unregisterAll(INSTANCE);
-        INSTANCE = null;
-        return true;
-    }
-
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
         // TODO: without this block its possible to spam click with the wrong item on an input slot, and it can still get accepted (without anything happening)

@@ -75,6 +75,16 @@ public class ListenerManager {
         return false;
     }
 
+    public <T extends Listener> boolean remove(Class<T> clazz) {
+        if (!isRegistered(clazz)) {
+            return false;
+        }
+
+        disable(clazz);
+        listeners.remove(clazz);
+        return true;
+    }
+
     private static class ListenerReference {
         public final Listener instance;
         public boolean enabled;

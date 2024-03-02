@@ -1,5 +1,6 @@
 package me.munchii.igloolib.gui;
 
+import me.munchii.igloolib.Igloolib;
 import me.munchii.igloolib.gui.page.InventoryPage;
 import me.munchii.igloolib.gui.page.InventoryPageHandler;
 import me.munchii.igloolib.gui.slot.Slot;
@@ -37,7 +38,7 @@ public class InventoryWindow implements IInventoryGUI {
     }
 
     public void registerDefaultListener() {
-        DefaultWindowListener.register();
+        Igloolib.registerListener(DefaultWindowListener::new);
     }
 
     @Override
