@@ -2,7 +2,6 @@ package me.munchii.mistwoodfarming;
 
 import me.munchii.igloolib.block.*;
 import me.munchii.igloolib.registry.IglooRegistry;
-import me.munchii.igloolib.util.Logger;
 import me.munchii.mistwoodfarming.modules.shop.blockentity.ShopBlockEntity;
 import org.bukkit.Location;
 import org.bukkit.Material;

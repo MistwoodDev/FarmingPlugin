@@ -28,11 +28,12 @@ public final class Igloolib extends JavaPlugin {
 
         new Configuration(IgloolibConfig.class, this);
 
+        // TODO: fix the listener manager. it doesn't work apparently
         //registerListener(DefaultBlockEntityListener::new);
-        //Logger.severe("AAABBB DefaultBlockEntityListener isRegistered=" + LISTENERS.isRegistered(DefaultBlockEntityListener.class));
         Bukkit.getPluginManager().registerEvents(new DefaultBlockEntityListener(), INSTANCE);
 
         commandManager = new CommandManager();
+        // TODO: this command doesn't work. probably something wrong with command groups lol
         commandManager.registerCommandGroup(IglooCommandGroup.create("igloo")
                 .withCommand(IglooCommand.create("locale")
                         .withDescription("Locale tools")
