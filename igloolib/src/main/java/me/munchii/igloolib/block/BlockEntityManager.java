@@ -31,13 +31,17 @@ public enum BlockEntityManager {
         return Objects.requireNonNull(pos.getWorld()).getBlockAt(pos);
     }
 
-    public static void removeBlockEntity(@NotNull Location pos) {
-        INSTANCE.existingBlockEntities.remove(pos);
+    public static IglooBlockEntity removeBlockEntity(@NotNull Location pos) {
+        return INSTANCE.existingBlockEntities.remove(pos);
     }
 
     @Nullable
     public static IglooBlockEntity getBlockEntity(@NotNull Location pos) {
         return INSTANCE.existingBlockEntities.getOrDefault(pos, null);
+    }
+
+    public static boolean isBlockEntityAt(@NotNull Location pos) {
+        return INSTANCE.existingBlockEntities.containsKey(pos);
     }
 
     private static void createTickTask() {
