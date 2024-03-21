@@ -1,6 +1,7 @@
 package me.munchii.mistwoodfarming.modules.shop;
 
 import me.munchii.igloolib.command.IglooCommand;
+import me.munchii.igloolib.command.IglooCommandGroup;
 import me.munchii.igloolib.gui.InventoryWindow;
 import me.munchii.igloolib.module.PluginModule;
 import me.munchii.igloolib.text.Text;
@@ -106,14 +107,14 @@ public class ShopModule extends PluginModule {
                         .withDescription("Opens the shop window")
                         .withUsage("/shop")
                         .withAlias("sh")
-                        .withAction((sender, args) -> {
-                            Text.translatableColor((Player) sender, "message.mistwoodfarming.open_shop").send((Player) sender);
+                        .withAction(ctx -> {
+                            Text.translatableColor(ctx.getPlayer().getPlayer(), "message.mistwoodfarming.open_shop").send(ctx.getPlayer().getPlayer());
 
                             InventoryWindow shopWindow = new InventoryWindow("Shop", 6, 9);
                             Logger.severe(items.get(0).itemName());
                             shopWindow.drawPage(new ShopPage(items, 1));
                             shopWindow.registerDefaultListener();
-                            shopWindow.open((Player) sender);
+                            shopWindow.open(ctx.getPlayer().getPlayer());
 
                             return true;
                         })

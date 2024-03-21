@@ -1,8 +1,11 @@
 package me.munchii.igloolib.text;
 
+import me.munchii.igloolib.IgloolibConfig;
 import me.munchii.igloolib.util.Chat;
 import me.munchii.igloolib.util.Logger;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
@@ -15,7 +18,7 @@ public interface Text {
         }
 
         @Override
-        public void send(Player player) {
+        public void send(@NotNull Player player) {
             player.sendMessage(value);
         }
 
@@ -25,13 +28,21 @@ public interface Text {
         }
     }
 
-    void send(Player player);
+    void send(@NotNull Player player);
 
-    static Literal translatable(Player player, String key) {
-        String res = LocaleManager.get(player.getLocale(), key);
+    @NotNull
+    static Literal translatable(@Nullable Player player, String key) {
+        String locale;
+        if (player == null) {
+            locale = IgloolibConfig.defaultLocale;
+        } else {
+            locale = player.getLocale();
+        }
+
+        String res = LocaleManager.get(locale, key);
         if (res == null) {
-            if (!player.getLocale().toLowerCase(Locale.ROOT).equals("en_us")) {
-                res = LocaleManager.get("en_us", key);
+            if (!player.getLocale().toLowerCase(Locale.ROOT).equals(IgloolibConfig.defaultLocale)) {
+                res = LocaleManager.get(IgloolibConfig.defaultLocale, key);
                 if (res != null) {
                     return new Literal(res);
                 }
@@ -44,15 +55,18 @@ public interface Text {
         return new Literal(res);
     }
 
-    static Literal translatable(Player player, String key, Object... args) {
+    @NotNull
+    static Literal translatable(@Nullable Player player, String key, Object... args) {
         return new Literal(String.format(translatable(player, key).toString(), args));
     }
 
-    static Literal translatableColor(Player player, String key) {
+    @NotNull
+    static Literal translatableColor(@Nullable Player player, String key) {
         return new Literal(Chat.color(translatable(player, key).toString()));
     }
 
-    static Literal translatableColor(Player player, String key, Object... args) {
+    @NotNull
+    static Literal translatableColor(@Nullable Player player, String key, Object... args) {
         return new Literal(Chat.color(translatable(player, key, args).toString()));
     }
 }

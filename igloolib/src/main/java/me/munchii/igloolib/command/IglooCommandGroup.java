@@ -39,6 +39,10 @@ public class IglooCommandGroup implements CommandExecutor, TabCompleter, Listene
         enable();
     }
 
+    public static Builder create(String groupCommand) {
+        return new Builder(groupCommand);
+    }
+
     public void enable() {
         if (enabled) return;
 
@@ -133,6 +137,7 @@ public class IglooCommandGroup implements CommandExecutor, TabCompleter, Listene
 
     public IglooCommandGroup registerCommand(IglooCommand subCommand) {
         if (!hasCommand(subCommand)) {
+            subCommand.setGroup(this);
             subCommands.add(subCommand);
         }
 
@@ -142,6 +147,7 @@ public class IglooCommandGroup implements CommandExecutor, TabCompleter, Listene
     public IglooCommandGroup registerCommand(Supplier<IglooCommand> subCommand) {
         IglooCommand cmd = subCommand.get();
         if (!hasCommand(cmd)) {
+            cmd.setGroup(this);
             subCommands.add(cmd);
         }
 
@@ -203,5 +209,49 @@ public class IglooCommandGroup implements CommandExecutor, TabCompleter, Listene
 
     public Set<IglooCommand> getSubCommands() {
         return Collections.unmodifiableSet(subCommands);
+    }
+
+    public static class Builder {
+        private final String groupCommand;
+
+        private Set<String> groupAliases = Collections.emptySet();
+        private IglooCommandPermissionHandler permissionHandler;
+        private Set<IglooCommand> commands = new HashSet<>();
+
+        public Builder(String groupCommand) {
+            this.groupCommand = groupCommand;
+        }
+
+        public Builder withAliases(Set<String> groupAliases) {
+            this.groupAliases = groupAliases;
+            return this;
+        }
+
+        public Builder withPermissionHandler(IglooCommandPermissionHandler permissionHandler) {
+            this.permissionHandler = permissionHandler;
+            return this;
+        }
+
+        public Builder withCommand(IglooCommand command) {
+            commands.add(command);
+            return this;
+        }
+
+        public Builder withCommand(Supplier<IglooCommand> command) {
+            commands.add(command.get());
+            return this;
+        }
+
+        public IglooCommandGroup create() {
+            final IglooCommandGroup group = new IglooCommandGroup(groupCommand, groupAliases);
+
+            if (permissionHandler != null) {
+                group.setPermissionHandler(permissionHandler);
+            }
+
+            commands.forEach(group::registerCommand);
+
+            return group;
+        }
     }
 }

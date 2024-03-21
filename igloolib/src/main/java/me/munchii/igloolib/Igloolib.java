@@ -1,5 +1,6 @@
 package me.munchii.igloolib;
 
+import me.munchii.igloolib.config.Configuration;
 import me.munchii.igloolib.util.ListenerManager;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,6 +15,8 @@ public final class Igloolib extends JavaPlugin {
     @Override
     public void onEnable() {
         INSTANCE = this;
+
+        new Configuration(IgloolibConfig.class, this);
 
         getLogger().info("igloolib initialized");
     }
