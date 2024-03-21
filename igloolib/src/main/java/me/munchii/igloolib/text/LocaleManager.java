@@ -45,6 +45,12 @@ public enum LocaleManager {
         return null;
     }
 
+    public static void reload() {
+        INSTANCE.isInitialized = false;
+        INSTANCE.locales.clear();
+        loadPluginLocales();
+    }
+
     private static void loadPluginLocales() {
         int localeFiles = 0;
         int failedFiles = 0;

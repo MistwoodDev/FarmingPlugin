@@ -57,6 +57,8 @@ public final class MistwoodFarming extends JavaPlugin {
 
         setupListeners();
 
+        RegistryManager.register();
+
         playerCache = new UUIDCache<>(1024);
         farmCache = new UUIDCache<>(1024);
     }

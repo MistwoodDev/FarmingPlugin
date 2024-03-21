@@ -4,11 +4,16 @@ import me.munchii.igloolib.command.IglooCommand;
 import me.munchii.igloolib.command.IglooCommandGroup;
 import me.munchii.igloolib.gui.InventoryWindow;
 import me.munchii.igloolib.module.PluginModule;
+import me.munchii.igloolib.registry.IglooRegistry;
 import me.munchii.igloolib.text.Text;
 import me.munchii.igloolib.util.Logger;
+import me.munchii.mistwoodfarming.MistwoodFarming;
+import me.munchii.mistwoodfarming.RegistryManager;
 import me.munchii.mistwoodfarming.config.MistwoodFarmingConfig;
 import me.munchii.mistwoodfarming.model.ShopItem;
 import me.munchii.mistwoodfarming.modules.shop.gui.ShopPage;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -108,6 +113,9 @@ public class ShopModule extends PluginModule {
                         .withUsage("/shop")
                         .withAlias("sh")
                         .withAction(ctx -> {
+                            ctx.getPlayer().getInventory().addItem(RegistryManager.Blocks.SHOP_BLOCK.getDefaultStack(ctx.getPlayer().getPlayer()));
+                            ctx.getPlayer().updateInventory();
+                            /*
                             Text.translatableColor(ctx.getPlayer().getPlayer(), "message.mistwoodfarming.open_shop").send(ctx.getPlayer().getPlayer());
 
                             InventoryWindow shopWindow = new InventoryWindow("Shop", 6, 9);
@@ -115,7 +123,7 @@ public class ShopModule extends PluginModule {
                             shopWindow.drawPage(new ShopPage(items, 1));
                             shopWindow.registerDefaultListener();
                             shopWindow.open(ctx.getPlayer().getPlayer());
-
+                            */
                             return true;
                         })
                         .build());

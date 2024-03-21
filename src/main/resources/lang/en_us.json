@@ -1,4 +1,6 @@
 {
   "message.mistwoodfarming.player_welcome": "&aWelcome!",
-  "message.mistwoodfarming.open_shop": "&7Opening shop..."
+  "message.mistwoodfarming.open_shop": "&7Opening shop...",
+
+  "block.mistwoodfarming.shop_block": "&aShop Block"
 }

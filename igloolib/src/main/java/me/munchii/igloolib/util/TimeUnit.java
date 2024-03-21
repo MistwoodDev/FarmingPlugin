@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
 public enum TimeUnit {
+    TICK(Long::valueOf),
     MILLISECOND((value) -> value * 20L / 100),
     SECOND((value) -> value * 20L),
     MINUTE((value) -> value * (60L * 20L)),

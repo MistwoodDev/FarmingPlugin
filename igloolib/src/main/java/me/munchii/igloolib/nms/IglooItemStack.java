@@ -4,16 +4,16 @@ import me.munchii.igloolib.util.NBTUtil;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public final class IglooItem {
+public final class IglooItemStack {
     private final ItemStack nmsStack;
     private NbtCompound nbtCompound;
 
-    public IglooItem(ItemStack stack) {
+    public IglooItemStack(ItemStack stack) {
         this.nmsStack = stack;
     }
 
-    public static IglooItem of(org.bukkit.inventory.ItemStack stack) {
-        return new IglooItem(NBTUtil.getNMSStack(stack));
+    public static IglooItemStack of(org.bukkit.inventory.ItemStack stack) {
+        return new IglooItemStack(NBTUtil.getNMSStack(stack));
     }
 
     public NbtCompound getOrCreateNbt() {
