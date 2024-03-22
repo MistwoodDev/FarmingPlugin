@@ -2,6 +2,7 @@ package me.munchii.mistwoodfarming.modules.shop.blockentity;
 
 import me.munchii.igloolib.block.IglooBlockEntity;
 import me.munchii.igloolib.util.Logger;
+import me.munchii.mistwoodfarming.RegistryManager;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -14,7 +15,7 @@ public class ShopBlockEntity extends IglooBlockEntity {
     private int alive = 0;
 
     public ShopBlockEntity(Location pos) {
-        super(pos);
+        super(RegistryManager.BlockEntities.SHOP_BLOCK, pos);
         Logger.severe("AAABBB ShopBlockEntity Init");
     }
 
