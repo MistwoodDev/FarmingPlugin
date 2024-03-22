@@ -6,6 +6,7 @@ import me.munchii.igloolib.command.CommandManager;
 import me.munchii.igloolib.command.IglooCommand;
 import me.munchii.igloolib.command.IglooCommandGroup;
 import me.munchii.igloolib.config.Configuration;
+import me.munchii.igloolib.gui.DefaultWindowListener;
 import me.munchii.igloolib.text.LocaleManager;
 import me.munchii.igloolib.util.ListenerManager;
 import me.munchii.igloolib.util.Logger;
@@ -29,11 +30,9 @@ public final class Igloolib extends JavaPlugin {
 
         new Configuration(IgloolibConfig.class, this);
 
-        // TODO: fix the listener manager. it doesn't work apparently
-        //registerListener(DefaultBlockEntityListener::new);
-        Bukkit.getPluginManager().registerEvents(new DefaultBlockEntityListener(), INSTANCE);
-        // TODO: replace this
-        Bukkit.getPluginManager().registerEvents(new BlockEntityManager.ChunkListener(), INSTANCE);
+        registerListener(DefaultBlockEntityListener::new);
+        registerListener(BlockEntityManager.ChunkListener::new);
+        registerListener(DefaultWindowListener::new);
 
         commandManager = new CommandManager();
         // TODO: this command doesn't work. probably something wrong with command groups lol

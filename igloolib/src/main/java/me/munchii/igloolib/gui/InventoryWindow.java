@@ -37,10 +37,6 @@ public class InventoryWindow implements IInventoryGUI {
         this.columns = columns;
     }
 
-    public void registerDefaultListener() {
-        Igloolib.registerListener(DefaultWindowListener::new);
-    }
-
     @Override
     public void open(Player player) {
         slots.forEach((slotId, slot) -> inventory.setItem(slotId, slot.getStack()));

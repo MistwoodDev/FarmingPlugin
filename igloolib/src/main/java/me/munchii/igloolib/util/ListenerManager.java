@@ -94,7 +94,7 @@ public class ListenerManager {
 
         public ListenerReference(Listener instance) {
             this.instance = instance;
-            this.enabled = true;
+            this.enabled = false;
         }
     }
 }
