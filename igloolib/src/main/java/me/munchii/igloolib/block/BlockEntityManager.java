@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.WorldSaveEvent;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,7 +62,8 @@ public enum BlockEntityManager {
         return INSTANCE.existingBlockEntities.containsKey(pos);
     }
 
-    private static void writeBlockEntityToChunk(@NotNull Location pos, @NotNull IglooBlockEntityType<?> blockEntityType, @NotNull IglooBlockEntity blockEntity) {
+    @ApiStatus.Internal
+    public static void writeBlockEntityToChunk(@NotNull Location pos, @NotNull IglooBlockEntityType<?> blockEntityType, @NotNull IglooBlockEntity blockEntity) {
         NamespacedKey registryKey = IglooRegistry.BLOCK_ENTITY_TYPE.getId(blockEntityType);
 
         Chunk chunk = pos.getChunk();
@@ -93,6 +95,7 @@ public enum BlockEntityManager {
         chunk.getPersistentDataContainer().set(BLOCK_ENTITIES_KEY, IglooPersistentDataType.STRING_ARRAY, blockEntitiesList.toArray(new String[0]));
     }
 
+    @ApiStatus.Internal
     public static void saveBlockEntitiesFromChunk(@NotNull Chunk chunk) {
         if (chunk.getPersistentDataContainer().has(BLOCK_ENTITIES_KEY, IglooPersistentDataType.STRING_ARRAY)) {
             String[] blockEntities = chunk.getPersistentDataContainer().get(BLOCK_ENTITIES_KEY, IglooPersistentDataType.STRING_ARRAY);
@@ -139,7 +142,8 @@ public enum BlockEntityManager {
         }
     }
 
-    private static void removeBlockEntityFromChunk(@NotNull Location pos) {
+    @ApiStatus.Internal
+    public static void removeBlockEntityFromChunk(@NotNull Location pos) {
         Chunk chunk = pos.getChunk();
         if (chunk.getPersistentDataContainer().has(BLOCK_ENTITIES_KEY, IglooPersistentDataType.STRING_ARRAY)) {
             String[] blockEntities = chunk.getPersistentDataContainer().get(BLOCK_ENTITIES_KEY, IglooPersistentDataType.STRING_ARRAY);
@@ -166,7 +170,8 @@ public enum BlockEntityManager {
         }
     }
 
-    private static void loadBlockEntitiesFromChunk(@NotNull Chunk chunk) {
+    @ApiStatus.Internal
+    public static void loadBlockEntitiesFromChunk(@NotNull Chunk chunk) {
         if (chunk.getPersistentDataContainer().has(BLOCK_ENTITIES_KEY, IglooPersistentDataType.STRING_ARRAY)) {
             String[] blockEntities = chunk.getPersistentDataContainer().get(BLOCK_ENTITIES_KEY, IglooPersistentDataType.STRING_ARRAY);
             if (blockEntities == null) return;
