@@ -9,17 +9,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
 import java.util.Objects;
 
 public abstract class IglooBlockEntity {
-    private final NMSBlockEntity tileEntity;
     private final Location pos;
 
     public IglooBlockEntity(Location pos) {
-        // TODO: is tileEntity needed really?
-        // TODO: probably to store data, but do we need it. and if so, how would that work?
-        // TODO: nvm, yeah. because how else would we know when we destroy it
-        this.tileEntity = new NMSBlockEntity(TileEntityTypes.t, new BlockPosition(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ()), Block.a(425));
         this.pos = pos;
     }
 
@@ -32,7 +28,11 @@ public abstract class IglooBlockEntity {
     }
 
     @NotNull
-    public final NMSBlockEntity getTileEntity() {
-        return tileEntity;
+    public Map<String, String> writeChunkData() {
+        return Map.of();
+    }
+
+    public void loadChunkData(@NotNull Map<String, String> data) {
+
     }
 }

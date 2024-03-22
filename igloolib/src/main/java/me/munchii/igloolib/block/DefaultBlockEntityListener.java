@@ -33,7 +33,7 @@ public class DefaultBlockEntityListener implements Listener {
             IglooBlockEntity blockEntity = blockEntityType.instantiate(event.getBlock().getLocation());
             if (blockEntity == null) return;
 
-            BlockEntityManager.addBlockEntity(event.getBlock().getLocation(), blockEntity);
+            BlockEntityManager.addBlockEntity(event.getBlock().getLocation(), blockEntityType, blockEntity);
         }
     }
 

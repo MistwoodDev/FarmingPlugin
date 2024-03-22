@@ -1,5 +1,6 @@
 package me.munchii.igloolib;
 
+import me.munchii.igloolib.block.BlockEntityManager;
 import me.munchii.igloolib.block.DefaultBlockEntityListener;
 import me.munchii.igloolib.command.CommandManager;
 import me.munchii.igloolib.command.IglooCommand;
@@ -31,6 +32,8 @@ public final class Igloolib extends JavaPlugin {
         // TODO: fix the listener manager. it doesn't work apparently
         //registerListener(DefaultBlockEntityListener::new);
         Bukkit.getPluginManager().registerEvents(new DefaultBlockEntityListener(), INSTANCE);
+        // TODO: replace this
+        Bukkit.getPluginManager().registerEvents(new BlockEntityManager.ChunkListener(), INSTANCE);
 
         commandManager = new CommandManager();
         // TODO: this command doesn't work. probably something wrong with command groups lol

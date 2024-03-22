@@ -5,8 +5,14 @@ import me.munchii.igloolib.util.Logger;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
 
 public class ShopBlockEntity extends IglooBlockEntity {
+    private int progress = 0;
+    private int alive = 0;
+
     public ShopBlockEntity(Location pos) {
         super(pos);
         Logger.severe("AAABBB ShopBlockEntity Init");
@@ -14,6 +20,24 @@ public class ShopBlockEntity extends IglooBlockEntity {
 
     @Override
     public void tick(World world, Location pos, Block block) {
-        Logger.severe("AAABBB ShopBlockEntity Tick");
+        // every 2 sec
+        if (progress >= 40) {
+            alive++;
+            Logger.severe("AAABBB ShopBlockEntity alive=" + alive);
+            progress = 0;
+        } else {
+            progress++;
+        }
+    }
+
+    @Override
+    public @NotNull Map<String, String> writeChunkData() {
+        return Map.of("progress", String.valueOf(progress), "alive", String.valueOf(alive));
+    }
+
+    @Override
+    public void loadChunkData(@NotNull Map<String, String> data) {
+        progress = Integer.parseInt(data.get("progress"));
+        alive = Integer.parseInt(data.get("alive"));
     }
 }
