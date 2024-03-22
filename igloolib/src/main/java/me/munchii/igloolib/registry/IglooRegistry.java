@@ -48,7 +48,7 @@ public interface IglooRegistry<T> extends Iterable<T> {
                 return value;
             }
 
-            Logger.severe("Attempted to register key '" + key.toString() + "' in registry '" + type.getName() + "' which already exists!");
+            Logger.severe("IglooRegistry: Attempted to register key '" + key + "' in registry '" + type.getName() + "' which already exists!");
             return map.get(key);
         }
 

@@ -2,6 +2,7 @@ package me.munchii.igloolib.block;
 
 import com.mojang.datafixers.util.Pair;
 import me.munchii.igloolib.Igloolib;
+import me.munchii.igloolib.IgloolibConfig;
 import me.munchii.igloolib.registry.IglooRegistry;
 import me.munchii.igloolib.util.*;
 import org.bukkit.Chunk;
@@ -11,6 +12,9 @@ import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.event.world.WorldSaveEvent;
+import org.bukkit.event.world.WorldUnloadEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -94,6 +98,52 @@ public enum BlockEntityManager {
         chunk.getPersistentDataContainer().set(BLOCK_ENTITIES_KEY, IglooPersistentDataType.STRING_ARRAY, blockEntitiesList.toArray(new String[0]));
     }
 
+    public static void saveBlockEntitiesFromChunk(@NotNull Chunk chunk) {
+        if (chunk.getPersistentDataContainer().has(BLOCK_ENTITIES_KEY, IglooPersistentDataType.STRING_ARRAY)) {
+            String[] blockEntities = chunk.getPersistentDataContainer().get(BLOCK_ENTITIES_KEY, IglooPersistentDataType.STRING_ARRAY);
+            if (blockEntities == null) return;
+
+            List<String> newBlockEntities = new ArrayList<>();
+            for (String info : blockEntities) {
+                String[] parts = info.split(";");
+                if (parts.length < 1) return;
+
+                String data = parts[0];
+                String[] dataParts = data.split(",");
+                int blockX = Integer.parseInt(dataParts[0]);
+                int blockY = Integer.parseInt(dataParts[1]);
+                int blockZ = Integer.parseInt(dataParts[2]);
+
+                Location blockPos = chunk.getWorld().getBlockAt(blockX, blockY, blockZ).getLocation();
+                if (INSTANCE.existingBlockEntities.containsKey(blockPos)) {
+                    Pair<IglooBlockEntityType<?>, IglooBlockEntity> blockEntityPair = INSTANCE.existingBlockEntities.get(blockPos);
+                    String newInfo = String.join(",",
+                            // xyz
+                            String.valueOf(blockPos.getBlockX()),
+                            String.valueOf(blockPos.getBlockY()),
+                            String.valueOf(blockPos.getBlockZ()),
+                            // block entity type
+                            dataParts[3])
+                            // custom data
+                            + ";"
+                            + blockEntityPair.getSecond().writeChunkData()
+                            .entrySet().stream()
+                            .map(entry -> entry.getKey() + ":" + entry.getValue())
+                            .collect(Collectors.joining(","));
+
+                    if (IgloolibConfig.verbose) Logger.info("BlockEntityManager: Successfully saved block entity '" + dataParts[3] + "' at " + blockPos);
+                    newBlockEntities.add(newInfo);
+                } else {
+                    // TODO: how?
+                    // TODO: is this even possible (maybe very edge-case), because when chunk is loaded it's put into existingBlockEntities, so should be at unload as well right?
+                    Logger.severe("BlockEntityManager: Unable to save block entity '" + dataParts[3] + "' at " + blockPos);
+                }
+            }
+
+            chunk.getPersistentDataContainer().set(BLOCK_ENTITIES_KEY, IglooPersistentDataType.STRING_ARRAY, newBlockEntities.toArray(new String[0]));
+        }
+    }
+
     private static void removeBlockEntityFromChunk(@NotNull Location pos) {
         Chunk chunk = pos.getChunk();
         if (chunk.getPersistentDataContainer().has(BLOCK_ENTITIES_KEY, IglooPersistentDataType.STRING_ARRAY)) {
@@ -111,7 +161,7 @@ public enum BlockEntityManager {
                 int blockY = Integer.parseInt(dataParts[1]);
                 int blockZ = Integer.parseInt(dataParts[2]);
                 if (pos.getBlockX() == blockX && pos.getBlockY() == blockY && pos.getBlockZ() == blockZ) {
-                    Logger.info("BlockEntityManager: Successfully removed block entity: " + info);
+                    if (IgloolibConfig.verbose) Logger.info("BlockEntityManager: Successfully removed block entity '" + dataParts[3] + "' at " + pos);
                     continue;
                 }
                 newBlockEntities.add(info);
@@ -160,7 +210,7 @@ public enum BlockEntityManager {
 
                 blockEntity.loadChunkData(customData);
                 INSTANCE.existingBlockEntities.put(blockPos, new Pair<>(entityType, blockEntity));
-                Logger.info("BlockEntityManager: Successfully loaded block entity: " + info);
+                if (IgloolibConfig.verbose) Logger.info("BlockEntityManager: Successfully loaded block entity '" + dataParts[3] + "' at " + blockPos);
             }
         }
     }
@@ -182,7 +232,14 @@ public enum BlockEntityManager {
             loadBlockEntitiesFromChunk(event.getChunk());
         }
 
-        // TODO: maybe add a chunk unload event to write the updated data to the chunk
-        // TODO: because right now we only write the data when it's created and any updates is just discarded
+        @EventHandler
+        public void onChunkUnloaded(ChunkUnloadEvent event) {
+            saveBlockEntitiesFromChunk(event.getChunk());
+        }
+
+        @EventHandler
+        public void onWorldSave(WorldSaveEvent event) {
+            Arrays.stream(event.getWorld().getLoadedChunks()).forEach(BlockEntityManager::saveBlockEntitiesFromChunk);
+        }
     }
 }

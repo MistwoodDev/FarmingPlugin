@@ -55,7 +55,7 @@ public class Configuration {
                     final JsonObject jsonObject = GSON.fromJson(fileContents, JsonObject.class);
                     configs.put(name, jsonObject);
                 } catch (IOException e) {
-                    plugin.getLogger().warning("failed to read config file " + file.getAbsolutePath());
+                    plugin.getLogger().warning("IglooConfig: Failed to read config file " + file.getAbsolutePath());
                     e.printStackTrace();
                 }
             }

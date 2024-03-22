@@ -48,7 +48,7 @@ public interface Text {
                 }
             }
 
-            Logger.severe("could not find key '" + key + "' for locale '" + player.getLocale() + "'");
+            Logger.severe("Text: Could not find key '" + key + "' for locale '" + player.getLocale() + "'");
             return new Literal(key);
         }
 

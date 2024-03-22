@@ -15,7 +15,7 @@ public class IglooBlockEntityType<T extends IglooBlockEntity> {
 
     private static <T extends IglooBlockEntity> IglooBlockEntityType<T> create(NamespacedKey key, Builder<T> builder) {
         if (builder.blocks.isEmpty()) {
-            Logger.warning("Block entity type " + key.getKey() + " requires at least one valid block to be defined!");
+            Logger.warning("IglooEntityType: Block entity type " + key.getKey() + " requires at least one valid block to be defined!");
         }
 
         return (IglooBlockEntityType<T>) IglooRegistry.BLOCK_ENTITY_TYPE.register(key, builder.build());

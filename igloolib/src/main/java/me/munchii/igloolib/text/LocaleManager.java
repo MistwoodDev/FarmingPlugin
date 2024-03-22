@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import me.munchii.igloolib.IgloolibConfig;
 import me.munchii.igloolib.util.Logger;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
@@ -87,7 +88,7 @@ public enum LocaleManager {
                     for (Map.Entry<String, JsonElement> entry : jsonObject.asMap().entrySet()) {
                         String key = entry.getKey().toLowerCase(Locale.ROOT);
                         if (localeMap.has(key)) {
-                            Logger.severe("locale '" + localeName + "' already contains key: " + key);
+                            Logger.warning("LocaleManager: Locale '" + localeName + "' already contains key: " + key);
                             continue;
                         }
 
@@ -96,7 +97,7 @@ public enum LocaleManager {
                     localeFiles += 1;
                 } catch (IOException e) {
                     failedFiles += 1;
-                    plugin.getLogger().warning("failed to read locale file " + file.getAbsolutePath());
+                    Logger.warning("LocaleManager: Failed to read locale file " + file.getAbsolutePath());
                     e.printStackTrace();
                 }
 
@@ -109,7 +110,7 @@ public enum LocaleManager {
         }
 
         INSTANCE.isInitialized = true;
-        Logger.info("loaded " + localeFiles + " locale files. failed to load " + failedFiles + " locale files");
+        if (IgloolibConfig.verbose) Logger.info("LocaleManager: Loaded " + localeFiles + " locale files. Failed to load " + failedFiles + " locale files");
     }
 
     private static Locale parseLocale(String locale) {
