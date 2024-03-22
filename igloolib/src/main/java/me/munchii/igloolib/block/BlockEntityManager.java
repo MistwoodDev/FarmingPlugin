@@ -14,7 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.WorldSaveEvent;
-import org.bukkit.event.world.WorldUnloadEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,11 +40,7 @@ public enum BlockEntityManager {
     public static Block addBlockEntity(@NotNull Location pos, @NotNull IglooBlockEntityType<?> blockEntityType, @NotNull IglooBlockEntity blockEntity) {
         INSTANCE.existingBlockEntities.put(pos, new Pair<>(blockEntityType, blockEntity));
 
-        //pos.getChunk().getPersistentDataContainer().remove(BLOCK_ENTITIES_KEY);
         writeBlockEntityToChunk(pos, blockEntityType, blockEntity);
-        String[] data = pos.getChunk().getPersistentDataContainer().get(BLOCK_ENTITIES_KEY, IglooPersistentDataType.STRING_ARRAY);
-        assert data != null;
-        Logger.severe("AAABBB data[0]=" + data[0]);
 
         return Objects.requireNonNull(pos.getWorld()).getBlockAt(pos);
     }
