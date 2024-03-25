@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -25,6 +26,10 @@ public interface IglooRegistry<T> extends Iterable<T> {
 
     @Nullable
     T get(@NotNull NamespacedKey key);
+
+    default Optional<T> getOrEmpty(@NotNull NamespacedKey key) {
+        return Optional.ofNullable(get(key));
+    }
 
     @Nullable
     NamespacedKey getId(T value);

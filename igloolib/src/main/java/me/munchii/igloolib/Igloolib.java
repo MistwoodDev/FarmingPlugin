@@ -39,8 +39,8 @@ public final class Igloolib extends JavaPlugin {
         commandManager.registerCommandGroup(IglooCommandGroup.create("igloo")
                 .withCommand(IglooCommand.create("locale")
                         .withDescription("Locale tools")
-                        .withUsage("/locale")
-                        .withPermission("igloolib.locale.reload")
+                        .withUsage("/igloo locale <sub-command>")
+                        .withPermission("igloolib.admin")
                         .withAction(ctx -> {
                             List<String> args = ctx.getArgs();
                             if (Objects.equals(args.get(0), "reload")) {
@@ -52,7 +52,21 @@ public final class Igloolib extends JavaPlugin {
                             return false;
                         })
                         .build()
-                ).create());
+                )
+                .withCommand(IglooCommand.create("bem")
+                        .withDescription("BlockEntityManager tools")
+                        .withUsage("/igloo bem <sub-command>")
+                        .withPermission("igloolib.admin")
+                        .withAction(ctx -> {
+                            List<String> args = ctx.getArgs();
+                            if (Objects.equals(args.get(0), "clearchunk")) {
+                                BlockEntityManager.clearChunkData(ctx.getPlayer().getLocation().getChunk());
+                                ctx.getPlayer().sendMessage("&7[igloolib] Chunk data cleared of block entities!");
+                                return true;
+                            }
+
+                            return false;
+                        }).build()).create());
         commandManager.enable();
 
         getLogger().info("igloolib initialized");

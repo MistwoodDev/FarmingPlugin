@@ -10,6 +10,8 @@ import org.bukkit.craftbukkit.v1_20_R2.block.CraftBlock;
 import org.bukkit.craftbukkit.v1_20_R2.block.CraftBlockState;
 import org.bukkit.craftbukkit.v1_20_R2.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,32 +19,32 @@ import java.util.Set;
 import java.util.UUID;
 
 public class NBTUtil {
-    public static net.minecraft.world.item.ItemStack getNMSStack(ItemStack stack) {
+    public static net.minecraft.world.item.ItemStack getNMSStack(@NotNull ItemStack stack) {
         return CraftItemStack.asNMSCopy(stack);
     }
 
-    public static ItemStack getBukkitStack(net.minecraft.world.item.ItemStack stack) {
+    public static ItemStack getBukkitStack(@NotNull net.minecraft.world.item.ItemStack stack) {
         return CraftItemStack.asBukkitCopy(stack);
     }
 
-    public static NBTTagCompound getItemNBT(ItemStack stack) {
+    public static NBTTagCompound getItemNBT(@NotNull ItemStack stack) {
         net.minecraft.world.item.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
         //return nmsStack.getOrCreateTag();
         return nmsStack.w();
     }
 
-    public static NBTTagCompound getItemNBT(net.minecraft.world.item.ItemStack stack) {
+    public static NBTTagCompound getItemNBT(@NotNull net.minecraft.world.item.ItemStack stack) {
         //return stack.getOrCreateTag();
         return stack.w();
     }
 
-    public static void putItemNBT(ItemStack stack, NBTTagCompound nbt) {
+    public static void putItemNBT(ItemStack stack, @Nullable NBTTagCompound nbt) {
         net.minecraft.world.item.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
         //nmsStack.setTag(nbt);
         nmsStack.c(nbt);
     }
 
-    public static void putItemNBT(net.minecraft.world.item.ItemStack stack, NBTTagCompound nbt) {
+    public static void putItemNBT(net.minecraft.world.item.ItemStack stack, @Nullable NBTTagCompound nbt) {
         //stack.setTag(nbt);
         stack.c(nbt);
     }
@@ -195,6 +197,10 @@ public class NBTUtil {
     public static boolean nbtContainsKey(NBTTagCompound nbt, String key) {
         //return nbt.contains(key);
         return nbt.e(key);
+    }
+
+    public static boolean nbtContains(NBTTagCompound nbt, String key, int type) {
+        return nbt.b(key, type);
     }
 
     public static Optional<NBTBase> nbtGetBase(NBTTagCompound nbt, String key) {

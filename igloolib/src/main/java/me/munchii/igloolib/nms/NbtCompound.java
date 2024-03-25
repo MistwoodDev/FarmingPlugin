@@ -3,6 +3,9 @@ package me.munchii.igloolib.nms;
 import me.munchii.igloolib.util.NBTUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.item.ItemStack;
+import org.bukkit.craftbukkit.v1_20_R2.persistence.CraftPersistentDataContainer;
+import org.bukkit.craftbukkit.v1_20_R2.persistence.CraftPersistentDataTypeRegistry;
+import org.bukkit.persistence.PersistentDataContainer;
 
 import java.util.List;
 import java.util.Set;
@@ -161,6 +164,10 @@ public final class NbtCompound {
         return NBTUtil.nbtContainsKey(compound, key);
     }
 
+    public boolean contains(String key, int type) {
+        return NBTUtil.nbtContains(compound, key, type);
+    }
+
     public void remove(String key) {
         NBTUtil.nbtRemoveEntry(compound, key);
     }
@@ -185,7 +192,14 @@ public final class NbtCompound {
         return NBTUtil.nbtIsEmpty(compound);
     }
 
-    NBTTagCompound getCompound() {
+    public NBTTagCompound getCompound() {
         return compound;
+    }
+
+    public CraftPersistentDataContainer toPersistentDataContainer() {
+        CraftPersistentDataContainer pdc = new CraftPersistentDataContainer(new CraftPersistentDataTypeRegistry());
+        pdc.putAll(compound);
+
+        return pdc;
     }
 }
