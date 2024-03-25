@@ -13,6 +13,10 @@ public class IglooBlockItem extends IglooItem {
         this.block = block;
     }
 
+    public IglooBlock getBlock() {
+        return block;
+    }
+
     public ItemStack getItem() {
         // TODO: apply nbt
         return new ItemStack(block.getType(), 1);

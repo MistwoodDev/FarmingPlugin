@@ -25,6 +25,8 @@ public class DefaultBlockEntityListener implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
+        // TODO: rewrite this to use the new IglooBlockItem methods
+        // TODO: dont know how tho
         ItemStack stack = event.getItemInHand();
         IglooItemStack item = IglooItemStack.of(stack);
         NbtCompound nbt = item.getOrCreateNbt();
@@ -44,6 +46,7 @@ public class DefaultBlockEntityListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
+        // TODO
         if (BlockEntityManager.isBlockEntityAt(event.getBlock().getLocation())) {
             // TODO: needs testing
 
