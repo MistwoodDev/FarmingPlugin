@@ -6,7 +6,16 @@ import me.munchii.igloolib.nms.NbtCompound;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class IglooBlockItem extends IglooItem {
+    private static final Map<IglooBlock, IglooBlockItem> BLOCK_ITEMS = new HashMap<>();
+
+    public static IglooBlockItem getBlockItem(IglooBlock block) {
+        return BLOCK_ITEMS.computeIfAbsent(block, IglooBlockItem::new);
+    }
+
     private final IglooBlock block;
 
     public IglooBlockItem(IglooBlock block) {

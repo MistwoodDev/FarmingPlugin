@@ -2,6 +2,7 @@ package me.munchii.igloolib.player;
 
 import me.munchii.igloolib.Igloolib;
 import me.munchii.igloolib.IgloolibConfig;
+import me.munchii.igloolib.nms.IglooItemStack;
 import me.munchii.igloolib.text.Text;
 import me.munchii.igloolib.util.Chat;
 import me.munchii.igloolib.util.UUIDCache;
@@ -241,5 +242,10 @@ public final class IglooPlayer {
         }
 
         return true;
+    }
+
+    public void giveItem(IglooItemStack item) {
+        getInventory().addItem(item.asBukkitStack());
+        updateInventory();
     }
 }

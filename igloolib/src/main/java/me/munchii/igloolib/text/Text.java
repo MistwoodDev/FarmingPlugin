@@ -2,7 +2,9 @@ package me.munchii.igloolib.text;
 
 import me.munchii.igloolib.IgloolibConfig;
 import me.munchii.igloolib.util.Chat;
+import me.munchii.igloolib.util.KeyUtil;
 import me.munchii.igloolib.util.Logger;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +33,12 @@ public interface Text {
     void send(@NotNull Player player);
 
     @NotNull
-    static Literal translatable(@Nullable Player player, String key) {
+    static Literal translatable(@Nullable Player player, @NotNull NamespacedKey key) {
+        return translatable(player, KeyUtil.toDottedString(key));
+    }
+
+    @NotNull
+    static Literal translatable(@Nullable Player player, @NotNull String key) {
         String locale;
         if (player == null) {
             locale = IgloolibConfig.defaultLocale;

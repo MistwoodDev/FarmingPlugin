@@ -2,7 +2,11 @@ package me.munchii.igloolib.block;
 
 import me.munchii.igloolib.nms.IglooItemStack;
 import me.munchii.igloolib.nms.NbtCompound;
+import me.munchii.igloolib.player.IglooPlayer;
 import me.munchii.igloolib.registry.IglooRegistry;
+import me.munchii.igloolib.screen.BuiltScreenHandler;
+import me.munchii.igloolib.screen.BuiltScreenHandlerProvider;
+import me.munchii.igloolib.screen.ScreenProvider;
 import me.munchii.igloolib.text.Text;
 import me.munchii.igloolib.util.KeyUtil;
 import org.bukkit.Material;
@@ -20,6 +24,15 @@ import java.util.Objects;
 public class DefaultBlockEntityListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getClickedBlock() != null) {
+            if (BlockEntityManager.isBlockEntityAt(event.getClickedBlock().getLocation())) {
+                IglooBlockEntity blockEntity = BlockEntityManager.getBlockEntity(event.getClickedBlock().getLocation());
+
+                if (blockEntity instanceof BuiltScreenHandlerProvider provider) {
+                    BuiltScreenHandler screenHandler = provider.createScreenHandler(IglooPlayer.get(event.getPlayer()));
+                }
+            }
+        }
         // TODO: handle interaction (like screens or something else)
     }
 
@@ -27,6 +40,13 @@ public class DefaultBlockEntityListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         // TODO: rewrite this to use the new IglooBlockItem methods
         // TODO: dont know how tho
+        // BlockItem.class
+        // Block.class
+        // Item.class
+        // ItemStack.class
+        // ItemConvertible.class
+        // Block.class : line 474 -> Item.class : line 91 (deprecated?)
+        // Item.class : line 344
         ItemStack stack = event.getItemInHand();
         IglooItemStack item = IglooItemStack.of(stack);
         NbtCompound nbt = item.getOrCreateNbt();

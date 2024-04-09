@@ -162,7 +162,7 @@ public enum BlockEntityManager {
                     Logger.severe("BlockEntityManager: Failed to load block entity of id '" + nbt.getString("id") + "' because of previous errors!");
                 } else {
                     INSTANCE.existingBlockEntities.put(blockPos, blockEntity);
-                    if (IgloolibConfig.verbose) Logger.info("BlockEntityManager: Successfully loaded block entity '" + nbt.getString("blockEntityType") + "' at " + blockPos);
+                    if (IgloolibConfig.verbose) Logger.info("BlockEntityManager: Successfully loaded block entity '" + nbt.getString("id") + "' at " + blockPos);
                 }
             }
         }

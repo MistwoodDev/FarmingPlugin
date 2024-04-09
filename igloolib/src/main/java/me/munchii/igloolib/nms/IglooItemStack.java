@@ -1,7 +1,12 @@
 package me.munchii.igloolib.nms;
 
+import me.munchii.igloolib.block.IglooBlock;
+import me.munchii.igloolib.block.custom.SkullBlock;
+import me.munchii.igloolib.item.IglooItem;
+import me.munchii.igloolib.util.Logger;
 import me.munchii.igloolib.util.NBTUtil;
 import net.minecraft.world.item.ItemStack;
+import org.bukkit.Material;
 import org.jetbrains.annotations.Nullable;
 
 public final class IglooItemStack {
@@ -15,6 +20,19 @@ public final class IglooItemStack {
 
     public static IglooItemStack of(org.bukkit.inventory.ItemStack stack) {
         return new IglooItemStack(NBTUtil.getNMSStack(stack));
+    }
+
+    public static IglooItemStack of(Material material) {
+        return new IglooItemStack(NBTUtil.getNMSStack(new org.bukkit.inventory.ItemStack(material)));
+    }
+
+    public static IglooItemStack of(IglooItem item) {
+        return new IglooItemStack(null);
+    }
+
+    public static IglooItemStack of(IglooBlock block) {
+        Logger.severe(block instanceof SkullBlock);
+        return of(block.asItem().getItem());
     }
 
     public boolean hasNbt() {

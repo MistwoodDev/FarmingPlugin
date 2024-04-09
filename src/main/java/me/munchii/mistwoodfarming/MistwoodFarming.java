@@ -10,6 +10,7 @@ import me.munchii.mistwoodfarming.model.FarmData;
 import me.munchii.mistwoodfarming.model.PlayerData;
 import me.munchii.mistwoodfarming.modules.farming.FarmingModule;
 import me.munchii.mistwoodfarming.modules.shop.ShopModule;
+import me.munchii.mistwoodfarming.modules.wid.WIDModule;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -71,6 +72,7 @@ public final class MistwoodFarming extends JavaPlugin {
     private void registerModules() {
         moduleManager.registerModule(FarmingModule::new);
         moduleManager.registerModule(ShopModule::new);
+        moduleManager.registerModule(WIDModule::new);
     }
 
     private void setupListeners() {

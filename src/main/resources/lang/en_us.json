@@ -2,5 +2,6 @@
   "message.mistwoodfarming.player_welcome": "&aWelcome!",
   "message.mistwoodfarming.open_shop": "&7Opening shop...",
 
-  "block.mistwoodfarming.shop_block": "&aShop Block"
+  "block.mistwoodfarming.shop_block": "&aShop Block",
+  "block.mistwoodfarming.farmers_crafting_table": "&aFarmer's Crafting Table"
 }

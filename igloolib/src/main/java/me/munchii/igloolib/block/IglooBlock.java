@@ -17,7 +17,7 @@ import java.util.Objects;
 public class IglooBlock {
     private final Material type;
 
-    private IglooBlock(@NotNull Material type) {
+    protected IglooBlock(@NotNull Material type) {
         this.type = type;
     }
 
@@ -55,5 +55,10 @@ public class IglooBlock {
         }
 
         return stack;
+    }
+
+    @NotNull
+    public IglooBlockItem asItem() {
+        return IglooBlockItem.getBlockItem(this);
     }
 }
