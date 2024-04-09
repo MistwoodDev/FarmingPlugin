@@ -8,6 +8,7 @@ public class FarmersCraftingModule extends PluginModule {
         super("farmerscrafting", MistwoodFarmingConfig.farmersCraftingModuleEnabled);
     }
 
+    // TODO maybe a cool crafting grid like 6x6 or 9x9 or something like that so we can create many complicated recipes
     @Override
     public void onEnable() {
 
