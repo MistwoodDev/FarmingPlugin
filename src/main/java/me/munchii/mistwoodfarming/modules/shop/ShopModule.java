@@ -108,11 +108,11 @@ public class ShopModule extends PluginModule {
                         .withUsage("/shop")
                         .withAlias("sh")
                         .withAction(ctx -> {
-                            /*ctx.getPlayer().getInventory().addItem(RegistryManager.Blocks.SHOP_BLOCK.getDefaultStack(ctx.getPlayer().getPlayer()));
-                            ctx.getPlayer().updateInventory();
-
+                            ctx.getPlayer().getInventory().addItem(RegistryManager.Blocks.SHOP_BLOCK.getDefaultStack(ctx.getPlayer().getPlayer()));
                             ctx.getPlayer().getInventory().addItem(RegistryManager.Blocks.PEDESTAL.getDefaultStack(ctx.getPlayer().getPlayer()));
-                            ctx.getPlayer().updateInventory();*/
+                            // this here is still not working correctly
+                            ctx.getPlayer().getInventory().addItem(RegistryManager.Blocks.FARMERS_CRAFTING_TABLE.getDefaultStack(ctx.getPlayer().getPlayer()));
+                            ctx.getPlayer().updateInventory();
 
                             //SkullBlock skullBlock = SkullBlock.of("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWU5ZTBmN2ZlZTRlMmNmOTRmZjM3NmYyOTlmZTg3YTcyYTE3MjM4N2VlNWJiZWM5Yzk0YjgyMWU3YmM3MDQ5NyJ9fX0=");
                             //ctx.getPlayer().getInventory().addItem(skullBlock.asItem().getItem());

@@ -50,6 +50,7 @@ public enum BlockEntityManager {
     public static Block addBlockEntity(@NotNull Location pos, @NotNull IglooBlockEntity blockEntity) {
         INSTANCE.existingBlockEntities.put(pos, blockEntity);
 
+        Logger.severe("Added block entity " + IglooBlockEntityType.getId(blockEntity.getType()).toString() + " at " + pos);
         writeBlockEntityToChunk(pos, blockEntity);
 
         return Objects.requireNonNull(pos.getWorld()).getBlockAt(pos);

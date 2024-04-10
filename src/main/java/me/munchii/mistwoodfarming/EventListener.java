@@ -13,6 +13,6 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Chat.sendTranslatable(event.getPlayer(), "message.mistwoodfarming.player_welcome");
+        //Chat.sendTranslatable(event.getPlayer(), "message.mistwoodfarming.player_welcome");
     }
 }

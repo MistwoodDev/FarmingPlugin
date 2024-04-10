@@ -23,8 +23,8 @@ public class PedestalBlockEntity extends IglooBlockEntity {
     public static final int MAX_STORED = 64;
 
     private GenerationType generationType = null;
-    private int stored;
-    private int ticks;
+    private int stored = 0;
+    private int ticks = 0;
 
     public PedestalBlockEntity(Location pos) {
         super(RegistryManager.BlockEntities.PEDESTAL, pos);
@@ -38,7 +38,8 @@ public class PedestalBlockEntity extends IglooBlockEntity {
         if (stored >= MAX_STORED) return;
 
         ticks++;
-        Block beneath = world.getBlockAt(pos.subtract(0, 1, 0));
+        Location loc = pos.clone().subtract(0, 1, 0);
+        Block beneath = world.getBlockAt(loc);
 
         // if generationType hasn't been set yet - first time it's been placed
         if (generationType == null) {
@@ -58,7 +59,6 @@ public class PedestalBlockEntity extends IglooBlockEntity {
         }
 
         if (ticks >= generationType.ticks) {
-            Logger.severe("AAABBB PedestalBlockEntity Tick5 (Generation)");
             ticks = 0;
             stored++;
         }
@@ -132,28 +132,18 @@ public class PedestalBlockEntity extends IglooBlockEntity {
         public void onPlayerInteract(PlayerInteractEvent event) {
             Player player = event.getPlayer();
 
-            Logger.severe("AAABBB PedestalBlockEntity Click1");
-
             if (event.getClickedBlock() == null) return;
-            Logger.severe("AAABBB PedestalBlockEntity AfterCheck1");
             if (!BlockEntityManager.isBlockEntityAt(event.getClickedBlock().getLocation())) return;
-            Logger.severe("AAABBB PedestalBlockEntity AfterCheck2");
             if (BlockEntityManager.getBlockEntity(event.getClickedBlock().getLocation()).getType() != RegistryManager.BlockEntities.PEDESTAL) return;
-            Logger.severe("AAABBB PedestalBlockEntity AfterCheck3");
             PedestalBlockEntity pedestal = BlockEntityManager.getBlockEntityAt(event.getClickedBlock().getLocation());
-            Logger.severe("AAABBB PedestalBlockEntity AfterCheck4");
             if (pedestal == null) return;
-
-            Logger.severe("AAABBB PedestalBlockEntity Click2");
 
             // left click = take all
             // right click = take one
             if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-                Logger.severe("AAABBB PedestalBlockEntity Click3");
                 player.getInventory().addItem(pedestal.clearStored());
                 player.updateInventory();
             } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                Logger.severe("AAABBB PedestalBlockEntity Click4");
                 player.getInventory().addItem(pedestal.takeOne());
                 player.updateInventory();
             }

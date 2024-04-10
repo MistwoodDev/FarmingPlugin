@@ -39,7 +39,10 @@ public class IglooBlock {
     public ItemStack getDefaultStack(Player player, int count) {
         NamespacedKey registryKey = Objects.requireNonNull(IglooRegistry.BLOCK.getId(this));
 
-        ItemStack stack = new ItemStack(type, count);
+        IglooBlockItem blockItem = asItem();
+        //ItemStack stack = new ItemStack(type, count);
+        ItemStack stack = blockItem.getItem();
+        stack.setAmount(count);
 
         IglooItemStack item = IglooItemStack.of(stack);
         NbtCompound nbt = item.getOrCreateNbt();
