@@ -3,8 +3,11 @@ package me.munchii.mistwoodfarming.modules.pedestals.blockentity;
 import me.munchii.igloolib.block.BlockEntityManager;
 import me.munchii.igloolib.block.IglooBlockEntity;
 import me.munchii.igloolib.nms.NbtCompound;
+import me.munchii.igloolib.text.Text;
 import me.munchii.igloolib.util.Logger;
+import me.munchii.igloolib.util.StringUtil;
 import me.munchii.mistwoodfarming.RegistryManager;
+import me.munchii.mistwoodfarming.modules.wid.api.WIDInformable;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -17,9 +20,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
 import java.util.Objects;
 
-public class PedestalBlockEntity extends IglooBlockEntity {
+public class PedestalBlockEntity extends IglooBlockEntity implements WIDInformable {
     public static final int MAX_STORED = 64;
 
     private GenerationType generationType = null;
@@ -28,7 +32,6 @@ public class PedestalBlockEntity extends IglooBlockEntity {
 
     public PedestalBlockEntity(Location pos) {
         super(RegistryManager.BlockEntities.PEDESTAL, pos);
-        Logger.severe("AAABBB PedestalBlockEntity Init");
     }
 
     @Override
@@ -101,6 +104,11 @@ public class PedestalBlockEntity extends IglooBlockEntity {
         }
 
         return null;
+    }
+
+    @Override
+    public Text getInformation() {
+        return new Text.Literal(stored + "x " + StringUtil.toTitleCase(generationType.name().toLowerCase(Locale.ROOT).replace("_", " ")));
     }
 
     // TODO: make configurable? (add more types of generation)

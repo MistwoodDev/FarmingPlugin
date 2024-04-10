@@ -2,6 +2,10 @@ package me.munchii.igloolib;
 
 import me.munchii.igloolib.profanity.ProfanityFilter;
 import me.munchii.igloolib.profanity.ProfanityResult;
+import net.minecraft.network.chat.IChatBaseComponent;
+import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
 
 public class Test {
     public static void main(String... args) {

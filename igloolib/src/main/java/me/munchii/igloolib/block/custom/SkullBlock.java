@@ -10,14 +10,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.UUID;
 
 public class SkullBlock extends IglooBlock {
@@ -50,7 +48,6 @@ public class SkullBlock extends IglooBlock {
 
     @Override
     public @NotNull IglooBlockItem asItem() {
-        Logger.severe("SkullBlock.asItem() called + uuid=" + (uuid == null ? "null" : uuid.toString()) + ", base64=" + (base64 == null ? "null" : base64));
         return new SkullBlockItem(this);
     }
 
@@ -71,10 +68,8 @@ public class SkullBlock extends IglooBlock {
             ItemStack stack = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta meta = (SkullMeta) stack.getItemMeta();
             if (skullBlock.uuid != null) {
-                Logger.severe("uuid");
                 meta.setOwningPlayer(Bukkit.getOfflinePlayer(skullBlock.uuid));
             } else if (skullBlock.base64 != null) {
-                Logger.severe("base64");
                 mutateItemMeta(meta, skullBlock.base64);
             }
             stack.setItemMeta(meta);

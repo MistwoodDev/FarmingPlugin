@@ -1,5 +1,7 @@
 import net.minecraft.core.BlockPosition;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.chat.IChatBaseComponent;
+import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.world.entity.EntityLiving;
 import net.minecraft.world.entity.ambient.EntityBat;
 import net.minecraft.world.level.block.Block;
@@ -14,6 +16,8 @@ import net.minecraft.world.level.block.state.IBlockData;
 import net.minecraft.world.level.block.state.properties.BlockPropertyWood;
 import net.minecraft.world.level.block.state.properties.IBlockState;
 import net.minecraft.world.level.chunk.Chunk;
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
 
 public class Test {
     public static void test() {
@@ -26,5 +30,10 @@ public class Test {
         Block block = new Block(null);
         Chunk chunk = new Chunk(null, null);
         EntityLiving entityLiving = new EntityBat(null, null);
+
+        CraftPlayer player = (CraftPlayer) Bukkit.getPlayer("dmunch04");
+        IChatBaseComponent cbc = IChatBaseComponent.ChatSerializer.fromJson("");
+        ClientboundSystemChatPacket packet = new ClientboundSystemChatPacket(cbc, true);
+        player.getHandle().connection.send(packet);
     }
 }

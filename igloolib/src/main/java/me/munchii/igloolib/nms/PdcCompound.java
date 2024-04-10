@@ -16,7 +16,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("DataFlowIssue")
-public class PdcCompound {
+public final class PdcCompound {
     private final PersistentDataContainer compound;
 
     public PdcCompound() {

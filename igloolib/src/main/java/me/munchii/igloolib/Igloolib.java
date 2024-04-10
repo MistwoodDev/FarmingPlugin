@@ -7,6 +7,7 @@ import me.munchii.igloolib.command.IglooCommand;
 import me.munchii.igloolib.command.IglooCommandGroup;
 import me.munchii.igloolib.config.Configuration;
 import me.munchii.igloolib.gui.DefaultWindowListener;
+import me.munchii.igloolib.screen.ScreenListener;
 import me.munchii.igloolib.text.LocaleManager;
 import me.munchii.igloolib.util.ListenerManager;
 import me.munchii.igloolib.util.Logger;
@@ -33,6 +34,7 @@ public final class Igloolib extends JavaPlugin {
         registerListener(DefaultBlockEntityListener::new);
         registerListener(BlockEntityManager.ChunkListener::new);
         registerListener(DefaultWindowListener::new);
+        registerListener(ScreenListener::new);
 
         commandManager = new CommandManager();
         // TODO: this command doesn't work. probably something wrong with command groups lol

@@ -4,23 +4,25 @@ import me.munchii.igloolib.block.BlockEntityManager;
 import me.munchii.igloolib.block.IglooBlockEntity;
 import me.munchii.igloolib.block.IglooBlockEntityType;
 import me.munchii.igloolib.module.PluginModule;
-import me.munchii.igloolib.text.LocaleManager;
 import me.munchii.igloolib.text.Text;
 import me.munchii.igloolib.util.*;
 import me.munchii.mistwoodfarming.config.MistwoodFarmingConfig;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
+import me.munchii.mistwoodfarming.modules.wid.api.WIDInformable;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 // Was Is Das (Jade clone)
 public class WIDModule extends PluginModule {
@@ -40,9 +42,28 @@ public class WIDModule extends PluginModule {
                 if (targetBlock.getType() != Material.AIR && BlockEntityManager.isBlockEntityAt(targetBlock.getLocation())) {
                     IglooBlockEntity blockEntity = BlockEntityManager.getBlockEntity(targetBlock.getLocation());
                     blockName = Chat.stripColorCodes(Text.translatable(player, KeyUtil.join("block", IglooBlockEntityType.getId(blockEntity.getType()))));
+
+                    if (blockEntity instanceof WIDInformable informable) {
+                        blockName += "\n§n" + informable.getInformation();
+                    }
                 } else {
                     blockName = StringUtil.toTitleCase(targetBlock.getType().name().toLowerCase(Locale.ROOT).replace("_", " "));
                 }
+
+                Location lookingAt = player.getEyeLocation();
+                Set<Entity> entities = player.getWorld().getNearbyEntities(lookingAt, 5, 5, 5)
+                        .stream().filter(entity -> !(entity instanceof Player) && !entity.isDead()).collect(Collectors.toSet());
+                if (!entities.isEmpty()) {
+                    for (Entity entity : entities) {
+                        if (isLookingAtEntity(player, (LivingEntity) entity)) {
+                            // TODO: check for custom entities when implemented
+
+                            blockName = entity.getName();
+                        }
+                    }
+                }
+
+                Chat.sendActionBar(player, blockName);
 
                 if (BOSS_BARS.containsKey(player.getUniqueId())) {
                     if (targetBlock.getType() == Material.AIR) {
@@ -69,5 +90,13 @@ public class WIDModule extends PluginModule {
     @Override
     public void onDisable() {
         TaskManager.removeTask("WID_BOSSBAR_TICK");
+    }
+
+    private static boolean isLookingAtEntity(Player player, LivingEntity entity) {
+        Location lookingAt = player.getEyeLocation();
+        Vector toEntity = entity.getEyeLocation().toVector().subtract(lookingAt.toVector());
+        double dot = toEntity.normalize().dot(lookingAt.getDirection());
+
+        return dot > 0.99D;
     }
 }
