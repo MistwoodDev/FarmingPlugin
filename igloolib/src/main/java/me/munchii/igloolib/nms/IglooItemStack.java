@@ -7,6 +7,7 @@ import me.munchii.igloolib.util.Logger;
 import me.munchii.igloolib.util.NBTUtil;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.Material;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
 public final class IglooItemStack {
@@ -86,6 +87,7 @@ public final class IglooItemStack {
     }
 
     private void prepare() {
+        getOrCreateNbt();
         NBTUtil.putItemNBT(nmsStack, nbtCompound != null ? nbtCompound.getCompound() : null);
     }
 

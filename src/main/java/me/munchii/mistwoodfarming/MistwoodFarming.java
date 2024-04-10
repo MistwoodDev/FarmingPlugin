@@ -3,12 +3,15 @@ package me.munchii.mistwoodfarming;
 import me.munchii.igloolib.Igloolib;
 import me.munchii.igloolib.config.Configuration;
 import me.munchii.igloolib.module.ModuleManager;
+import me.munchii.igloolib.util.ListenerManager;
 import me.munchii.igloolib.util.Logger;
 import me.munchii.igloolib.util.UUIDCache;
 import me.munchii.mistwoodfarming.config.MistwoodFarmingConfig;
 import me.munchii.mistwoodfarming.model.FarmData;
 import me.munchii.mistwoodfarming.model.PlayerData;
 import me.munchii.mistwoodfarming.modules.farming.FarmingModule;
+import me.munchii.mistwoodfarming.modules.pedestals.PedestalsModule;
+import me.munchii.mistwoodfarming.modules.pedestals.blockentity.PedestalBlockEntity;
 import me.munchii.mistwoodfarming.modules.shop.ShopModule;
 import me.munchii.mistwoodfarming.modules.wid.WIDModule;
 import net.milkbowl.vault.economy.Economy;
@@ -22,6 +25,7 @@ public final class MistwoodFarming extends JavaPlugin {
     public static MistwoodFarming INSTANCE;
 
     private ModuleManager moduleManager;
+    private ListenerManager listenerManager;
 
     private UUIDCache<PlayerData> playerCache;
     private UUIDCache<FarmData> farmCache;
@@ -56,6 +60,7 @@ public final class MistwoodFarming extends JavaPlugin {
         moduleManager = new ModuleManager();
         registerModules();
 
+        listenerManager = new ListenerManager();
         setupListeners();
 
         RegistryManager.register();
@@ -73,10 +78,12 @@ public final class MistwoodFarming extends JavaPlugin {
         moduleManager.registerModule(FarmingModule::new);
         moduleManager.registerModule(ShopModule::new);
         moduleManager.registerModule(WIDModule::new);
+        moduleManager.registerModule(PedestalsModule::new);
     }
 
     private void setupListeners() {
-        new EventListener();
+        listenerManager.register(EventListener::new);
+        listenerManager.register(PedestalBlockEntity.PedestalListener::new);
     }
 
     private boolean setupIgloolib() {

@@ -1,26 +1,16 @@
 package me.munchii.mistwoodfarming.modules.shop;
 
-import me.munchii.igloolib.block.custom.SkullBlock;
 import me.munchii.igloolib.command.IglooCommand;
-import me.munchii.igloolib.command.IglooCommandGroup;
-import me.munchii.igloolib.gui.InventoryWindow;
 import me.munchii.igloolib.module.PluginModule;
 import me.munchii.igloolib.nms.IglooItemStack;
-import me.munchii.igloolib.registry.IglooRegistry;
-import me.munchii.igloolib.text.Text;
-import me.munchii.igloolib.util.Logger;
-import me.munchii.mistwoodfarming.MistwoodFarming;
+import me.munchii.igloolib.nms.NbtCompound;
+import me.munchii.igloolib.nms.PdcCompound;
 import me.munchii.mistwoodfarming.RegistryManager;
 import me.munchii.mistwoodfarming.config.MistwoodFarmingConfig;
 import me.munchii.mistwoodfarming.model.ShopItem;
-import me.munchii.mistwoodfarming.modules.shop.gui.ShopPage;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.lang.reflect.Method;
 import java.util.List;
 
 public class ShopModule extends PluginModule {
@@ -118,15 +108,44 @@ public class ShopModule extends PluginModule {
                         .withUsage("/shop")
                         .withAlias("sh")
                         .withAction(ctx -> {
-                            ctx.getPlayer().getInventory().addItem(RegistryManager.Blocks.SHOP_BLOCK.getDefaultStack(ctx.getPlayer().getPlayer()));
+                            /*ctx.getPlayer().getInventory().addItem(RegistryManager.Blocks.SHOP_BLOCK.getDefaultStack(ctx.getPlayer().getPlayer()));
                             ctx.getPlayer().updateInventory();
+
+                            ctx.getPlayer().getInventory().addItem(RegistryManager.Blocks.PEDESTAL.getDefaultStack(ctx.getPlayer().getPlayer()));
+                            ctx.getPlayer().updateInventory();*/
 
                             //SkullBlock skullBlock = SkullBlock.of("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWU5ZTBmN2ZlZTRlMmNmOTRmZjM3NmYyOTlmZTg3YTcyYTE3MjM4N2VlNWJiZWM5Yzk0YjgyMWU3YmM3MDQ5NyJ9fX0=");
                             //ctx.getPlayer().getInventory().addItem(skullBlock.asItem().getItem());
-                            IglooItemStack stack = IglooItemStack.of(RegistryManager.Blocks.FARMERS_CRAFTING_TABLE);
-                            ItemStack bukkitStack = stack.asBukkitStack();
-                            SkullBlock.SkullBlockItem.getGameProfile(bukkitStack);
-                            ctx.getPlayer().giveItem(IglooItemStack.of(RegistryManager.Blocks.FARMERS_CRAFTING_TABLE.asItem().getItem()));
+                            //IglooItemStack stack = IglooItemStack.of(RegistryManager.Blocks.FARMERS_CRAFTING_TABLE);
+                            //ItemStack bukkitStack = stack.asBukkitStack();
+                            //SkullBlock.SkullBlockItem.getGameProfile(bukkitStack);
+                            //ctx.getPlayer().giveItem(IglooItemStack.of(RegistryManager.Blocks.FARMERS_CRAFTING_TABLE.asItem().getItem()));
+
+                            /*ItemStack stack = RegistryManager.Blocks.FARMERS_CRAFTING_TABLE.asItem().getItem();
+                            ctx.getPlayer().getInventory().addItem(stack);
+                            ctx.getPlayer().updateInventory();
+
+                            IglooItemStack iStack = IglooItemStack.of(stack);
+                            ctx.getPlayer().getInventory().addItem(iStack.asBukkitStack());
+                            ctx.getPlayer().updateInventory();
+
+                            ItemStack newStack = iStack.asBukkitStack();
+                            ItemMeta meta = newStack.getItemMeta();
+                            meta.setDisplayName("yeet");
+                            newStack.setItemMeta(meta);
+                            ctx.getPlayer().getInventory().addItem(newStack);
+                            ctx.getPlayer().updateInventory();
+
+                            NbtCompound nbtCompound = new NbtCompound();
+                            nbtCompound.putCompound("yeet", new NbtCompound());
+
+                            PdcCompound pdcCompound = new PdcCompound();
+                            pdcCompound.putCompound("yeet", new PdcCompound());*/
+
+                            ctx.getPlayer().giveItem(IglooItemStack.of(RegistryManager.Blocks.FARMERS_CRAFTING_TABLE));
+                            ctx.getPlayer().updateInventory();
+
+
                             //ctx.getPlayer().getInventory().addItem(RegistryManager.Blocks.FARMERS_CRAFTING_TABLE.getDefaultStack(ctx.getPlayer().getPlayer()));
                             //ctx.getPlayer().updateInventory();
                             /*

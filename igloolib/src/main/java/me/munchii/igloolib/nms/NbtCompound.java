@@ -3,9 +3,13 @@ package me.munchii.igloolib.nms;
 import me.munchii.igloolib.util.NBTUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.item.ItemStack;
+import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.v1_20_R2.persistence.CraftPersistentDataContainer;
 import org.bukkit.craftbukkit.v1_20_R2.persistence.CraftPersistentDataTypeRegistry;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
@@ -186,6 +190,10 @@ public final class NbtCompound {
 
     public void copyFrom(NBTTagCompound compound) {
         this.compound = NBTUtil.nbtCopyFrom(this.compound, compound);
+    }
+
+    public void copyInto(@NotNull ItemMeta meta) {
+        ((CraftPersistentDataContainer) meta.getPersistentDataContainer()).putAll(getCompound());
     }
 
     public boolean isEmpty() {

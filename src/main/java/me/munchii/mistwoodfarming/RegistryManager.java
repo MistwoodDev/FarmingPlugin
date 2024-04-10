@@ -34,7 +34,8 @@ public class RegistryManager {
         // eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDIxNmFmMjliMTlhNmZmNzUyNWQxODUzYjgxNDI3MGI4ZjA2ODU4MTBiMDg4NzBkY2UxNGJjOGYxZWE5NzQzZCJ9fX0=
         // or:
         // eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTlkMDEyMTc4MWE5Y2YwNmUzM2YyNTM0OGIzYjkxODQ4OGE3OTc0MDc2ZTMzZjRhMDI1YWY4MDBiZTdhYzliYSJ9fX0=
-        Blocks.PEDESTAL = registerSkullBlock("pedestal", SkullBlock.of(""));
+        //Blocks.PEDESTAL = registerSkullBlock("pedestal", SkullBlock.of(""));
+        Blocks.PEDESTAL = registerBlock("pedestal", IglooBlock.of(Material.LECTERN));
     }
 
     private static <B extends IglooBlock> B registerBlock(String name, B block) {

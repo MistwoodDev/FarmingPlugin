@@ -87,7 +87,6 @@ public class SkullBlock extends IglooBlock {
                     base64.substring(base64.length() - 20).hashCode(),
                     base64.substring(base64.length() - 10).hashCode()
             );
-            Logger.severe("gameprofile id=" + uuid);
             GameProfile profile = new GameProfile(uuid, "igloo");
             profile.getProperties().put("textures", new Property("textures", base64));
             return profile;
@@ -111,18 +110,6 @@ public class SkullBlock extends IglooBlock {
                     Logger.severe("Failed to set profile field: ");
                     Logger.severe(e2.getStackTrace());
                 }
-            }
-        }
-
-        public static void getGameProfile(ItemStack stack) {
-            SkullMeta skullMeta = (SkullMeta) stack.getItemMeta();
-            try {
-                Method metaGetProfileMethod = skullMeta.getClass().getDeclaredMethod("getProfile");
-                metaGetProfileMethod.setAccessible(true);
-                GameProfile profile = (GameProfile) metaGetProfileMethod.invoke(skullMeta);
-                Logger.severe("gameprofile id=" + profile.getId());
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                Logger.severe("Failed to retrieve profile field: " + Arrays.toString(e.getStackTrace()));
             }
         }
     }

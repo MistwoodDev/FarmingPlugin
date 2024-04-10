@@ -67,6 +67,11 @@ public enum BlockEntityManager {
         return blockEntity;
     }
 
+    @Nullable
+    public static <E extends IglooBlockEntity> E getBlockEntityAt(@NotNull Location pos) {
+        return (E) INSTANCE.existingBlockEntities.getOrDefault(pos, null);
+    }
+
     public static boolean isBlockEntityAt(@NotNull Location pos) {
         return INSTANCE.existingBlockEntities.containsKey(pos);
     }
