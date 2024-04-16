@@ -4,6 +4,7 @@ import net.minecraft.network.chat.IChatBaseComponent;
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.world.entity.EntityLiving;
 import net.minecraft.world.entity.ambient.EntityBat;
+import net.minecraft.world.entity.decoration.EntityArmorStand;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BlockCommand;
 import net.minecraft.world.level.block.BlockTileEntity;
@@ -35,5 +36,7 @@ public class Test {
         IChatBaseComponent cbc = IChatBaseComponent.ChatSerializer.fromJson("");
         ClientboundSystemChatPacket packet = new ClientboundSystemChatPacket(cbc, true);
         player.getHandle().connection.send(packet);
+
+        EntityArmorStand entityArmorStand;
     }
 }

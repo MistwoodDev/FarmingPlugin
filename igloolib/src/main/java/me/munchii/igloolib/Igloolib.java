@@ -12,15 +12,19 @@ import me.munchii.igloolib.gui.inventory.DefaultWindowListener;
 import me.munchii.igloolib.registry.IglooRegistry;
 import me.munchii.igloolib.screen.ScreenListener;
 import me.munchii.igloolib.text.LocaleManager;
-import me.munchii.igloolib.util.ListenerManager;
-import me.munchii.igloolib.util.LocationUtil;
-import me.munchii.igloolib.util.Logger;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
-import org.bukkit.World;
+import me.munchii.igloolib.util.*;
+import org.bukkit.*;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.BlockDisplay;
+import org.bukkit.entity.Display;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.Transformation;
+import org.joml.AxisAngle4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -43,6 +47,49 @@ public final class Igloolib extends JavaPlugin {
         registerListener(ScreenListener::new);
 
         commandManager = new CommandManager();
+        commandManager.registerCommand(IglooCommand.create("test")
+                .withAction(ctx -> {
+                    Location pos = ctx.getPlayer().getLocation().add(0, 5, 0);
+                    ArmorStand armorStand = (ArmorStand) pos.getWorld().spawnEntity(pos, EntityType.ARMOR_STAND);
+                    armorStand.setVisible(false);
+                    armorStand.setInvulnerable(true);
+                    armorStand.setGravity(false);
+                    armorStand.getEquipment().setHelmet(new ItemStack(Material.LECTERN, 1));
+
+                    ArmorStand armorStand2 = (ArmorStand) pos.getWorld().spawnEntity(pos.subtract(0, 1, 0), EntityType.ARMOR_STAND);
+                    armorStand2.setVisible(false);
+                    armorStand2.setInvulnerable(true);
+                    armorStand2.setGravity(false);
+                    armorStand2.getEquipment().setHelmet(new ItemStack(Material.SMOOTH_SANDSTONE, 1));
+
+                    ArmorStand armorStand3 = (ArmorStand) pos.getWorld().spawnEntity(pos.add(5, 0, 5), EntityType.ARMOR_STAND);
+                    armorStand3.setVisible(false);
+                    armorStand3.setInvulnerable(true);
+                    armorStand3.setGravity(false);
+                    armorStand3.setCustomName(Chat.color("&a&lYEET"));
+                    armorStand3.setCustomNameVisible(true);
+
+                    BlockDisplay blockDisplay = (BlockDisplay) pos.getWorld().spawnEntity(pos.add(10, 0, 10), EntityType.BLOCK_DISPLAY);
+                    blockDisplay.setBlock(pos.getWorld().getBlockData(pos.subtract(0, 50, 0)));
+                    blockDisplay.setBrightness(new Display.Brightness(15, 15));
+                    blockDisplay.setDisplayWidth(0.5f);
+                    blockDisplay.setDisplayHeight(0.5f);
+                    blockDisplay.setGravity(false);
+                    blockDisplay.setInvulnerable(true);
+                    blockDisplay.setGlowing(true);
+                    blockDisplay.setGlowColorOverride(Color.PURPLE);
+                    blockDisplay.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(), new Vector3f(0.5f), new AxisAngle4f()));
+
+                    TaskManager.runAnonymousDelayedTask(() -> {
+                        armorStand.remove();
+                        armorStand2.remove();
+                        armorStand3.remove();
+                        blockDisplay.remove();
+                    }, 20, TimeUnit.SECOND);
+
+                    return true;
+                })
+                .build());
         commandManager.registerCommandGroup(IglooCommandGroup.create("igloo")
                 .withCommand(IglooCommand.create("locale")
                         .withDescription("Locale tools")

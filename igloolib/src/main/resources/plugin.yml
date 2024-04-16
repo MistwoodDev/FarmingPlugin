@@ -10,3 +10,6 @@ commands:
     description: Main command
     usage: /igloo
     permission: igloolib.admin
+  test:
+    description: a
+    usage: b
