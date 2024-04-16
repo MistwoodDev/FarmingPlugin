@@ -1,4 +1,4 @@
-package me.munchii.igloolib.gui;
+package me.munchii.igloolib.gui.inventory;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;

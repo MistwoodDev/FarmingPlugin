@@ -1,7 +1,7 @@
-package me.munchii.igloolib.gui.slot;
+package me.munchii.igloolib.gui.inventory.slot;
 
-import me.munchii.igloolib.gui.InventoryActionResult;
-import me.munchii.igloolib.gui.InventoryClickEventContext;
+import me.munchii.igloolib.gui.inventory.InventoryActionResult;
+import me.munchii.igloolib.gui.inventory.InventoryClickEventContext;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

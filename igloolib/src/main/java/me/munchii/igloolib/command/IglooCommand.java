@@ -97,8 +97,8 @@ public abstract class IglooCommand implements CommandExecutor, TabCompleter {
         private String permission;
         private String description;
         private String usage;
-        private Function<CommandExecutionContext, Boolean> onCommand;
-        private BiFunction<CommandSender, List<String>, List<String>> tabComplete;
+        private Function<CommandExecutionContext, Boolean> onCommand = ctx -> true;
+        private BiFunction<CommandSender, List<String>, List<String>> tabComplete = (s, a) -> new ArrayList<>();
 
         public Builder(String cmd) {
             this.command = cmd;

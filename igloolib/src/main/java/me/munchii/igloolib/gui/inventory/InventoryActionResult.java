@@ -1,4 +1,4 @@
-package me.munchii.igloolib.gui;
+package me.munchii.igloolib.gui.inventory;
 
 public enum InventoryActionResult {
     /**

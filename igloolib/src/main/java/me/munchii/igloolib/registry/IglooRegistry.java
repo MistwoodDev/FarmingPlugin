@@ -1,5 +1,6 @@
 package me.munchii.igloolib.registry;
 
+import com.google.common.collect.ImmutableSet;
 import me.munchii.igloolib.block.IglooBlock;
 import me.munchii.igloolib.block.IglooBlockEntityType;
 import me.munchii.igloolib.item.IglooItem;
@@ -8,10 +9,7 @@ import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -36,6 +34,9 @@ public interface IglooRegistry<T> extends Iterable<T> {
 
     @NotNull
     Stream<T> stream();
+
+    @NotNull
+    Set<NamespacedKey> keySet();
 
     final class SimpleRegistry<T> implements IglooRegistry<T> {
         private final Class<T> type;
@@ -84,6 +85,12 @@ public interface IglooRegistry<T> extends Iterable<T> {
         @NotNull
         public Iterator<T> iterator() {
             return this.map.values().iterator();
+        }
+
+        @Override
+        @NotNull
+        public Set<NamespacedKey> keySet() {
+            return ImmutableSet.copyOf(map.keySet());
         }
     }
 }

@@ -1,10 +1,9 @@
-package me.munchii.igloolib.gui;
+package me.munchii.igloolib.gui.inventory;
 
-import me.munchii.igloolib.Igloolib;
-import me.munchii.igloolib.gui.page.InventoryPage;
-import me.munchii.igloolib.gui.page.InventoryPageHandler;
-import me.munchii.igloolib.gui.slot.Slot;
-import me.munchii.igloolib.gui.slot.StaticSlot;
+import me.munchii.igloolib.gui.inventory.page.InventoryPage;
+import me.munchii.igloolib.gui.inventory.page.InventoryPageHandler;
+import me.munchii.igloolib.gui.inventory.slot.Slot;
+import me.munchii.igloolib.gui.inventory.slot.StaticSlot;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

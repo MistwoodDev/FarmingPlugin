@@ -1,6 +1,6 @@
 package me.munchii.igloolib.screen;
 
-import me.munchii.igloolib.gui.IInventoryGUI;
+import me.munchii.igloolib.gui.inventory.IInventoryGUI;
 import me.munchii.igloolib.player.IglooPlayer;
 import org.bukkit.entity.Player;
 

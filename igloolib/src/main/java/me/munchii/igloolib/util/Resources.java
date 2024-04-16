@@ -1,5 +1,7 @@
 package me.munchii.igloolib.util;
 
+import me.munchii.igloolib.Igloolib;
+import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
@@ -67,5 +69,13 @@ public class Resources {
         }
 
         return Optional.empty();
+    }
+
+    public static NamespacedKey id(JavaPlugin plugin, String path) {
+        return new NamespacedKey(plugin, path);
+    }
+
+    public static NamespacedKey id(String path) {
+        return id(Igloolib.INSTANCE, path);
     }
 }

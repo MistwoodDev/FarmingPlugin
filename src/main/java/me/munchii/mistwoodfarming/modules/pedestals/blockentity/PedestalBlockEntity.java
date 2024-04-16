@@ -2,10 +2,14 @@ package me.munchii.mistwoodfarming.modules.pedestals.blockentity;
 
 import me.munchii.igloolib.block.BlockEntityManager;
 import me.munchii.igloolib.block.IglooBlockEntity;
+import me.munchii.igloolib.gui.toast.Toast;
+import me.munchii.igloolib.gui.toast.ToastStyle;
 import me.munchii.igloolib.nms.NbtCompound;
 import me.munchii.igloolib.text.Text;
+import me.munchii.igloolib.util.Duration;
 import me.munchii.igloolib.util.Logger;
 import me.munchii.igloolib.util.StringUtil;
+import me.munchii.igloolib.util.TimeUnit;
 import me.munchii.mistwoodfarming.RegistryManager;
 import me.munchii.mistwoodfarming.modules.wid.api.WIDInformable;
 import org.bukkit.Location;
@@ -108,7 +112,11 @@ public class PedestalBlockEntity extends IglooBlockEntity implements WIDInformab
 
     @Override
     public Text getInformation() {
-        return new Text.Literal(stored + "x " + StringUtil.toTitleCase(generationType.name().toLowerCase(Locale.ROOT).replace("_", " ")));
+        if (generationType != null) {
+            return new Text.Literal(stored + "x " + StringUtil.toTitleCase(generationType.name().toLowerCase(Locale.ROOT).replace("_", " ")));
+        } else {
+            return Text.literal(null);
+        }
     }
 
     // TODO: make configurable? (add more types of generation)
@@ -151,9 +159,11 @@ public class PedestalBlockEntity extends IglooBlockEntity implements WIDInformab
             if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                 player.getInventory().addItem(pedestal.clearStored());
                 player.updateInventory();
+                return;
             } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 player.getInventory().addItem(pedestal.takeOne());
                 player.updateInventory();
+                return;
             }
         }
     }

@@ -74,12 +74,26 @@ public class CommandManager implements CommandExecutor, TabCompleter, Listener {
     }
 
     private void linkCommandGroup(IglooCommandGroup commandGroup) {
+        commandGroup.setEnabled(false);
         commandGroup.enable();
+        Objects.requireNonNull(Bukkit.getPluginCommand(commandGroup.getGroupCommand())).setExecutor(this);
+        Objects.requireNonNull(Bukkit.getPluginCommand(commandGroup.getGroupCommand())).setTabCompleter(this);
+        Objects.requireNonNull(Bukkit.getPluginCommand(commandGroup.getGroupCommand())).register(((CraftServer) Igloolib.INSTANCE.getServer()).getCommandMap());
+        commandGroup.setPermissionHandler(permissionHandler);
+
+        //commandGroup.enable();
         Bukkit.getServer().getPluginManager().registerEvents(commandGroup, Igloolib.INSTANCE);
     }
 
     private void unlinkCommandGroup(IglooCommandGroup commandGroup) {
+        commandGroup.setEnabled(false);
         commandGroup.disable();
+        Objects.requireNonNull(Bukkit.getPluginCommand(commandGroup.getGroupCommand())).setExecutor(null);
+        Objects.requireNonNull(Bukkit.getPluginCommand(commandGroup.getGroupCommand())).setTabCompleter(null);
+        Objects.requireNonNull(Bukkit.getPluginCommand(commandGroup.getGroupCommand())).unregister(((CraftServer) Igloolib.INSTANCE.getServer()).getCommandMap());
+        commandGroup.setPermissionHandler(permissionHandler);
+
+        //commandGroup.disable();
         HandlerList.unregisterAll(commandGroup);
     }
 
@@ -173,10 +187,15 @@ public class CommandManager implements CommandExecutor, TabCompleter, Listener {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player && enabled) {
-            if (args.length > 0 && hasCommand(args[0])) {
-                IglooCommand subCommand = getCommand(args[0]).get();
+            if (hasCommand(label)) {
+                IglooCommand subCommand = getCommand(label).get();
                 if (subCommand.isEnabled() && permissionHandler.hasCommandPermission(sender, subCommand.getPermission())) {
                     return subCommand.onTabComplete(sender, command, label, args);
+                }
+            } else if (hasCommandGroup(label)) {
+                IglooCommandGroup commandGroup = getCommandGroup(label).get();
+                if (commandGroup.isEnabled()) {
+                    return commandGroup.onTabComplete(sender, command, label, args);
                 }
             } else {
                 SortedSet<String> tab = new TreeSet<>();
@@ -189,7 +208,21 @@ public class CommandManager implements CommandExecutor, TabCompleter, Listener {
                     cmdAccess.add(subCommand.getCommand());
 
                     for (String cmd : cmdAccess) {
-                        if (cmd.startsWith(args[0]) && !tab.contains(cmd) && permissionHandler.hasCommandPermission(sender, subCommand.getPermission())) {
+                        if (cmd.startsWith(label) && !tab.contains(cmd) && permissionHandler.hasCommandPermission(sender, subCommand.getPermission())) {
+                            tab.add(cmd);
+                        }
+                    }
+                }
+                for (IglooCommandGroup commandGroup : commandGroups) {
+                    if (!commandGroup.isEnabled()) {
+                        continue;
+                    }
+
+                    List<String> cmdAccess = new ArrayList<>(commandGroup.getGroupCommandAliases());
+                    cmdAccess.add(commandGroup.getGroupCommand());
+
+                    for (String cmd : cmdAccess) {
+                        if (cmd.startsWith(label) && !tab.contains(cmd)) {
                             tab.add(cmd);
                         }
                     }

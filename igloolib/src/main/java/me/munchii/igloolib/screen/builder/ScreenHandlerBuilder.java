@@ -1,6 +1,6 @@
 package me.munchii.igloolib.screen.builder;
 
-import me.munchii.igloolib.gui.slot.Slot;
+import me.munchii.igloolib.gui.inventory.slot.Slot;
 import me.munchii.igloolib.player.IglooPlayer;
 import me.munchii.igloolib.screen.BuiltScreenHandler;
 

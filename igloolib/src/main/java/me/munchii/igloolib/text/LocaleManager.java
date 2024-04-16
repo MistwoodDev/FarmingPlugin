@@ -1,5 +1,7 @@
 package me.munchii.igloolib.text;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -9,6 +11,7 @@ import me.munchii.igloolib.util.Logger;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -25,6 +28,7 @@ public enum LocaleManager {
     private final Map<String, LocaleMap> locales;
 
     private boolean isInitialized;
+    private int loadedFiles = 0;
 
     LocaleManager() {
         locales = new HashMap<>();
@@ -110,6 +114,7 @@ public enum LocaleManager {
         }
 
         INSTANCE.isInitialized = true;
+        INSTANCE.loadedFiles = localeFiles;
         if (IgloolibConfig.verbose) Logger.info("LocaleManager: Loaded " + localeFiles + " locale files. Failed to load " + failedFiles + " locale files");
     }
 
@@ -131,7 +136,20 @@ public enum LocaleManager {
         }
     }
 
-    private static class LocaleMap {
+    public static int getLoadedFiles() {
+        return INSTANCE.loadedFiles;
+    }
+
+    @ApiStatus.Internal
+    public static ImmutableMap<String, LocaleMap> getLocales() {
+        return ImmutableMap.copyOf(INSTANCE.locales);
+    }
+
+    public static Set<String> keySet() {
+        return ImmutableSet.copyOf(INSTANCE.locales.keySet());
+    }
+
+    public static class LocaleMap {
         private final Map<String, String> fields;
 
         public LocaleMap() {

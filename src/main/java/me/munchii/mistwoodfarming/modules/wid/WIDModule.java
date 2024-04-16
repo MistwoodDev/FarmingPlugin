@@ -44,7 +44,10 @@ public class WIDModule extends PluginModule {
                     blockName = Chat.stripColorCodes(Text.translatable(player, KeyUtil.join("block", IglooBlockEntityType.getId(blockEntity.getType()))));
 
                     if (blockEntity instanceof WIDInformable informable) {
-                        blockName += "\n§n" + informable.getInformation();
+                        Text information = informable.getInformation();
+                        if (!information.isEmpty()) {
+                            blockName += " &8|&7 " + information;
+                        }
                     }
                 } else {
                     blockName = StringUtil.toTitleCase(targetBlock.getType().name().toLowerCase(Locale.ROOT).replace("_", " "));
@@ -55,13 +58,17 @@ public class WIDModule extends PluginModule {
                         .stream().filter(entity -> !(entity instanceof Player) && !entity.isDead()).collect(Collectors.toSet());
                 if (!entities.isEmpty()) {
                     for (Entity entity : entities) {
-                        if (isLookingAtEntity(player, (LivingEntity) entity)) {
-                            // TODO: check for custom entities when implemented
+                        if (entity instanceof LivingEntity livingEntity) {
+                            if (isLookingAtEntity(player, livingEntity)) {
+                                // TODO: check for custom entities when implemented
 
-                            blockName = entity.getName();
+                                blockName = entity.getName();
+                            }
                         }
                     }
                 }
+
+                blockName = Chat.color(blockName);
 
                 Chat.sendActionBar(player, blockName);
 

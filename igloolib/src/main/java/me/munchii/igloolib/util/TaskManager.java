@@ -74,6 +74,14 @@ public enum TaskManager {
         Bukkit.getServer().getScheduler().runTaskAsynchronously(Igloolib.INSTANCE, runnable);
     }
 
+    public static void runAnonymousDelayedTask(Runnable runnable, int delay, TimeUnit timeUnit) {
+        Bukkit.getServer().getScheduler().runTaskLater(Igloolib.INSTANCE, runnable, timeUnit.convertToTicks(delay));
+    }
+
+    public static void runAnonymousDelayedAsyncTask(Runnable runnable, int delay, TimeUnit timeUnit) {
+        Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(Igloolib.INSTANCE, runnable, timeUnit.convertToTicks(delay));
+    }
+
     public static void removeTask(String name) {
         INSTANCE.tasks.remove(name);
         getTaskId(name).ifPresent(id -> Bukkit.getServer().getScheduler().cancelTask(id));

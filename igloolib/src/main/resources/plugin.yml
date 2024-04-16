@@ -9,3 +9,4 @@ commands:
   igloo:
     description: Main command
     usage: /igloo
+    permission: igloolib.admin

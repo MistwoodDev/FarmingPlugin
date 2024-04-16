@@ -1,6 +1,4 @@
-package me.munchii.igloolib.gui.page;
-
-import me.munchii.igloolib.gui.page.InventoryPage;
+package me.munchii.igloolib.gui.inventory.page;
 
 import java.util.Stack;
 

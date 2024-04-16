@@ -1,10 +1,10 @@
 package me.munchii.mistwoodfarming.modules.shop.gui;
 
-import me.munchii.igloolib.gui.IInventoryGUI;
-import me.munchii.igloolib.gui.InventoryActionResult;
-import me.munchii.igloolib.gui.page.InventoryPage;
-import me.munchii.igloolib.gui.slot.ButtonSlot;
-import me.munchii.igloolib.gui.slot.StaticSlot;
+import me.munchii.igloolib.gui.inventory.IInventoryGUI;
+import me.munchii.igloolib.gui.inventory.InventoryActionResult;
+import me.munchii.igloolib.gui.inventory.page.InventoryPage;
+import me.munchii.igloolib.gui.inventory.slot.ButtonSlot;
+import me.munchii.igloolib.gui.inventory.slot.StaticSlot;
 import me.munchii.igloolib.util.Chat;
 import me.munchii.igloolib.util.Logger;
 import me.munchii.igloolib.util.StringUtil;

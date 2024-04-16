@@ -1,8 +1,10 @@
 package me.munchii.igloolib.command;
 
 import me.munchii.igloolib.player.IglooPlayer;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +23,11 @@ public class CommandExecutionContext {
     @NotNull
     public final IglooPlayer getPlayer() {
         return player;
+    }
+
+    @NotNull
+    public final World getWorld() {
+        return player.getWorld();
     }
 
     @NotNull

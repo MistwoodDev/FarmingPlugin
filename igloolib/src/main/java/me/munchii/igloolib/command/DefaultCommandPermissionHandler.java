@@ -1,20 +1,23 @@
 package me.munchii.igloolib.command;
 
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class DefaultCommandPermissionHandler implements IglooCommandPermissionHandler {
     @Override
-    public boolean doesPlayerBypass(CommandSender player) {
+    public boolean doesPlayerBypass(@NotNull CommandSender player) {
         return player.isOp();
     }
 
     @Override
-    public boolean hasCommandPermission(CommandSender player, String permission) {
+    public boolean hasCommandPermission(@NotNull CommandSender player, @Nullable String permission) {
+        if (permission == null) return true;
         return permission.isEmpty() || doesPlayerBypass(player) || player.hasPermission(permission);
     }
 
     @Override
-    public void onPermissionFailure(CommandSender player, IglooCommand command) {
+    public void onPermissionFailure(@NotNull CommandSender player, @Nullable IglooCommand command) {
 
     }
 }

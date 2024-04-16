@@ -25,12 +25,19 @@ public interface Text {
         }
 
         @Override
+        public boolean isEmpty() {
+            return value.isEmpty();
+        }
+
+        @Override
         public String toString() {
             return value;
         }
     }
 
     void send(@NotNull Player player);
+
+    boolean isEmpty();
 
     @NotNull
     static Literal translatable(@Nullable Player player, @NotNull NamespacedKey key) {
@@ -75,5 +82,10 @@ public interface Text {
     @NotNull
     static Literal translatableColor(@Nullable Player player, String key, Object... args) {
         return new Literal(Chat.color(translatable(player, key, args).toString()));
+    }
+
+    @NotNull
+    static Literal literal(@Nullable String string) {
+        return new Literal(string == null ? "" : string);
     }
 }

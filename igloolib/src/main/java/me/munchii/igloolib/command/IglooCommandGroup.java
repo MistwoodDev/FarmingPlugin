@@ -2,6 +2,8 @@ package me.munchii.igloolib.command;
 
 import me.munchii.igloolib.Igloolib;
 import me.munchii.igloolib.util.ArrayUtil;
+import me.munchii.igloolib.util.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -49,6 +51,7 @@ public class IglooCommandGroup implements CommandExecutor, TabCompleter, Listene
         Objects.requireNonNull(Igloolib.INSTANCE.getCommand(groupCommand)).setExecutor(this);
         Objects.requireNonNull(Igloolib.INSTANCE.getCommand(groupCommand)).setTabCompleter(this);
         Objects.requireNonNull(Igloolib.INSTANCE.getCommand(groupCommand)).register(((CraftServer) Igloolib.INSTANCE.getServer()).getCommandMap());
+        enableAll();
         enabled = true;
     }
 
@@ -58,6 +61,7 @@ public class IglooCommandGroup implements CommandExecutor, TabCompleter, Listene
         Objects.requireNonNull(Igloolib.INSTANCE.getCommand(groupCommand)).setExecutor(null);
         Objects.requireNonNull(Igloolib.INSTANCE.getCommand(groupCommand)).setTabCompleter(null);
         Objects.requireNonNull(Igloolib.INSTANCE.getCommand(groupCommand)).unregister(((CraftServer) Igloolib.INSTANCE.getServer()).getCommandMap());
+        disableAll();
         enabled = false;
     }
 
@@ -173,12 +177,14 @@ public class IglooCommandGroup implements CommandExecutor, TabCompleter, Listene
 
     public boolean hasCommand(String cmd) {
         return subCommands.stream()
-                .anyMatch(subCommand -> subCommand.getCommandAliases().contains(cmd) || subCommand.getCommand().equals(cmd));
+                .anyMatch(subCommand -> subCommand.getCommand().equals(cmd)
+                        || subCommand.getCommandAliases().contains(cmd));
     }
 
     public boolean hasCommand(Set<String> aliases) {
         return subCommands.stream()
-                .anyMatch(subCommand -> subCommand.getCommandAliases().containsAll(aliases) || aliases.contains(subCommand.getCommand()));
+                .anyMatch(subCommand -> aliases.contains(subCommand.getCommand())
+                        || subCommand.getCommandAliases().stream().anyMatch(aliases::contains));
     }
 
     public IglooCommand getSubCommand(String cmd) {
@@ -205,6 +211,10 @@ public class IglooCommandGroup implements CommandExecutor, TabCompleter, Listene
 
     public boolean isEnabled() {
         return enabled;
+    }
+
+    protected void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Set<IglooCommand> getSubCommands() {

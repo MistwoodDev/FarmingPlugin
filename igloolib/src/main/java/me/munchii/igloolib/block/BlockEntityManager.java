@@ -1,5 +1,6 @@
 package me.munchii.igloolib.block;
 
+import com.google.common.collect.ImmutableSet;
 import me.munchii.igloolib.Igloolib;
 import me.munchii.igloolib.IgloolibConfig;
 import me.munchii.igloolib.nms.NbtCompound;
@@ -35,7 +36,7 @@ public enum BlockEntityManager {
         createTickTask();
     }
 
-    static void clearBlockEntities() {
+    public static void clearBlockEntities() {
         INSTANCE.existingBlockEntities.clear();
     }
 
@@ -172,6 +173,11 @@ public enum BlockEntityManager {
                 }
             }
         }
+    }
+
+    @ApiStatus.Internal
+    public static Set<IglooBlockEntity> getBlockEntities() {
+        return ImmutableSet.copyOf(INSTANCE.existingBlockEntities.values());
     }
 
     private static void createTickTask() {
