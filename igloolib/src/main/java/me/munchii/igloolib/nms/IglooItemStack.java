@@ -1,9 +1,7 @@
 package me.munchii.igloolib.nms;
 
 import me.munchii.igloolib.block.IglooBlock;
-import me.munchii.igloolib.block.custom.SkullBlock;
 import me.munchii.igloolib.item.IglooItem;
-import me.munchii.igloolib.util.Logger;
 import me.munchii.igloolib.util.NBTUtil;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.Material;
@@ -32,6 +30,10 @@ public final class IglooItemStack {
 
     public static IglooItemStack of(IglooBlock block) {
         return of(block.asItem().getItem());
+    }
+
+    public boolean isEmpty() {
+        return nmsStack.b();
     }
 
     public boolean hasNbt() {

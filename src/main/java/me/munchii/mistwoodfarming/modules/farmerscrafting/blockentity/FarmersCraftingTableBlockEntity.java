@@ -1,6 +1,6 @@
 package me.munchii.mistwoodfarming.modules.farmerscrafting.blockentity;
 
-import me.munchii.igloolib.block.IglooBlockEntity;
+import me.munchii.igloolib.block.entity.IglooBlockEntity;
 import me.munchii.igloolib.util.Logger;
 import me.munchii.mistwoodfarming.RegistryManager;
 import org.bukkit.Location;

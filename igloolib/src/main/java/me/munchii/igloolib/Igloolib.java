@@ -1,29 +1,30 @@
 package me.munchii.igloolib;
 
-import me.munchii.igloolib.block.BlockEntityManager;
-import me.munchii.igloolib.block.DefaultBlockEntityListener;
-import me.munchii.igloolib.block.IglooBlockEntity;
-import me.munchii.igloolib.block.IglooBlockEntityType;
+import me.munchii.igloolib.block.entity.BlockEntityManager;
+import me.munchii.igloolib.block.entity.DefaultBlockEntityListener;
+import me.munchii.igloolib.block.entity.IglooBlockEntity;
+import me.munchii.igloolib.block.entity.IglooBlockEntityType;
 import me.munchii.igloolib.command.CommandManager;
 import me.munchii.igloolib.command.IglooCommand;
 import me.munchii.igloolib.command.IglooCommandGroup;
 import me.munchii.igloolib.config.Configuration;
 import me.munchii.igloolib.gui.inventory.DefaultWindowListener;
+import me.munchii.igloolib.gui.window.FurnaceWindow;
+import me.munchii.igloolib.nms.IglooBlockDisplay;
 import me.munchii.igloolib.registry.IglooRegistry;
 import me.munchii.igloolib.screen.ScreenListener;
 import me.munchii.igloolib.text.LocaleManager;
 import me.munchii.igloolib.util.*;
 import org.bukkit.*;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.BlockDisplay;
-import org.bukkit.entity.Display;
-import org.bukkit.entity.EntityType;
+import org.bukkit.block.data.type.Furnace;
+import org.bukkit.craftbukkit.v1_20_R2.inventory.util.CraftTileInventoryConverter;
+import org.bukkit.entity.*;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Transformation;
 import org.joml.AxisAngle4f;
-import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import java.util.*;
@@ -49,7 +50,7 @@ public final class Igloolib extends JavaPlugin {
         commandManager = new CommandManager();
         commandManager.registerCommand(IglooCommand.create("test")
                 .withAction(ctx -> {
-                    Location pos = ctx.getPlayer().getLocation().add(0, 5, 0);
+                    /*Location pos = ctx.getPlayer().getLocation().add(0, 5, 0);
                     ArmorStand armorStand = (ArmorStand) pos.getWorld().spawnEntity(pos, EntityType.ARMOR_STAND);
                     armorStand.setVisible(false);
                     armorStand.setInvulnerable(true);
@@ -80,11 +81,34 @@ public final class Igloolib extends JavaPlugin {
                     blockDisplay.setGlowColorOverride(Color.PURPLE);
                     blockDisplay.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(), new Vector3f(0.5f), new AxisAngle4f()));
 
+                    IglooBlockDisplay blockDisplay2 = pos.getWorld().spawn(pos.add(10, 0, 15), IglooBlockDisplay.class);
+                    blockDisplay2.setBlock(pos.getWorld().getBlockData(pos.subtract(0, 50, 0)));
+                    blockDisplay2.setGravity(false);
+                    blockDisplay2.setInvulnerable(true);
+
                     TaskManager.runAnonymousDelayedTask(() -> {
                         armorStand.remove();
                         armorStand2.remove();
                         armorStand3.remove();
                         blockDisplay.remove();
+                        blockDisplay2.remove();
+                    }, 20, TimeUnit.SECOND);*/
+
+                    FurnaceWindow furnaceWindow = new FurnaceWindow("yeet", window -> {
+                        if (!window.getInputSlot().isEmpty() && !window.getFuelSlot().isEmpty()) {
+                        }
+                    });
+                    InventoryView view = furnaceWindow.open(ctx.getPlayer());
+                    view.setProperty(InventoryView.Property.TICKS_FOR_CURRENT_FUEL, 600); // total burn time
+                    view.setProperty(InventoryView.Property.TICKS_FOR_CURRENT_SMELTING, 600); // total cook time
+                    view.setProperty(InventoryView.Property.BURN_TIME, 300); // current burn time
+                    view.setProperty(InventoryView.Property.COOK_TIME, 300); // current cook time
+                    //((Player) view.getPlayer()).updateInventory();
+
+                    TaskManager.runAnonymousDelayedTask(() -> {
+                        Logger.severe("input=" + furnaceWindow.getInputSlot());
+                        Logger.severe("fuel=" + furnaceWindow.getFuelSlot());
+                        Logger.severe("output=" + furnaceWindow.getOutputSlot());
                     }, 20, TimeUnit.SECOND);
 
                     return true;

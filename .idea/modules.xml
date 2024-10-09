@@ -3,10 +3,13 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/FarmingPlugin.MistwoodFarming.main.iml" filepath="$PROJECT_DIR$/.idea/modules/FarmingPlugin.MistwoodFarming.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/igloolib/FarmingPlugin.igloolib.MistwoodFarming.igloolib.main.iml" filepath="$PROJECT_DIR$/.idea/modules/igloolib/FarmingPlugin.igloolib.MistwoodFarming.igloolib.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GitHub.FarmingPlugin.MistwoodFarming.main.iml" filepath="$PROJECT_DIR$/.idea/modules/GitHub.FarmingPlugin.MistwoodFarming.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/igloolib/MistwoodFarming.igloolib.main.iml" filepath="$PROJECT_DIR$/.idea/modules/igloolib/MistwoodFarming.igloolib.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/igloolib/MistwoodFarming.igloolib.test.iml" filepath="$PROJECT_DIR$/.idea/modules/igloolib/MistwoodFarming.igloolib.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/MistwoodFarming.main.iml" filepath="$PROJECT_DIR$/.idea/modules/MistwoodFarming.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/igloolib/igloolib.MistwoodFarming.igloolib.main.iml" filepath="$PROJECT_DIR$/.idea/modules/igloolib/igloolib.MistwoodFarming.igloolib.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/igloolib/igloolib.MistwoodFarming.igloolib.test.iml" filepath="$PROJECT_DIR$/.idea/modules/igloolib/igloolib.MistwoodFarming.igloolib.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/igloolib/me.munchii.MistwoodFarming.igloolib.main.iml" filepath="$PROJECT_DIR$/.idea/modules/igloolib/me.munchii.MistwoodFarming.igloolib.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/igloolib/me.munchii.MistwoodFarming.igloolib.test.iml" filepath="$PROJECT_DIR$/.idea/modules/igloolib/me.munchii.MistwoodFarming.igloolib.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/me.munchii.MistwoodFarming.main.iml" filepath="$PROJECT_DIR$/.idea/modules/me.munchii.MistwoodFarming.main.iml" />

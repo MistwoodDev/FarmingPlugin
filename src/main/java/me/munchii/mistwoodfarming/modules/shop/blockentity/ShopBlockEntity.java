@@ -1,6 +1,6 @@
 package me.munchii.mistwoodfarming.modules.shop.blockentity;
 
-import me.munchii.igloolib.block.IglooBlockEntity;
+import me.munchii.igloolib.block.entity.IglooBlockEntity;
 import me.munchii.igloolib.nms.NbtCompound;
 import me.munchii.igloolib.util.Logger;
 import me.munchii.mistwoodfarming.RegistryManager;

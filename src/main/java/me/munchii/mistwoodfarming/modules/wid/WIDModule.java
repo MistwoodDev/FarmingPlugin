@@ -1,8 +1,8 @@
 package me.munchii.mistwoodfarming.modules.wid;
 
-import me.munchii.igloolib.block.BlockEntityManager;
-import me.munchii.igloolib.block.IglooBlockEntity;
-import me.munchii.igloolib.block.IglooBlockEntityType;
+import me.munchii.igloolib.block.entity.BlockEntityManager;
+import me.munchii.igloolib.block.entity.IglooBlockEntity;
+import me.munchii.igloolib.block.entity.IglooBlockEntityType;
 import me.munchii.igloolib.module.PluginModule;
 import me.munchii.igloolib.text.Text;
 import me.munchii.igloolib.util.*;

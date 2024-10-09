@@ -5,6 +5,7 @@ import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.world.entity.EntityLiving;
 import net.minecraft.world.entity.ambient.EntityBat;
 import net.minecraft.world.entity.decoration.EntityArmorStand;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BlockCommand;
 import net.minecraft.world.level.block.BlockTileEntity;

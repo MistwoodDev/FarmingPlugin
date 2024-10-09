@@ -2,7 +2,7 @@ package me.munchii.igloolib.registry;
 
 import com.google.common.collect.ImmutableSet;
 import me.munchii.igloolib.block.IglooBlock;
-import me.munchii.igloolib.block.IglooBlockEntityType;
+import me.munchii.igloolib.block.entity.IglooBlockEntityType;
 import me.munchii.igloolib.item.IglooItem;
 import me.munchii.igloolib.util.Logger;
 import org.bukkit.NamespacedKey;

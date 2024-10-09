@@ -1,5 +1,6 @@
-package me.munchii.igloolib.block;
+package me.munchii.igloolib.block.entity;
 
+import me.munchii.igloolib.block.IglooBlock;
 import org.bukkit.Location;
 
 import java.util.ArrayList;

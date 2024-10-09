@@ -1,4 +1,4 @@
-package me.munchii.igloolib.block;
+package me.munchii.igloolib.block.entity;
 
 import com.google.common.collect.ImmutableSet;
 import me.munchii.igloolib.Igloolib;

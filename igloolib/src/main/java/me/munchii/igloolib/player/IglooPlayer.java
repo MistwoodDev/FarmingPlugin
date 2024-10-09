@@ -10,6 +10,8 @@ import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
@@ -104,6 +106,10 @@ public final class IglooPlayer {
     @NotNull
     public PlayerInventory getInventory() {
         return Objects.requireNonNull(player).getInventory();
+    }
+
+    public InventoryView openInventory(Inventory inventory) {
+        return Objects.requireNonNull(player).openInventory(inventory);
     }
 
     @NotNull

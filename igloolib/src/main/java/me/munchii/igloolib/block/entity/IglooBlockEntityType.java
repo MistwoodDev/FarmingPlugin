@@ -1,6 +1,7 @@
-package me.munchii.igloolib.block;
+package me.munchii.igloolib.block.entity;
 
 import com.google.common.collect.ImmutableSet;
+import me.munchii.igloolib.block.IglooBlock;
 import me.munchii.igloolib.registry.IglooRegistry;
 import me.munchii.igloolib.util.Logger;
 import org.bukkit.Location;

@@ -2,6 +2,9 @@ package me.munchii.mistwoodfarming;
 
 import me.munchii.igloolib.block.*;
 import me.munchii.igloolib.block.custom.SkullBlock;
+import me.munchii.igloolib.block.entity.IglooBlockEntity;
+import me.munchii.igloolib.block.entity.IglooBlockEntityType;
+import me.munchii.igloolib.block.entity.IglooBlockEntityTypeBuilder;
 import me.munchii.igloolib.registry.IglooRegistry;
 import me.munchii.mistwoodfarming.modules.farmerscrafting.blockentity.FarmersCraftingTableBlockEntity;
 import me.munchii.mistwoodfarming.modules.pedestals.blockentity.PedestalBlockEntity;

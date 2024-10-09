@@ -1,7 +1,7 @@
 package me.munchii.igloolib.screen;
 
-import me.munchii.igloolib.block.BlockEntityManager;
-import me.munchii.igloolib.block.IglooBlockEntity;
+import me.munchii.igloolib.block.entity.BlockEntityManager;
+import me.munchii.igloolib.block.entity.IglooBlockEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

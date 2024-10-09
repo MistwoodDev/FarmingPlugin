@@ -1,5 +1,6 @@
-package me.munchii.igloolib.block;
+package me.munchii.igloolib.block.entity;
 
+import me.munchii.igloolib.block.IglooBlockItem;
 import me.munchii.igloolib.nms.IglooItemStack;
 import me.munchii.igloolib.nms.NbtCompound;
 import me.munchii.igloolib.registry.IglooRegistry;

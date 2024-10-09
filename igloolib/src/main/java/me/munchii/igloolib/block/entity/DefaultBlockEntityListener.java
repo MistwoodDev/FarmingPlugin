@@ -1,4 +1,4 @@
-package me.munchii.igloolib.block;
+package me.munchii.igloolib.block.entity;
 
 import me.munchii.igloolib.nms.IglooItemStack;
 import me.munchii.igloolib.nms.NbtCompound;
@@ -6,10 +6,8 @@ import me.munchii.igloolib.player.IglooPlayer;
 import me.munchii.igloolib.registry.IglooRegistry;
 import me.munchii.igloolib.screen.BuiltScreenHandler;
 import me.munchii.igloolib.screen.BuiltScreenHandlerProvider;
-import me.munchii.igloolib.screen.ScreenProvider;
 import me.munchii.igloolib.text.Text;
 import me.munchii.igloolib.util.KeyUtil;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
